@@ -5,12 +5,12 @@ namespace App\Entity;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * Quests
+ * Posts
  *
- * @ORM\Table(name="quests", indexes={@ORM\Index(name="FK_quests_users", columns={"user_id"})})
+ * @ORM\Table(name="posts", indexes={@ORM\Index(name="FK_users_posts", columns={"user_id"})})
  * @ORM\Entity
  */
-class Quests
+class Posts
 {
     /**
      * @var int
@@ -24,30 +24,23 @@ class Quests
     /**
      * @var string
      *
-     * @ORM\Column(name="content", type="string", length=200, nullable=false)
+     * @ORM\Column(name="content", type="string", length=300, nullable=false)
      */
     private $content;
 
     /**
-     * @var int
-     *
-     * @ORM\Column(name="status", type="integer", nullable=false)
-     */
-    private $status;
-
-    /**
      * @var \DateTime
      *
-     * @ORM\Column(name="add_date", type="datetime", nullable=false)
+     * @ORM\Column(name="date", type="datetime", nullable=false)
      */
-    private $addDate;
+    private $date;
 
     /**
-     * @var \DateTime
+     * @var string
      *
-     * @ORM\Column(name="end_date", type="datetime", nullable=false)
+     * @ORM\Column(name="title", type="string", length=50, nullable=false)
      */
-    private $endDate;
+    private $title;
 
     /**
      * @var \Users
@@ -76,38 +69,26 @@ class Quests
         return $this;
     }
 
-    public function getStatus(): ?int
+    public function getDate(): ?\DateTimeInterface
     {
-        return $this->status;
+        return $this->date;
     }
 
-    public function setStatus(int $status): self
+    public function setDate(\DateTimeInterface $date): self
     {
-        $this->status = $status;
+        $this->date = $date;
 
         return $this;
     }
 
-    public function getAddDate(): ?\DateTimeInterface
+    public function getTitle(): ?string
     {
-        return $this->addDate;
+        return $this->title;
     }
 
-    public function setAddDate(\DateTimeInterface $addDate): self
+    public function setTitle(string $title): self
     {
-        $this->addDate = $addDate;
-
-        return $this;
-    }
-
-    public function getEndDate(): ?\DateTimeInterface
-    {
-        return $this->endDate;
-    }
-
-    public function setEndDate(\DateTimeInterface $endDate): self
-    {
-        $this->endDate = $endDate;
+        $this->title = $title;
 
         return $this;
     }

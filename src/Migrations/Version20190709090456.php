@@ -10,7 +10,7 @@ use Doctrine\Migrations\AbstractMigration;
 /**
  * Auto-generated Migration: Please modify to your needs!
  */
-final class Version20190703163812 extends AbstractMigration
+final class Version20190709090456 extends AbstractMigration
 {
     public function getDescription() : string
     {
@@ -22,9 +22,10 @@ final class Version20190703163812 extends AbstractMigration
         // this up() migration is auto-generated, please modify it to your needs
         $this->abortIf($this->connection->getDatabasePlatform()->getName() !== 'mysql', 'Migration can only be executed safely on \'mysql\'.');
 
-        $this->addSql('ALTER TABLE quests DROP FOREIGN KEY FK_quests_users');
-        $this->addSql('ALTER TABLE quests CHANGE user_id user_id INT DEFAULT NULL, CHANGE status status INT NOT NULL');
-        $this->addSql('ALTER TABLE quests ADD CONSTRAINT FK_989E5D34A76ED395 FOREIGN KEY (user_id) REFERENCES users (id)');
+        $this->addSql('ALTER TABLE messages CHANGE conv_id conv_id INT DEFAULT NULL');
+        $this->addSql('ALTER TABLE photos CHANGE post_id post_id INT DEFAULT NULL');
+        $this->addSql('ALTER TABLE posts CHANGE user_id user_id INT DEFAULT NULL');
+        $this->addSql('ALTER TABLE avatars CHANGE user_id user_id INT DEFAULT NULL');
     }
 
     public function down(Schema $schema) : void
@@ -32,8 +33,9 @@ final class Version20190703163812 extends AbstractMigration
         // this down() migration is auto-generated, please modify it to your needs
         $this->abortIf($this->connection->getDatabasePlatform()->getName() !== 'mysql', 'Migration can only be executed safely on \'mysql\'.');
 
-        $this->addSql('ALTER TABLE quests DROP FOREIGN KEY FK_989E5D34A76ED395');
-        $this->addSql('ALTER TABLE quests CHANGE user_id user_id INT NOT NULL, CHANGE status status INT DEFAULT 0 NOT NULL');
-        $this->addSql('ALTER TABLE quests ADD CONSTRAINT FK_quests_users FOREIGN KEY (user_id) REFERENCES users (id) ON UPDATE NO ACTION ON DELETE CASCADE');
+        $this->addSql('ALTER TABLE avatars CHANGE user_id user_id INT NOT NULL');
+        $this->addSql('ALTER TABLE messages CHANGE conv_id conv_id INT NOT NULL');
+        $this->addSql('ALTER TABLE photos CHANGE post_id post_id INT NOT NULL');
+        $this->addSql('ALTER TABLE posts CHANGE user_id user_id INT NOT NULL');
     }
 }
