@@ -123,6 +123,4 @@ class Quests
 
         return $this;
     }
-
-
 }

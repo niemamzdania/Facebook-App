@@ -4,16 +4,15 @@ namespace App\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\HttpFoundation\Request;
 
 class MainController extends AbstractController
 {
     /**
-     * @Route("/random", name="random")
+     * @Route("/", name="test")
      */
-    public function index()
+    public function index(Request $request)
     {
-        return $this->render('main/index.html.twig', [
-            'controller_name' => 'RandomController',
-        ]);
+        return $this->render('index.html.twig');
     }
 }
