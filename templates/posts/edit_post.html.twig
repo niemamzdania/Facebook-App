@@ -1,0 +1,13 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <div class="container">
+        <h4>Edit your Article</h4>
+    </div>
+    <div class="container">
+        {{ form_start(form) }}
+        {{ form_widget(form) }}
+        <button class="btn btn-dropbox" style="margin: 3px 0px">Save Changes</button>
+        {{ form_end(form) }}
+    </div>
+{% endblock %}
