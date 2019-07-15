@@ -4,6 +4,7 @@ namespace App\Controller;
 
 use App\Entity\Posts;
 use App\Form\AddPostFormType;
+use App\Service\PostsService;
 
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -14,22 +15,22 @@ use Symfony\Component\Routing\Annotation\Route;
 class PostsController extends AbstractController
 {
     /**
-     * @Route("/posts", name="all_posts")
+     * @Route("/posts", name="show_posts")
      */
     public function show_posts()
     {
         $posts = $this->getDoctrine()->getRepository(Posts::class)->findAllPosts();
 
-        return $this->render('posts/index.html.twig', [
-            'controller_name' => 'PostsController',
+        return $this->render('posts/show_posts.html.twig', [
+            'posts' => $posts,
         ]);
     }
 
     /**
-     * @Route("/new_post", name="add_post")'
+     * @Route("/post/new", name="add_post")
      * @IsGranted("IS_AUTHENTICATED_FULLY")
      */
-    public function add_post(Request $request)
+    public function add_post(Request $request, PostsService $postsService)
     {
         $post = new Posts();
 
@@ -38,14 +39,13 @@ class PostsController extends AbstractController
         $form->handleRequest($request);
 
         if($form->isSubmitted() && $form->isValid()){
-            $post->setDate(new \DateTime());
             $post->setUser($this->getUser());
 
             $entityManager = $this->getDoctrine()->getmanager();
-            $entityManager->persist($post);
-            $entityManager->flush();
 
-            return $this->redirectToRoute('test');
+            $postsService->setDateToPost($entityManager, $post);
+
+            return $this->redirectToRoute('show_posts');
         }
 
         return $this->render('posts/new_post.html.twig', [
@@ -54,17 +54,11 @@ class PostsController extends AbstractController
     }
 
     /**
-     * @Route("/edit_post/{id}", name="edit_post")'
+     * @Route("/post/edit/{id}", name="edit_post")
      * @IsGranted("IS_AUTHENTICATED_FULLY")
      */
-    public function edit_post(Request $request, $id)
+    public function edit_post(Request $request, Posts $post)
     {
-        $post = $this->getDoctrine()->getRepository(Posts::class)->findPostById($id);
-
-        if(!$post){
-            return new Response('Post not found');
-        }
-
         if($this->getUser() != $post->getUser()){
             return new Response('Forbidden access');
         }
@@ -80,11 +74,28 @@ class PostsController extends AbstractController
             $entityManager = $this->getDoctrine()->getmanager();
             $entityManager->flush();
 
-            return $this->redirectToRoute('test');
+            return $this->redirectToRoute('show_posts');
         }
 
         return $this->render('posts/edit_post.html.twig', [
             'form' => $form->createView()
         ]);
+    }
+
+    /**
+     * @Route("/post/delete/{id}", name="delete_post")
+     * @IsGranted("IS_AUTHENTICATED_FULLY")
+     */
+    public function delete_post(Posts $post)
+    {
+        if($this->getUser() != $post->getUser()){
+            return new Response('Forbidden access');
+        }
+
+        $entityManager = $this->getDoctrine()->getManager();
+        $entityManager->remove($post);
+        $entityManager->flush();
+
+        return $this->redirectToRoute('show_posts');
     }
 }

@@ -2,6 +2,9 @@
 
 namespace App\Controller;
 
+use App\Entity\Quests;
+use App\Form\EditQuestFormType;
+
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\HttpFoundation\Request;
@@ -13,6 +16,16 @@ class MainController extends AbstractController
      */
     public function index(Request $request)
     {
-        return $this->render('index.html.twig');
+        $quest = new Quests();
+
+        $form = $this->createForm(EditQuestFormType::class, $quest);
+
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            dd($quest);
+        }
+
+        return $this->render('index.html.twig', ['form' => $form->createView()]);
     }
 }

@@ -3,22 +3,26 @@
 {% block title %}Posts{% endblock %}
 
 {% block body %}
-    {% for post in posts %}
+    <div class="container">
         <table class="table table-striped">
             <thead>
             <tr>
+                <th scope="col">Id</th>
                 <th scope="col">Title</th>
                 <th scope="col">Date</th>
                 <th scope="col">Show</th>
             </tr>
             </thead>
             <tbody>
-            {% for article in articles %}
+            {% for post in posts %}
                 <tr>
-
+                    <td>{{ post.Id }}</td>
+                    <td>{{ post.Title }}</td>
+                    <td>{{ post.Date|date("d/m/Y") }}</td>
+                    <td><a href="#">Show Post</a></td>
                 </tr>
             {% endfor %}
             </tbody>
         </table>
-    {% endfor %}
+    </div>
 {% endblock %}
