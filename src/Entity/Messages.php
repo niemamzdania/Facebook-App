@@ -40,7 +40,7 @@ class Messages
      *
      * @ORM\ManyToOne(targetEntity="Conversations")
      * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="conv_id", referencedColumnName="id", onDelete="CASCADE")
+     *   @ORM\JoinColumn(name="conv_id", referencedColumnName="id")
      * })
      */
     private $conv;

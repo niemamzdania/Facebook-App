@@ -7,7 +7,7 @@ use Doctrine\ORM\Mapping as ORM;
 /**
  * Conversations
  *
- * @ORM\Table(name="conversations")
+ * @ORM\Table(name="conversations", indexes={@ORM\Index(name="FK_conversations_users", columns={"sender"}), @ORM\Index(name="FK_conversations_users_2", columns={"reciver"})})
  * @ORM\Entity
  */
 class Conversations
@@ -22,44 +22,50 @@ class Conversations
     private $id;
 
     /**
-     * @var int
+     * @var \Users
      *
-     * @ORM\Column(name="user1", type="integer", nullable=false)
+     * @ORM\ManyToOne(targetEntity="Users")
+     * @ORM\JoinColumns({
+     *   @ORM\JoinColumn(name="sender", referencedColumnName="id")
+     * })
      */
-    private $user1;
+    private $sender;
 
     /**
-     * @var int
+     * @var \Users
      *
-     * @ORM\Column(name="user2", type="integer", nullable=false)
+     * @ORM\ManyToOne(targetEntity="Users")
+     * @ORM\JoinColumns({
+     *   @ORM\JoinColumn(name="reciver", referencedColumnName="id")
+     * })
      */
-    private $user2;
+    private $reciver;
 
     public function getId(): ?int
     {
         return $this->id;
     }
 
-    public function getUser1(): ?int
+    public function getSender(): ?Users
     {
-        return $this->user1;
+        return $this->sender;
     }
 
-    public function setUser1(int $user1): self
+    public function setSender(?Users $sender): self
     {
-        $this->user1 = $user1;
+        $this->sender = $sender;
 
         return $this;
     }
 
-    public function getUser2(): ?int
+    public function getReciver(): ?Users
     {
-        return $this->user2;
+        return $this->reciver;
     }
 
-    public function setUser2(int $user2): self
+    public function setReciver(?Users $reciver): self
     {
-        $this->user2 = $user2;
+        $this->reciver = $reciver;
 
         return $this;
     }
