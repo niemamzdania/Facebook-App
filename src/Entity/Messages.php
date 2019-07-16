@@ -45,6 +45,11 @@ class Messages
      */
     private $conv;
 
+    /**
+     * @ORM\Column(type="integer")
+     */
+    private $sender;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -82,6 +87,18 @@ class Messages
     public function setConv(?Conversations $conv): self
     {
         $this->conv = $conv;
+
+        return $this;
+    }
+
+    public function getSender(): ?int
+    {
+        return $this->sender;
+    }
+
+    public function setSender(int $sender): self
+    {
+        $this->sender = $sender;
 
         return $this;
     }
