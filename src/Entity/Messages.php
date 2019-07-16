@@ -40,15 +40,10 @@ class Messages
      *
      * @ORM\ManyToOne(targetEntity="Conversations")
      * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="conv_id", referencedColumnName="id", onDelete="CASCADE")
+     *   @ORM\JoinColumn(name="conv_id", referencedColumnName="id")
      * })
      */
     private $conv;
-
-    /**
-     * @ORM\Column(type="integer")
-     */
-    private $sender;
 
     public function getId(): ?int
     {
@@ -87,18 +82,6 @@ class Messages
     public function setConv(?Conversations $conv): self
     {
         $this->conv = $conv;
-
-        return $this;
-    }
-
-    public function getSender(): ?int
-    {
-        return $this->sender;
-    }
-
-    public function setSender(int $sender): self
-    {
-        $this->sender = $sender;
 
         return $this;
     }

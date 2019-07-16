@@ -4,6 +4,7 @@ namespace App\Controller;
 
 use App\Entity\Users;
 use App\Entity\Conversations;
+use App\Entity\Messages;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Routing\Annotation\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
@@ -22,17 +23,14 @@ class MessengerController extends AbstractController
 
         foreach ($users as $value)  unset($users[$counter]);
         {
-            if($value == $user) 
+            if($value == $user) unset($users[$content]); 
             $counter ++; 
         }
 
-        unset($users[0]); 
+       
 
-        $conversation = $this->getDoctrine()->getRepository(Conversations::class)->findAll();
-        dump($conversation);
-        
         return $this->render('messenger/messenger.html.twig', [
-            'controller_name' => 'MessengerController', 'users' => $users , 'conversation' => $conversation[0]
+            'controller_name' => 'MessengerController', 'users' => $users 
         ]);
     }
 }

@@ -8,7 +8,7 @@ use Doctrine\ORM\Mapping as ORM;
  * Posts
  *
  * @ORM\Table(name="posts", indexes={@ORM\Index(name="FK_users_posts", columns={"user_id"})})
- * @ORM\Entity(repositoryClass="App\Repository\PostsRepository")
+ * @ORM\Entity
  */
 class Posts
 {
@@ -20,16 +20,6 @@ class Posts
      * @ORM\GeneratedValue(strategy="IDENTITY")
      */
     private $id;
-
-    /**
-     * @var \Users
-     *
-     * @ORM\ManyToOne(targetEntity="Users")
-     * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="user_id", referencedColumnName="id", onDelete="CASCADE")
-     * })
-     */
-    private $user;
 
     /**
      * @var string
@@ -52,21 +42,19 @@ class Posts
      */
     private $date;
 
+    /**
+     * @var \Users
+     *
+     * @ORM\ManyToOne(targetEntity="Users")
+     * @ORM\JoinColumns({
+     *   @ORM\JoinColumn(name="user_id", referencedColumnName="id")
+     * })
+     */
+    private $user;
+
     public function getId(): ?int
     {
         return $this->id;
-    }
-
-    public function getUser(): ?Users
-    {
-        return $this->user;
-    }
-
-    public function setUser(?Users $user): self
-    {
-        $this->user = $user;
-
-        return $this;
     }
 
     public function getTitle(): ?string
@@ -104,4 +92,18 @@ class Posts
 
         return $this;
     }
+
+    public function getUser(): ?Users
+    {
+        return $this->user;
+    }
+
+    public function setUser(?Users $user): self
+    {
+        $this->user = $user;
+
+        return $this;
+    }
+
+
 }
