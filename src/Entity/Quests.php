@@ -36,16 +36,16 @@ class Quests
     private $status;
 
     /**
-     * @var \DateTime
+     * @var \Date
      *
-     * @ORM\Column(name="add_date", type="datetime", nullable=false)
+     * @ORM\Column(name="add_date", type="date", nullable=false)
      */
     private $addDate;
 
     /**
-     * @var \DateTime
+     * @var \Date
      *
-     * @ORM\Column(name="end_date", type="datetime", nullable=false)
+     * @ORM\Column(name="end_date", type="date", nullable=false)
      */
     private $endDate;
 
@@ -105,7 +105,7 @@ class Quests
         return $this->endDate;
     }
 
-    public function setEndDate(\DateTimeInterface $endDate): self
+    public function setEndDate($endDate): self
     {
         $this->endDate = $endDate;
 
