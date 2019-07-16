@@ -2,10 +2,19 @@
 
 {% block body %}
     <div class="container">
-        <form action="/quest/new" method="post">
-            Content:<input type="textarea">
-            Status:<input type="text">
-            <input type="submit" value="Submit">
+        <form action="/quest/new" method="POST">
+            <div class="row">Content:<input type="textarea" name="Content"></div>
+            <div class="row">Date:<input type="date" min="2019-07-16" max="2019-12-31" name="EndDate"></div>
+            <div class="row"><select name="Status">
+                    <option value=0>0%</option>
+                    <option value=20>20%</option>
+                    <option value=40>40%</option>
+                    <option value=60>60%</option>
+                    <option value=80>80%</option>
+                    <option value=100>100%</option>
+                </select>
+            </div>
+            <div class="row"><input type="submit" value="Submit"></div>
         </form>
     </div>
 {% endblock %}
