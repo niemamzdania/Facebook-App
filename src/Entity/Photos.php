@@ -33,7 +33,7 @@ class Photos
      *
      * @ORM\ManyToOne(targetEntity="Posts")
      * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="post_id", referencedColumnName="id")
+     *   @ORM\JoinColumn(name="post_id", referencedColumnName="id", onDelete="CASCADE")
      * })
      */
     private $post;

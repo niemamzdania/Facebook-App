@@ -26,7 +26,7 @@ class Conversations
      *
      * @ORM\ManyToOne(targetEntity="Users")
      * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="sender", referencedColumnName="id")
+     *   @ORM\JoinColumn(name="sender", referencedColumnName="id", onDelete="CASCADE")
      * })
      */
     private $sender;
@@ -36,7 +36,7 @@ class Conversations
      *
      * @ORM\ManyToOne(targetEntity="Users")
      * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="reciver", referencedColumnName="id")
+     *   @ORM\JoinColumn(name="reciver", referencedColumnName="id", onDelete="CASCADE")
      * })
      */
     private $reciver;
