@@ -2,14 +2,14 @@
 
 namespace App\Service;
 
-use App\Entity\Quests;
-use http\Env\Request;
+use http\Env\Response;
 
 class QuestsService
 {
     public function saveNewQuest($entityManager, $quest, $request)
     {
         $dateInString = $request->request->get('EndDate');
+
         $date = new \DateTime($dateInString);
 
         $quest->setAddDate(new \DateTime());

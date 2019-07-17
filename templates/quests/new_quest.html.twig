@@ -2,10 +2,10 @@
 
 {% block body %}
     <div class="container">
-        <form action="/quest/new" method="POST">
-            <div class="row">Content:<input type="textarea" name="Content"></div>
-            <div class="row">Date:<input type="date" min="2019-07-16" max="2019-12-31" name="EndDate"></div>
-            <div class="row"><select name="Status">
+        <form action="{{ path('add_quest') }}" method="POST">
+            <div class="row">Content:<input type="textarea" name="Content" required></div>
+            <div class="row">Date:<input type="date" min="2019-07-16" max="2019-12-31" name="EndDate" required></div>
+            <div class="row"><select name="Status" required>
                     <option value=0>0%</option>
                     <option value=20>20%</option>
                     <option value=40>40%</option>
