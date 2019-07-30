@@ -28,4 +28,17 @@ class MainController extends AbstractController
 
         return $this->render('index.html.twig', ['form' => $form->createView()]);
     }
+
+
+    /**
+     * @Route("/main", name="main")
+     */
+    public function index1()
+    {
+        
+
+        return $this->render('main.html.twig');
+    }
+
+
 }
