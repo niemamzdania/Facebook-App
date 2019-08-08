@@ -1,71 +1,99 @@
-{% extends 'base.html.twig' %}
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="UTF-8">
+        <title>
+            {% block title %}Welcome!
+            {% endblock %}
+        </title>
 
-{% block body %}
+        <!-- Assets -->
+        {% include 'assets.html.twig' %}
+        <!-- Assets -->
 
-<!-- Left side column. contains the logo and sidebar -->
-<aside class="main-sidebar" style="font-size:20px;">
+    </head>
 
-  <!-- sidebar: style can be found in sidebar.less -->
-  <section class="sidebar">
 
-    <!-- Sidebar user panel (optional) -->
-    <div class="user-panel">
-      <div class="pull-left image">
-        <img src="dist/img/user2-160x160.jpg" class="img-circle" alt="User Image">
-      </div>
-      <div class="pull-left info">
-        <p>Alexander Pierce</p>
-        <!-- Status -->
-        <a href="#"><i class="fa fa-circle text-success"></i> Online</a>
-      </div>
-    </div>
+    {% block body %}
 
-    <!-- search form (Optional) -->
-    <form action="#" method="get" class="sidebar-form">
-      <div class="input-group">
-        <input type="text" name="q" class="form-control" placeholder="Search...">
-        <span class="input-group-btn">
-              <button type="submit" name="search" id="search-btn" class="btn btn-flat"><i class="fa fa-search"></i>
-              </button>
-            </span>
-      </div>
-    </form>
-    <!-- /.search form -->
 
-    <!-- Sidebar Menu -->
-    <ul class="sidebar-menu" data-widget="tree">
-      <li class="header">HEADER</li>
-      <!-- Optionally, you can add icons to the links -->
-      <li class="active"><a href="#"><i class="fa fa-link"></i> <span>Link</span></a></li>
-      <li><a href="#"><i class="fa fa-link"></i> <span>Another Link</span></a></li>
-      <li class="treeview">
-        <a href="#"><i class="fa fa-link"></i> <span>Multilevel</span>
-              <span class="pull-right-container">
-                <i class="fa fa-angle-left pull-right"></i>
-              </span>
-            
-            <ul class="treeview-menu" style="">
-            <li class="active">
-              <a href="mailbox.html">Inbox
-                <span class="pull-right-container">
-                  <span class="label label-primary pull-right">13</span>
-                </span>
-              </a>
-            </li>
-            <li><a href="compose.html">Compose</a></li>
-            <li><a href="read-mail.html">Read</a></li>
-          </ul>
-            
-            </a>
-        <ul class="treeview-menu">
-          <li><a href="#">Link in level 2</a></li>
-          <li><a href="#">Link in level 2</a></li>
-        </ul>
-      </li>
-    </ul>
-    <!-- /.sidebar-menu -->
-  </section>
-  <!-- /.sidebar -->
-</aside>
+        <body class="hold-transition sidebar-mini">
+            <div
+                class="wrapper">
 
-{% endblock %}
+                <!-- Navbar -->
+                <nav
+                    class="main-header navbar navbar-expand bg-white navbar-light border-bottom">
+                    <!-- Left navbar links -->
+
+
+                    <ul class="navbar-nav">
+                        <li class="nav-item">
+                            <a class="nav-link" data-widget="pushmenu" href="#" style="background-color:white">
+                                <i class="fa fa-bars">
+                                    <div id="powitanie">
+                                        Witaj,
+                                        {#{{name}}!#}
+                                    </div>
+                                </i>
+                            </a>
+                        </li>
+                        <li class="nav-item d-none d-sm-inline-block"></li>
+
+                    </ul>
+
+
+                    <!-- Right navbar links -->
+                    <ul
+                        class="navbar-nav ml-auto">
+                        <!-- Messages Dropdown Menu -->
+
+                        <div class="dropdown-menu dropdown-menu-lg dropdown-menu-right">
+                            <a class="dropdown-item" href="#">
+                                <!-- Message Start -->
+
+                                <!-- Notifications Dropdown Menu --><li class="nav-item"> </li>
+                            </ul>
+                        </nav>
+                        <!-- /.navbar -->
+
+                      
+                        
+
+                            <!-- Sidebar -->
+
+                            {% include 'sidebar.html.twig' %}
+
+                            <!-- Sidebar -->
+
+                        </aside>
+
+                        <!-- Content -->
+                        {% include 'content.html.twig' %}
+                        <!-- Content -->
+
+
+                        <!-- Footer -->
+                    {% include 'footer.html.twig'%}
+                        <!-- Footer -->
+
+                    </div>
+
+
+                {% endblock %}
+
+
+                {% block javascripts %}
+
+                <script crossorigin="anonymous" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
+                <script crossorigin="anonymous" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js"></script>
+                <script crossorigin="anonymous" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy" src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js"></script>
+                <script src="{{ asset('css/dist/js/adminlte.min.js') }}"></script>
+                <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+
+                <script>
+
+
+                    {% endblock %}
+</body>
+</html>
