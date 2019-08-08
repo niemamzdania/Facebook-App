@@ -38,7 +38,7 @@ class MainController extends AbstractController
     {
         
 
-        return $this->render('main.html.twig');
+        return $this->render('mainpage/main.html.twig');
     }
 
 
