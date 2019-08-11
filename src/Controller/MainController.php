@@ -11,33 +11,11 @@ use Symfony\Component\HttpFoundation\Request;
 
 class MainController extends AbstractController
 {
-    
     /**
-     * @Route("/", name="test")
+     * @Route("/", name="main")
      */
-    //public function index(Request $request)
-    //{
-    //    $quest = new Quests();
-
-    //    $form = $this->createForm(EditQuestFormType::class, $quest);
-
-     //   $form->handleRequest($request);
-
-       // if ($form->isSubmitted() && $form->isValid()) {
-        //    dd($quest);
-       // }
-
-      //  return $this->render('index.html.twig', ['form' => $form->createView()]);
-    //}
-
-
-    /**
-     * @Route("/main", name="main")
-     */
-    public function index1()
+    public function mainpage()
     {
-        
-
         return $this->render('mainpage/main.html.twig');
     }
 
