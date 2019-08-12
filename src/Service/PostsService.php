@@ -2,13 +2,19 @@
 
 namespace App\Service;
 
-use App\Entity\Posts;
-
 class PostsService
 {
-    public function setDateToPost($entityManager, $post)
+    public function saveNewPost($entityManager, $post, $data)
     {
+        //$aaa = $data[];
+        //dd($aaa);
+
+        //dd($data);
         $post->setDate(new \DateTime());
+        //$post->setTitle($request->request->get('Title'));
+        //$post->setContent($request->request->get('Content'));
+
+        //dd($post);
 
         $entityManager->persist($post);
         $entityManager->flush();

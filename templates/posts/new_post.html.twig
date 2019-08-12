@@ -1,11 +1,8 @@
-{% block body %}
-    <div class="container">
-        <h4>Add new Article</h4>
-    </div>
-    <div class="container">
-        {{ form_start(form) }}
-        {{ form_widget(form) }}
-        <button class="btn btn-dropbox" style="margin: 3px 0px">Save Post</button>
-        {{ form_end(form) }}
-    </div>
-{% endblock %}
+<div class="container">
+    <h4>Add new Post</h4>
+</div>
+<div class="container">
+    {{ form_start(form) }}
+    {{ form_widget(form) }}
+    {{ form_end(form) }}
+</div>
