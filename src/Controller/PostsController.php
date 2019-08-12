@@ -37,17 +37,19 @@ class PostsController extends AbstractController
     {
         $post = new Posts();
 
-        //$form = $this->createForm(AddPostFormType::class, $post);
+        $form = $this->createForm(AddPostFormType::class, $post, array('method' => 'POST', 'action' => $this->generateUrl('add_post')));
 
 
-        $form = $this->createFormBuilder($post)
+
+
+        /*$form = $this->createFormBuilder($post)
             ->setAction($this->generateUrl('add_post'))
             ->setMethod('POST')
             ->add('Title', TextType::class, array('attr' => array('class' => 'form-control')))
             ->add('Content', TextareaType::class, array('required' => false, 'attr' => array('class' => 'form-control')))
             ->add('Submit', SubmitType::class, array('label' => 'Add Post', 'attr' => array('class' => 'btn btn-primary mt-3')))
             ->getForm();
-
+*/
         return $this->render('posts/new_post.html.twig', [
             'form' => $form->createView()
         ]);
@@ -65,11 +67,9 @@ class PostsController extends AbstractController
 
         $entityManager = $this->getDoctrine()->getmanager();
 
-        $chuj = $_POST;
-
         $postsService->saveNewPost($entityManager, $post, $_POST);
 
-        return $this->redirectToRoute('show_posts');
+        return $this->redirectToRoute('mainpage');
     }
 
     /**

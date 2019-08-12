@@ -6,15 +6,9 @@ class PostsService
 {
     public function saveNewPost($entityManager, $post, $data)
     {
-        //$aaa = $data[];
-        //dd($aaa);
-
-        //dd($data);
         $post->setDate(new \DateTime());
-        //$post->setTitle($request->request->get('Title'));
-        //$post->setContent($request->request->get('Content'));
-
-        //dd($post);
+        $post->setTitle($data['add_post_form']['Title']);
+        $post->setContent($data['add_post_form']['Content']);
 
         $entityManager->persist($post);
         $entityManager->flush();

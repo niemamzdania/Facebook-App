@@ -12,7 +12,6 @@ class AddPostFormType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->setAction($this->generateUrl('add_post'))
             ->setMethod('POST')
             ->add('Title', TextType::class, array('attr' => array('class' => 'form-control')))
             ->add('Content', TextareaType::class, array('required' => false, 'attr' => array('class' => 'form-control')))

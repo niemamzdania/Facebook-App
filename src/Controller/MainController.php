@@ -13,7 +13,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 class MainController extends AbstractController
 {
     /**
-     * @Route("/", name="test")
+     * @Route("/", name="mainpage")
      *  @IsGranted("ROLE_ADMIN")
      */
     public function mainpage()
