@@ -45,10 +45,12 @@ class PostsController extends AbstractController
             $entityManager = $this->getDoctrine()->getmanager();
 
             $postsService->setDateToPost($entityManager, $post);
-
+            
+            //dd($post);die;
             return $this->redirectToRoute('show_posts');
         }
-
+        
+        
         return $this->render('posts/new_post.html.twig', [
             'form' => $form->createView()
         ]);
