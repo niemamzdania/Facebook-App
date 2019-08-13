@@ -13,9 +13,9 @@ class AddPostFormType extends AbstractType
     {
         $builder
             ->setMethod('POST')
-            ->add('Title', TextType::class, array('attr' => array('class' => 'form-control')))
+            ->add('Title', TextType::class, array('attr' => array('class' => 'form-control mb-3')))
             ->add('Content', TextareaType::class, array('required' => false, 'attr' => array('class' => 'form-control')))
-            ->add('Submit', SubmitType::class, array('label' => 'Add Post', 'attr' => array('class' => 'btn btn-primary mt-3')))
+            ->add('Submit', SubmitType::class, array('label' => 'Add Post', 'attr' => array('class' => 'btn btn-primary mt-4')))
             ->getForm();
     }
 }
