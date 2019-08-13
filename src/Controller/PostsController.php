@@ -3,14 +3,11 @@
 namespace App\Controller;
 
 use App\Entity\Posts;
-use App\Form\AddPostFormType;
+use App\Form\PostFormType;
 use App\Service\PostsService;
 
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Symfony\Component\Form\Extension\Core\Type\SubmitType;
-use Symfony\Component\Form\Extension\Core\Type\TextareaType;
-use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -37,7 +34,7 @@ class PostsController extends AbstractController
     {
         $post = new Posts();
 
-        $form = $this->createForm(AddPostFormType::class, $post, array('method' => 'POST', 'action' => $this->generateUrl('add_post')));
+        $form = $this->createForm(PostFormType::class, $post, array('method' => 'POST', 'action' => $this->generateUrl('add_post')));
 
         return $this->render('posts/new_post.html.twig', [
             'form' => $form->createView()
@@ -71,7 +68,7 @@ class PostsController extends AbstractController
             return new Response('Forbidden access');
         }
 
-        $form = $this->createForm(AddPostFormType::class, $post, array('method' => 'POST', 'action' => $this->generateUrl('save_post')));
+        $form = $this->createForm(PostFormType::class, $post, array('method' => 'POST', 'action' => $this->generateUrl('save_post')));
 
         return $this->render('posts/edit_post.html.twig', [
             'form' => $form->createView()
@@ -84,15 +81,13 @@ class PostsController extends AbstractController
      */
     public function save_post(Request $request, PostsService $postsService)
     {
-        $post = new Posts();
-
-        dd($_POST);
+        $post = $this->getDoctrine()->getRepository(Posts::class)->findPostById($_POST['post_form']['id']);
 
         $post->setUser($this->getUser());
 
         $entityManager = $this->getDoctrine()->getmanager();
 
-        $postsService->saveNewPost($entityManager, $post, $_POST);
+        $postsService->saveEditedPost($entityManager, $post, $_POST);
 
         return $this->redirectToRoute('main_page');
     }
@@ -112,6 +107,6 @@ class PostsController extends AbstractController
         $entityManager->remove($post);
         $entityManager->flush();
 
-        return $this->redirectToRoute('show_posts');
+        return $this->redirectToRoute('main_page');
     }
 }
