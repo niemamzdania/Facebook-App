@@ -13,7 +13,6 @@
             <tbody>
             {% for post in posts %}
                 <tr>
-                    <td>{{ post.Id }}</td>
                     <td>{{ post.Title }}</td>
                     <td>{{ post.Date|date("d/m/Y H:i") }}</td>
                     <td><a href="#">Show Post</a></td>

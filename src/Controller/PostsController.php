@@ -90,7 +90,7 @@ class PostsController extends AbstractController
 
         $entityManager = $this->getDoctrine()->getmanager();
 
-        $postsService->saveNewPost($entityManager, $post, $_POST);
+        $postsService->saveEditedPost($entityManager, $post, $_POST);
 
         return $this->redirectToRoute('main_page');
     }
