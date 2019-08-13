@@ -2,8 +2,6 @@
 
 namespace App\Service;
 
-use http\Env\Response;
-
 class QuestsService
 {
     public function saveNewQuest($entityManager, $quest, $request)

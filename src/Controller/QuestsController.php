@@ -38,4 +38,17 @@ class QuestsController extends AbstractController
 
             return $this->redirectToRoute('show_posts');
     }
+
+    /**
+     * @Route("/quest/edit/{id}", name="edit_quest")
+     * @IsGranted("IS_AUTHENTICATED_FULLY")
+     */
+    public function edit_quest(Request $request, Quests $quest)
+    {
+        if ($this->getUser() != $quest->getUser()) {
+            return new Response('Forbidden access');
+        }
+
+        return $this->render('quests/edit_quest.html.twig', ['quest' => $quest]);
+    }
 }

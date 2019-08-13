@@ -62,7 +62,7 @@ class PostsController extends AbstractController
      * @Route("/post/edit/{id}", name="edit_post")
      * @IsGranted("IS_AUTHENTICATED_FULLY")
      */
-    public function edit_post(Request $request, Posts $post)
+    public function edit_post(Posts $post)
     {
         if ($this->getUser() != $post->getUser()) {
             return new Response('Forbidden access');
@@ -79,7 +79,7 @@ class PostsController extends AbstractController
      * @Route("/post/save", name="save_post")
      * @IsGranted("IS_AUTHENTICATED_FULLY")
      */
-    public function save_post(Request $request, PostsService $postsService)
+    public function save_post(PostsService $postsService)
     {
         $post = $this->getDoctrine()->getRepository(Posts::class)->findPostById($_POST['post_form']['id']);
 
