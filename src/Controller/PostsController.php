@@ -86,6 +86,8 @@ class PostsController extends AbstractController
     {
         $post = new Posts();
 
+        dd($_POST);
+
         $post->setUser($this->getUser());
 
         $entityManager = $this->getDoctrine()->getmanager();
