@@ -28,15 +28,15 @@ class QuestsController extends AbstractController
      */
     public function add_quest(Request $request, QuestsService $questsService)
     {
-            $quest = new Quests();
+        $quest = new Quests();
 
-            $quest->setUser($this->getUser());
+        $quest->setUser($this->getUser());
 
-            $entityManager = $this->getDoctrine()->getManager();
+        $entityManager = $this->getDoctrine()->getManager();
 
-            $questsService->saveNewQuest($entityManager, $quest, $request);
+        $questsService->saveNewQuest($entityManager, $quest, $request);
 
-            return $this->redirectToRoute('show_posts');
+        return $this->redirectToRoute('show_posts');
     }
 
     /**
@@ -50,5 +50,39 @@ class QuestsController extends AbstractController
         }
 
         return $this->render('quests/edit_quest.html.twig', ['quest' => $quest]);
+    }
+
+    /**
+     * @Route("/quest/save", name="save_quest")
+     * @IsGranted("IS_AUTHENTICATED_FULLY")
+     */
+    public function save_post(QuestsService $questsService)
+    {
+        $quest = $this->getDoctrine()->getRepository(Quests::class)->findQuestById($_POST['id']);
+
+        $quest->setUser($this->getUser());
+
+        $entityManager = $this->getDoctrine()->getmanager();
+
+        $questsService->saveEditedQuest($entityManager, $quest, $_POST);
+
+        return $this->redirectToRoute('main_page');
+    }
+
+    /**
+     * @Route("/quest/delete/{id}", name="delete_quest")
+     * @IsGranted("IS_AUTHENTICATED_FULLY")
+     */
+    public function delete_post(Quests $quest)
+    {
+        if ($this->getUser() != $quest->getUser()) {
+            return new Response('Forbidden access');
+        }
+
+        $entityManager = $this->getDoctrine()->getManager();
+        $entityManager->remove($quest);
+        $entityManager->flush();
+
+        return $this->redirectToRoute('main_page');
     }
 }

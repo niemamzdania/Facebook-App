@@ -5,10 +5,8 @@
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/Controller/PostsController.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Controller/PostsController.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/Controller/QuestsController.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Controller/QuestsController.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Entity/Quests.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Entity/Quests.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Repository/QuestsRepository.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Repository/QuestsRepository.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/Service/QuestsService.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Service/QuestsService.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/templates/quests/new_quest.html.twig" beforeDir="false" afterPath="$PROJECT_DIR$/templates/quests/new_quest.html.twig" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/templates/quests/edit_quest.html.twig" beforeDir="false" afterPath="$PROJECT_DIR$/templates/quests/edit_quest.html.twig" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -203,7 +201,7 @@
       <workItem from="1565609658016" duration="9105000" />
       <workItem from="1565643027654" duration="2368000" />
       <workItem from="1565690786135" duration="103000" />
-      <workItem from="1565690890664" duration="5577000" />
+      <workItem from="1565690890664" duration="7944000" />
     </task>
     <servers />
   </component>

@@ -96,8 +96,7 @@ class PostsController extends AbstractController
      * @Route("/post/delete/{id}", name="delete_post")
      * @IsGranted("IS_AUTHENTICATED_FULLY")
      */
-    public
-    function delete_post(Posts $post)
+    public function delete_post(Posts $post)
     {
         if ($this->getUser() != $post->getUser()) {
             return new Response('Forbidden access');

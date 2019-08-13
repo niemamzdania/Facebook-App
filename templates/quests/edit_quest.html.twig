@@ -1,5 +1,6 @@
 <div class="container">
-    <form action="{{ path('add_quest') }}" method="POST">
+    <form action="{{ path('save_quest') }}" method="POST">
+        <input type="hidden" name="id" value="{{ quest.Id }}">
         <div class="row">Content:<input type="textarea" name="Content" value="{{ quest.Content }}" required></div>
         <div class="row">Date:<input type="date" min="2019-07-16" max="2019-12-31" name="EndDate" required></div>
         <div class="row"><select name="Status" required>

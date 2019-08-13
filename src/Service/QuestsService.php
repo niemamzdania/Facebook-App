@@ -18,4 +18,16 @@ class QuestsService
         $entityManager->persist($quest);
         $entityManager->flush();
     }
+
+    public function saveEditedQuest($entityManager, $quest, $data)
+    {
+        $date = new \DateTime($data['EndDate']);
+
+        $quest->setAddDate(new \DateTime());
+        $quest->setEndDate($date);
+        $quest->setContent($data['Content']);
+        $quest->setStatus($data['Status']);
+
+        $entityManager->flush();
+    }
 }
