@@ -5,10 +5,10 @@
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/Controller/MainController.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Controller/MainController.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/Controller/PostsController.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Controller/PostsController.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Form/AddPostFormType.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Form/AddPostFormType.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Migrations/Version20190730115847.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Repository/PostsRepository.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Repository/PostsRepository.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/Security/LoginFormAuthenticator.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Security/LoginFormAuthenticator.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Service/PostsService.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Service/PostsService.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/templates/posts/edit_post.html.twig" beforeDir="false" afterPath="$PROJECT_DIR$/templates/posts/edit_post.html.twig" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/templates/posts/show_posts.html.twig" beforeDir="false" afterPath="$PROJECT_DIR$/templates/posts/show_posts.html.twig" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />

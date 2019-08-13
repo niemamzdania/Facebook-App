@@ -15,7 +15,7 @@
                 <tr>
                     <td>{{ post.Id }}</td>
                     <td>{{ post.Title }}</td>
-                    <td>{{ post.Date|date("d/m/Y") }}</td>
+                    <td>{{ post.Date|date("d/m/Y H:i") }}</td>
                     <td><a href="#">Show Post</a></td>
                 </tr>
             {% endfor %}

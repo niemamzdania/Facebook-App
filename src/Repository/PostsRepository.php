@@ -26,7 +26,7 @@ class PostsRepository extends ServiceEntityRepository
     public function findAllPosts()
     {
         return $this->createQueryBuilder('p')
-            ->orderBy('p.id', 'ASC')
+            ->orderBy('p.date', 'ASC')
             ->getQuery()
             ->getResult()
         ;
