@@ -11,19 +11,22 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Knp\Component\Pager\PaginatorInterface;
 
 class PostsController extends AbstractController
 {
     /**
      * @Route("/posts", name="show_posts")
      */
-    public function show_posts()
+    public function show_posts(PaginatorInterface $paginator)
     {
         $posts = $this->getDoctrine()->getRepository(Posts::class)->findAllPosts();
 
-        return $this->render('posts/show_posts.html.twig', [
-            'posts' => $posts,
-        ]);
+        return $this->render('posts/show_posts.html.twig', ['posts' => $paginator->paginate($posts,1,12)]);
+        
+        //return $this->render('posts/show_posts.html.twig', [
+        //    'posts' => $posts,
+        //]);
     }
 
     /**

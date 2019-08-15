@@ -1,6 +1,3 @@
-{% block title %}Posts
-{% endblock %}
-
 {% block body %}
     <style>
         tr th:first-child {
@@ -16,6 +13,13 @@
         .delete_post:hover{
             color:white;
         }
+        .send_post{
+            color:blue;
+            transition: all 0.5s;
+        }
+        .delete_post:send{
+            color:white;
+        }
     </style>
     <table class="table table-striped">
         <thead>
@@ -25,6 +29,7 @@
                 <th scope="col">Show</th>
                 <th scope="col">Edit</th>
                 <th scope="col">Delete</th>
+                <th scope="col">Send</th>
             </tr>
         </thead>
         <tbody>
@@ -44,13 +49,18 @@
                             <i class="fas fa-trash-alt"></i>
                         </button>
                     </td>
+                    <td>
+                        <button class="btn btn-outline-primary send_post" data-target="#exampleModalCenter" data-toggle="modal" type="button">
+                            <i class="fas fa-share-alt"></i>
+                        </button>    
+                    </td>
                 </tr>
                 <!-- Delete post modal -->
                 <div aria-hidden="true" aria-labelledby="exampleModalCenterTitle" class="modal fade" id="exampleModalCenter" role="dialog" tabindex="-1">
                     <div class="modal-dialog modal-dialog-centered" role="document">
                         <div class="modal-content">
                             <div class="modal-body text-center">
-                                <h1><i class="far fa-question-circle"></i></h1>
+                                <h1><i class="far fa-question-circle mt-2"></i></h1>
                                 <h2 class="mt-4 mb-3">Are you sure?</h2>
                                 <h5>Do you want to delete post?</h5>
                                 <a href="/post/delete/{{ post.id }}"><button class="btn-lg btn-outline-danger mt-5 mr-2" type="button">Delete</button></a>
@@ -63,4 +73,7 @@
             {% endfor %}
         </tbody>
     </table>
+    <div class="row d-flex justify-content-center w-100 paginator">
+                {{ knp_pagination_render(posts) }}
+    </div>
 {% endblock %}
