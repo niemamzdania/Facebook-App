@@ -1,34 +1,66 @@
-{% block title %}Posts{% endblock %}
+{% block title %}Posts
+{% endblock %}
 
 {% block body %}
     <style>
-        tr th:first-child{
-            text-align:left;
+        tr th:first-child {
+            text-align: left;
         }
-        tr td:first-child{
-            text-align:left;
+        tr td:first-child {
+            text-align: left;
+        }
+        .delete_post{
+            color:red;
+            transition: all 0.5s;
+        }
+        .delete_post:hover{
+            color:white;
         }
     </style>
     <table class="table table-striped">
         <thead>
-        <tr style="text-align: center;">
-            <th scope="col">Title</th>
-            <th scope="col">Date</th>
-            <th scope="col">Show</th>
-            <th scope="col">Edit</th>
-            <th scope="col">Delete</th>
-        </tr>
+            <tr style="text-align: center;">
+                <th scope="col">Title</th>
+                <th scope="col">Date</th>
+                <th scope="col">Show</th>
+                <th scope="col">Edit</th>
+                <th scope="col">Delete</th>
+            </tr>
         </thead>
         <tbody>
-        {% for post in posts %}
-            <tr style="text-align: center;">
-                <td>{{ post.Title }}</td>
-                <td>{{ post.Date|date("d/m/Y H:i") }}</td>
-                <td><a class="btn btn-success" href="#">Show Post</a></td>
-                <td><a class="btn btn-warning" href="#">Edit Post</a></td>
-                <td><a href="/post/delete/{{ post.id }}"><i class="fas fa-trash-alt" style="color:red"></i></a></td>
-            </tr>
-        {% endfor %}
+            {% for post in posts %}
+                <tr style="text-align: center;">
+                    <td>{{ post.Title }}</td>
+                    <td>{{ post.Date|date("d/m/Y H:i") }}</td>
+                    <td>
+                        <a class="btn btn-success" href="#">Show Post</a>
+                    </td>
+                    <td>
+                        <a class="btn btn-warning" href="#">Edit Post</a>
+                    </td>
+
+                    <td>
+                        <button class="btn btn-outline-danger delete_post" data-target="#exampleModalCenter" data-toggle="modal" type="button">
+                            <i class="fas fa-trash-alt"></i>
+                        </button>
+                    </td>
+                </tr>
+                <!-- Delete post modal -->
+                <div aria-hidden="true" aria-labelledby="exampleModalCenterTitle" class="modal fade" id="exampleModalCenter" role="dialog" tabindex="-1">
+                    <div class="modal-dialog modal-dialog-centered" role="document">
+                        <div class="modal-content">
+                            <div class="modal-body text-center">
+                                <h1><i class="far fa-question-circle"></i></h1>
+                                <h2 class="mt-4 mb-3">Are you sure?</h2>
+                                <h5>Do you want to delete post?</h5>
+                                <a href="/post/delete/{{ post.id }}"><button class="btn-lg btn-outline-danger mt-5 mr-2" type="button">Delete</button></a>
+                                <button class="btn-lg btn-outline-secondary mt-5 ml-2" data-dismiss="modal" type="button">Cancel</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- Delete post modal -->
+            {% endfor %}
         </tbody>
     </table>
 {% endblock %}
