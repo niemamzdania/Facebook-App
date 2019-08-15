@@ -45,25 +45,40 @@
                     </td>
 
                     <td>
-                        <button class="btn btn-outline-danger delete_post" data-target="#exampleModalCenter" data-toggle="modal" type="button">
+                        <button class="btn btn-outline-danger delete_post" data-target="#exampleModalCenterDelete" data-toggle="modal" type="button">
                             <i class="fas fa-trash-alt"></i>
                         </button>
                     </td>
                     <td>
-                        <button class="btn btn-outline-primary send_post" data-target="#exampleModalCenter" data-toggle="modal" type="button">
+                        <button class="btn btn-outline-primary send_post" data-target="#exampleModalCenterSend" data-toggle="modal" type="button">
                             <i class="fas fa-share-alt"></i>
                         </button>    
                     </td>
                 </tr>
                 <!-- Delete post modal -->
-                <div aria-hidden="true" aria-labelledby="exampleModalCenterTitle" class="modal fade" id="exampleModalCenter" role="dialog" tabindex="-1">
+                <div aria-hidden="true" aria-labelledby="exampleModalCenterTitle" class="modal fade" id="exampleModalCenterDelete" role="dialog" tabindex="-1">
                     <div class="modal-dialog modal-dialog-centered" role="document">
                         <div class="modal-content">
                             <div class="modal-body text-center">
                                 <h1><i class="far fa-question-circle mt-2"></i></h1>
-                                <h2 class="mt-4 mb-3">Are you sure?</h2>
+                                <h2 class="mt-4 mb-3"><bold>Are you sure?</bold></h2>
                                 <h5>Do you want to delete post?</h5>
                                 <a href="/post/delete/{{ post.id }}"><button class="btn-lg btn-outline-danger mt-5 mr-2" type="button">Delete</button></a>
+                                <button class="btn-lg btn-outline-secondary mt-5 ml-2" data-dismiss="modal" type="button">Cancel</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- Delete post modal -->
+                <!-- Send post modal -->
+                <div aria-hidden="true" aria-labelledby="exampleModalCenterTitle" class="modal fade" id="exampleModalCenterSend" role="dialog" tabindex="-1">
+                    <div class="modal-dialog modal-dialog-centered" role="document">
+                        <div class="modal-content">
+                            <div class="modal-body text-center">
+                                <h1><i class="far fa-question-circle mt-2"></i></h1>
+                                <h2 class="mt-4 mb-3"><bold>Are you sure?</bold></h2>
+                                <h5>Do you want to send post?</h5>
+                                <a {#href="/post/delete/{{ post.id }}"#}><button class="btn-lg btn-outline-primary mt-5 mr-2" type="button">Send</button></a>
                                 <button class="btn-lg btn-outline-secondary mt-5 ml-2" data-dismiss="modal" type="button">Cancel</button>
                             </div>
                         </div>
