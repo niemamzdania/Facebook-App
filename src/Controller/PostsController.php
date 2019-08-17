@@ -12,9 +12,55 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Knp\Component\Pager\PaginatorInterface;
+use Facebook\Facebook;
+use Facebook\Exceptions\FacebookResponseException;
+use Facebook\Exceptions\FacebookSDKException;
+
 
 class PostsController extends AbstractController
 {
+     /**
+     * @Route("/post/send", name="send_post")
+     */
+    public function send_post(PaginatorInterface $paginator)
+    {
+        $appId = '1305065672989564';
+        $appSecret = '7bd264052cfb10caa9b0e15d54867f0e';
+        $pageId = '107637360600429';
+        $userAccessToken = 'EAASi80fY23wBAFM3rKkDmTZAr7aDZAZCRYT6nvjk0Vo8JLZCY9DJKd2s1VVJ1K73PeXe6QlsZC3oDnwzZCrHLxxZAoPZBF1nhRnycRCjUGqpBWHhHWkI11PmVKHvDY3PKZBzb56PEWgr8ZCCbZBZBYx18pyZAIN6Ff1rbb4R5oLIOwZBDJNZAkK8BU1CUfNnZC5C3CBEmaJeijSHK0iOfekzpMErHNIYszfK36MCwOPKtCKaZC5suygZDZD';
+
+        $fb = new Facebook([
+            'app_id' => $appId,
+            'app_secret' => $appSecret,
+            'default_graph_version' => 'v2.5'
+        ]);
+
+        $longLivedToken = $fb->getOAuth2Client()->getLongLivedAccessToken($userAccessToken);
+
+        $fb->setDefaultAccessToken($longLivedToken);
+
+        $response = $fb->sendRequest('GET', $pageId, ['fields' => 'access_token'])
+            ->getDecodedBody();
+
+        $foreverPageAccessToken = $response['access_token'];
+
+        $fb = new Facebook([
+            'app_id' => $appId,
+            'app_secret' => $appSecret,
+            'default_graph_version' => 'v4.0'
+        ]);
+
+        $fb->setDefaultAccessToken($foreverPageAccessToken);
+        $fb->sendRequest('POST', "$pageId/feed", [
+            'message' => 'Test Post',
+            //'link' => 'http://blog.damirmiladinov.com',
+        ]);
+        
+        var_dump($fb->sendRequest('GET', '/debug_token', ['input_token' => $foreverPageAccessToken])->getDecodedBody());
+
+        return new Response("ok");
+    }
+    
     /**
      * @Route("/posts", name="show_posts")
      */

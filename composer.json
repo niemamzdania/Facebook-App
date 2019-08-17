@@ -6,6 +6,7 @@
         "ext-ctype": "*",
         "ext-iconv": "*",
         "almasaeed2010/adminlte": "~2.4",
+        "facebook/graph-sdk": "^5.7",
         "knplabs/knp-paginator-bundle": "^4.0",
         "sensio/framework-extra-bundle": "^5.3",
         "symfony/asset": "4.3.*",
