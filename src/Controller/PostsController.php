@@ -66,10 +66,6 @@ class PostsController extends AbstractController
         $posts = $this->getDoctrine()->getRepository(Posts::class)->findAllPosts();
 
         return $this->render('posts/show_posts.html.twig', ['posts' => $paginator->paginate($posts,1,12)]);
-        
-        //return $this->render('posts/show_posts.html.twig', [
-        //    'posts' => $posts,
-        //]);
     }
 
     /**
