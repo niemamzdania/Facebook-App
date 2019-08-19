@@ -61,11 +61,15 @@ class PostsController extends AbstractController
     /**
      * @Route("/posts", name="show_posts")
      */
-    public function show_posts(PaginatorInterface $paginator)
+    public function show_posts(Request $request, PaginatorInterface $paginator)
     {
         $posts = $this->getDoctrine()->getRepository(Posts::class)->findAllPosts();
 
-        return $this->render('posts/show_posts.html.twig', ['posts' => $paginator->paginate($posts,1,12)]);
+        return $this->render('posts/show_posts.html.twig', ['posts' => $paginator->paginate(
+            $posts,
+            $request->query->getInt('page', 1),
+            12
+        )]);
     }
 
     /**
