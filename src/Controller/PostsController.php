@@ -152,6 +152,7 @@ class PostsController extends AbstractController
         $entityManager->remove($post);
         $entityManager->flush();
 
-        return $this->redirectToRoute('main_page');
+        return new Response("Ok");
+        //return $this->redirectToRoute('main_page');
     }
 }
