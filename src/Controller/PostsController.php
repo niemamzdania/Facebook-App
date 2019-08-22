@@ -5,7 +5,6 @@ namespace App\Controller;
 use App\Entity\Photos;
 use App\Entity\Posts;
 use App\Form\PostFormType;
-use App\Form\PostFormType2;
 use App\Service\PostsService;
 
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
@@ -82,18 +81,7 @@ class PostsController extends AbstractController
     {
         $post = new Posts();
 
-        $form = $this->createForm(PostFormType::class, $post);
-
-        $form->handleRequest($request);
-
-        if($form->isSubmitted() && $form->isValid())
-        {
-            $form = $request;
-            $form2 = $form;
-            //dd($form2);
-            $form = "sddsa";
-            return $this->redirectToRoute('add_post');
-        }
+        $form = $this->createForm(PostFormType::class, $post, array('method' => 'POST', 'action' => $this->generateUrl('add_post')));
 
         return $this->render('posts/new_post.html.twig', [
             'form' => $form->createView()
@@ -106,15 +94,16 @@ class PostsController extends AbstractController
      */
     public function add_post(Request $request, PostsService $postsService)
     {
-        $request
-        dd($request);
         $post = new Posts();
+        $photo = new Photos();
 
         $post->setUser($this->getUser());
 
         $entityManager = $this->getDoctrine()->getManager();
 
-        $postsService->saveNewPost($entityManager, $post, $request);
+        $directory = $this->getParameter('upload_directory');
+
+        $postsService->saveNewPost($entityManager, $post, $photo, $directory, $request);
 
         return $this->redirectToRoute('main_page');
     }
