@@ -5,6 +5,8 @@
     {{ form_start(form) }}
     {{ form_widget(form) }}
     <button class="btn btn-dark">Edit Post</button>
-    <img src="{{ asset('uploads/photos/') }}{{ photoPath }}">
+    {% if photoPath is defined %}
+        <img src="{{ asset('uploads/photos/') }}{{ photoPath }}">
+    {% endif %}
     {{ form_end(form) }}
 </div>

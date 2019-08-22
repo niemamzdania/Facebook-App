@@ -18,7 +18,7 @@ use Facebook\Facebook;
 
 class PostsController extends AbstractController
 {
-     /**
+    /**
      * @Route("/post/send", name="send_post")
      */
     public function send_post(PaginatorInterface $paginator)
@@ -54,12 +54,12 @@ class PostsController extends AbstractController
             'message' => 'Test Post',
             //'link' => 'http://blog.damirmiladinov.com',
         ]);
-        
+
         var_dump($fb->sendRequest('GET', '/debug_token', ['input_token' => $foreverPageAccessToken])->getDecodedBody());
 
         return new Response("ok");
     }
-    
+
     /**
      * @Route("/posts", name="show_posts")
      */
@@ -121,26 +121,33 @@ class PostsController extends AbstractController
 
         $photo = $this->getDoctrine()->getRepository(Photos::class)->findPhotoByPostId($post->getId());
 
-        if(!$photo)
-        {
-            return new Response("Photo not found");
-        }
-
-        $directory = $this->getParameter('upload_directory');
-
-        $finder = new Finder();
-
-        $finder->files()->in($directory)->name($photo->getName());
-
-        foreach ($finder as $file)
-        {
-            $photoPath = $file->getRelativePathname();
-        }
-
         $form = $this->createForm(PostFormType::class, $post, array('method' => 'POST', 'action' => $this->generateUrl('save_post')));
 
+        if ($photo) {
+            $directory = $this->getParameter('upload_directory');
+
+            $finder = new Finder();
+
+            $finder->files()->in($directory)->name($photo->getName());
+
+            foreach ($finder as $file) {
+                $photoPath = $file->getRelativePathname();
+            }
+
+            if (isset($photoPath)) {
+                return $this->render('posts/edit_post.html.twig', [
+                    'form' => $form->createView(), 'photoPath' => $photoPath
+                ]);
+            }
+            else {
+                $entityManager = $this->getDoctrine()->getManager();
+                $entityManager->remove($photo);
+                $entityManager->flush();
+            }
+        }
+
         return $this->render('posts/edit_post.html.twig', [
-            'form' => $form->createView(), 'photoPath' => $photoPath
+            'form' => $form->createView()
         ]);
     }
 
@@ -148,7 +155,8 @@ class PostsController extends AbstractController
      * @Route("/post/save", name="save_post")
      * @IsGranted("IS_AUTHENTICATED_FULLY")
      */
-    public function save_post(PostsService $postsService)
+    public
+    function save_post(PostsService $postsService)
     {
         $post = $this->getDoctrine()->getRepository(Posts::class)->findPostById($_POST['post_form']['id']);
 
@@ -165,7 +173,8 @@ class PostsController extends AbstractController
      * @Route("/post/delete/{id}", name="delete_post")
      * @IsGranted("IS_AUTHENTICATED_FULLY")
      */
-    public function delete_post(Posts $post)
+    public
+    function delete_post(Posts $post)
     {
         if ($this->getUser() != $post->getUser()) {
             return new Response('Forbidden access');

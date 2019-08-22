@@ -21,6 +21,7 @@ class PostFormType extends AbstractType
             ->add('Content', TextareaType::class, array('required' => false, 'attr' => array('class' => 'form-control')))
             ->add('name', FileType::class, ['label' => 'Choose an image',
                 'mapped' => false,
+                'required' => false,
                 'constraints' => [
                 new File([
                     'maxSize' => '2048k',

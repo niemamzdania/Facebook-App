@@ -17,23 +17,25 @@ class PostsService
 
         $file = $request->files->get('post_form')['name'];
 
-        $date = new \DateTime();
-        $dateInString = $date->format('Y-m');
-        $directory = $directory . "/" . $dateInString;
+        if($file) {
+            $date = new \DateTime();
+            $dateInString = $date->format('Y-m');
+            $directory = $directory . "/" . $dateInString;
 
-        $fileName = md5(time());
-        $fileName = substr($fileName, 0, 32);
+            $fileName = md5(time());
+            $fileName = substr($fileName, 0, 32);
 
-        $extension = $request->files->get('post_form')['name']->guessExtension();
-        $fileName = $fileName . "." . $extension;
+            $extension = $request->files->get('post_form')['name']->guessExtension();
+            $fileName = $fileName . "." . $extension;
 
-        $file->move($directory, $fileName);
+            $file->move($directory, $fileName);
 
-        $photo->setName($fileName);
-        $photo->setPost($post);
+            $photo->setName($fileName);
+            $photo->setPost($post);
 
-        $entityManager->persist($photo);
-        $entityManager->flush();
+            $entityManager->persist($photo);
+            $entityManager->flush();
+        }
     }
 
     public function saveEditedPost($entityManager, $post, $data)
