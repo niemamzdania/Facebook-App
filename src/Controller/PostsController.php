@@ -96,7 +96,6 @@ class PostsController extends AbstractController
     public function add_post(Request $request, PostsService $postsService)
     {
         $post = new Posts();
-        $photo = new Photos();
 
         $post->setUser($this->getUser());
 
@@ -104,7 +103,7 @@ class PostsController extends AbstractController
 
         $directory = $this->getParameter('upload_directory');
 
-        $postsService->saveNewPost($entityManager, $post, $photo, $directory, $request);
+        $postsService->saveNewPost($entityManager, $post, $directory, $request);
 
         return $this->redirectToRoute('main_page');
     }
@@ -155,16 +154,20 @@ class PostsController extends AbstractController
      * @Route("/post/save", name="save_post")
      * @IsGranted("IS_AUTHENTICATED_FULLY")
      */
-    public
-    function save_post(PostsService $postsService)
+    public function save_post(Request $request, PostsService $postsService)
     {
-        $post = $this->getDoctrine()->getRepository(Posts::class)->findPostById($_POST['post_form']['id']);
+        $post = $this->getDoctrine()->getRepository(Posts::class)->findPostById($request->request->get('post_form')['id']);
 
-        $post->setUser($this->getUser());
+        if(!$post)
+            return new Response('Post to edit not found');
+
+        $photo = $this->getDoctrine()->getRepository(Photos::class)->findPhotoByPostId($post->getId());
+
+        $directory = $this->getParameter('upload_directory');
 
         $entityManager = $this->getDoctrine()->getmanager();
 
-        $postsService->saveEditedPost($entityManager, $post, $_POST);
+        $postsService->saveEditedPost($entityManager, $post, $photo, $directory, $request);
 
         return $this->redirectToRoute('main_page');
     }

@@ -3,11 +3,11 @@
   <component name="ChangeListManager">
     <list default="true" id="9679a1ab-2270-47ff-adb7-a743d0f823b2" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/public/uploads/photos/2019-08/973a3ac75bc8aef2819def9eb415aeed.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/composer.json" beforeDir="false" afterPath="$PROJECT_DIR$/composer.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/composer.lock" beforeDir="false" afterPath="$PROJECT_DIR$/composer.lock" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/uploads/photos/2019-08/696cc31e323c086121a4dd02ebf5b008.png" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/src/Controller/PostsController.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Controller/PostsController.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Form/PostFormType.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Form/PostFormType.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/Service/PostsService.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Service/PostsService.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/templates/posts/edit_post.html.twig" beforeDir="false" afterPath="$PROJECT_DIR$/templates/posts/edit_post.html.twig" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -210,7 +210,8 @@
       <workItem from="1566386895705" duration="7512000" />
       <workItem from="1566422824588" duration="9224000" />
       <workItem from="1566472035831" duration="8809000" />
-      <workItem from="1566487280107" duration="1455000" />
+      <workItem from="1566487280107" duration="1584000" />
+      <workItem from="1566497182649" duration="10394000" />
     </task>
     <servers />
   </component>
