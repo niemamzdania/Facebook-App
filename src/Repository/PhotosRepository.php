@@ -47,4 +47,14 @@ class PhotosRepository extends ServiceEntityRepository
         ;
     }
     */
+
+    public function findPhotoByPostId($id): ?Photos
+    {
+        return $this->createQueryBuilder('p')
+            ->andWhere('p.post = :val')
+            ->setParameter('val', $id)
+            ->getQuery()
+            ->getOneOrNullResult()
+            ;
+    }
 }

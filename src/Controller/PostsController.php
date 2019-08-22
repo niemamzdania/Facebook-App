@@ -9,6 +9,7 @@ use App\Service\PostsService;
 
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\Finder\Finder;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -118,10 +119,28 @@ class PostsController extends AbstractController
             return new Response('Forbidden access');
         }
 
+        $photo = $this->getDoctrine()->getRepository(Photos::class)->findPhotoByPostId($post->getId());
+
+        if(!$photo)
+        {
+            return new Response("Photo not found");
+        }
+
+        $directory = $this->getParameter('upload_directory');
+
+        $finder = new Finder();
+
+        $finder->files()->in($directory)->name($photo->getName());
+
+        foreach ($finder as $file)
+        {
+            $photoPath = $file->getRelativePathname();
+        }
+
         $form = $this->createForm(PostFormType::class, $post, array('method' => 'POST', 'action' => $this->generateUrl('save_post')));
 
         return $this->render('posts/edit_post.html.twig', [
-            'form' => $form->createView()
+            'form' => $form->createView(), 'photoPath' => $photoPath
         ]);
     }
 
