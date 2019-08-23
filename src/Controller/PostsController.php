@@ -9,6 +9,7 @@ use App\Service\PostsService;
 
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\Finder\Finder;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -125,6 +126,11 @@ class PostsController extends AbstractController
         if ($photo) {
             $directory = $this->getParameter('upload_directory');
 
+            $date = $post->getDate();
+            $dateInString = $date->format('Y-m');
+
+            $directory = $directory . "/" . $dateInString;
+
             $finder = new Finder();
 
             $finder->files()->in($directory)->name($photo->getName());
@@ -183,7 +189,30 @@ class PostsController extends AbstractController
             return new Response('Forbidden access');
         }
 
+        $photo = $this->getDoctrine()->getRepository(Photos::class)->findPhotoByPostId($post->getId());
+
         $entityManager = $this->getDoctrine()->getManager();
+
+        if($photo)
+        {
+            $directory = $this->getParameter('upload_directory');
+            $date = $post->getDate();
+            $dateInString = $date->format('Y-m');
+            $directory = $directory . "/" . $dateInString;
+
+            $finder = new Finder();
+            $finder->files()->in($directory)->name($photo->getName());
+
+            foreach ($finder as $currentPhoto) {
+                $fileSystem = new Filesystem();
+
+                $fileSystem->remove([$currentPhoto->getPathname()]);
+            }
+
+            $entityManager->remove($photo);
+            $entityManager->flush();
+        }
+
         $entityManager->remove($post);
         $entityManager->flush();
 
