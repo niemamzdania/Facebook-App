@@ -52,11 +52,24 @@ class Users implements UserInterface
     private $email;
 
     /**
-     * @var string|null
-     *
-     * @ORM\Column(name="fb_token", type="string", length=500, nullable=true)
+     * @ORM\Column(type="string", length=20, nullable=true)
      */
-    private $fbToken;
+    private $appId;
+
+    /**
+     * @ORM\Column(type="string", length=40, nullable=true)
+     */
+    private $appSecret;
+
+    /**
+     * @ORM\Column(type="string", length=20, nullable=true)
+     */
+    private $pageId;
+
+    /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
+    private $userAccessToken;
 
     public function getId(): ?int
     {
@@ -111,18 +124,6 @@ class Users implements UserInterface
         return $this;
     }
 
-    public function getFbToken(): ?string
-    {
-        return $this->fbToken;
-    }
-
-    public function setFbToken(?string $fbToken): self
-    {
-        $this->fbToken = $fbToken;
-
-        return $this;
-    }
-
     /**
      * @see UserInterface
      */
@@ -148,5 +149,53 @@ class Users implements UserInterface
     {
         // If you store any temporary, sensitive data on the user, clear it here
         // $this->plainPassword = null;
+    }
+
+    public function getAppId(): ?string
+    {
+        return $this->appId;
+    }
+
+    public function setAppId(?string $appId): self
+    {
+        $this->appId = $appId;
+
+        return $this;
+    }
+
+    public function getAppSecret(): ?string
+    {
+        return $this->appSecret;
+    }
+
+    public function setAppSecret(?string $appSecret): self
+    {
+        $this->appSecret = $appSecret;
+
+        return $this;
+    }
+
+    public function getPageId(): ?string
+    {
+        return $this->pageId;
+    }
+
+    public function setPageId(?string $pageId): self
+    {
+        $this->pageId = $pageId;
+
+        return $this;
+    }
+
+    public function getUserAccessToken(): ?string
+    {
+        return $this->userAccessToken;
+    }
+
+    public function setUserAccessToken(?string $userAccessToken): self
+    {
+        $this->userAccessToken = $userAccessToken;
+
+        return $this;
     }
 }

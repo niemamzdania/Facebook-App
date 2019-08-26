@@ -5,6 +5,8 @@ use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\Extension\Core\Type\RepeatedType;
 use Symfony\Component\Form\Extension\Core\Type\PasswordType;
+use Symfony\Component\Form\Extension\Core\Type\SubmitType;
+
 
 class PasswordFormType extends AbstractType
 {
@@ -19,6 +21,7 @@ class PasswordFormType extends AbstractType
                 'first_options'  => array('label' => 'Password', 'attr' => array('class' => 'form-control')),
                 'second_options' => array('label' => 'Repeat Password', 'attr' => array('class' => 'form-control')),
             ])
+            ->add('Edit', SubmitType::class, array('label' => 'Edit data', 'attr' => array('class' => 'btn btn-primary mt-3')))
             ->getForm();
     }
 }

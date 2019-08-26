@@ -6,6 +6,10 @@ use App\Entity\Users;
 use App\Form\LoginFormType;
 use App\Form\PasswordFormType;
 use App\Form\EmailFormType;
+use App\Form\AppIdFormType;
+use App\Form\AppSecretFormType;
+use App\Form\PageIdFormType;
+use App\Form\AccessTokenFormType;
 
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -34,8 +38,12 @@ class UsersController extends AbstractController
             return new Response('Forbidden access');
         }
 
-        $loginForm = $this->createForm(LoginFormType::class, $user);
-        $passwordForm = $this->createForm(PasswordFormType::class, $user);
+        //$loginForm = $this->createForm(LoginFormType::class, $user);
+
+        $loginForm = $this->createForm(LoginFormType::class, $user, array('method' => 'POST', 'action' => $this->generateUrl('save_user')));
+        $passwordForm = $this->createForm(PasswordFormType::class, $user, array('method' => 'POST', 'action' => $this->generateUrl('save_user')));
+
+        //$passwordForm = $this->createForm(PasswordFormType::class, $user);
         $emailForm = $this->createForm(EmailFormType::class, $user);
 
         $loginForm->handleRequest($request);
@@ -65,6 +73,52 @@ class UsersController extends AbstractController
             'loginForm' => $loginForm->createView(),
             'passwordForm' => $passwordForm->createView(),
             'emailForm' => $emailForm->createView()
+        ]);
+    }
+
+    /**
+     * @Route("/user/save", name="save_user")
+     * @IsGranted("IS_AUTHENTICATED_FULLY")
+     */
+    public function save_user(Request $request)
+    {
+        dd($request);
+    }
+
+    /**
+     * @Route("/facebook/edit/{id}", name="edit_facebook")
+     * @IsGranted("IS_AUTHENTICATED_FULLY")
+     */
+    public function edit_facebook(Request $request, Users $user)
+    {
+        if ($this->getUser() != $user) {
+            return new Response('Forbidden access');
+        }
+
+        $appIdForm = $this->createForm(AppIdFormType::class, $user);
+        $appSecretForm = $this->createForm(AppSecretFormType::class, $user);
+        $pageIdForm = $this->createForm(PageIdFormType::class, $user);
+        $accessTokenForm = $this->createForm(AccessTokenFormType::class, $user);
+
+        $appIdForm->handleRequest($request);
+        $appSecretForm->handleRequest($request);
+        $pageIdForm->handleRequest($request);
+        $accessTokenForm->handleRequest($request);
+
+        if(($appIdForm->isSubmitted() && $appIdForm->isValid()) ||
+            ($appSecretForm->isSubmitted() && $appSecretForm->isValid()) ||
+            ($pageIdForm->isSubmitted() && $pageIdForm->isValid()) ||
+            ($accessTokenForm->isSubmitted() && $accessTokenForm->isValid()))
+        {
+            $entityManager = $this->getDoctrine()->getManager();
+            $entityManager->flush();
+        }
+
+        return $this->render('users/edit_facebook.html.twig', [
+            'appIdForm' => $appIdForm->createView(),
+            'appSecretForm' => $appSecretForm->createView(),
+            'pageIdForm' => $pageIdForm->createView(),
+            'accessTokenForm' => $accessTokenForm->createView()
         ]);
     }
 }
