@@ -62,20 +62,6 @@ class PostsController extends AbstractController
     }
 
     /**
-     * @Route("/posts", name="show_posts")
-     */
-    public function show_posts(Request $request, PaginatorInterface $paginator)
-    {
-        $posts = $this->getDoctrine()->getRepository(Posts::class)->findAllPosts();
-
-        return $this->render('posts/show_posts.html.twig', ['posts' => $paginator->paginate(
-            $posts,
-            $request->query->getInt('page', 1),
-            12
-        )]);
-    }
-
-    /**
      * @Route("/post/new", name="new_post")
      * @IsGranted("IS_AUTHENTICATED_FULLY")
      */
@@ -107,6 +93,33 @@ class PostsController extends AbstractController
         $postsService->saveNewPost($entityManager, $post, $directory, $request);
 
         return $this->redirectToRoute('main_page');
+    }
+
+    /**
+     * @Route("/post/{id}", name="show_post")
+     * @IsGranted("IS_AUTHENTICATED_FULLY")
+     */
+    public function show_post(Request $request, Posts $post)
+    {
+        if ($this->getUser() != $post->getUser()) {
+            return new Response('Forbidden access');
+        }
+
+        return $this->render('posts/show_post.html.twig', ['post' => $post]);
+    }
+
+    /**
+     * @Route("/posts", name="show_posts")
+     */
+    public function show_posts(Request $request, PaginatorInterface $paginator)
+    {
+        $posts = $this->getDoctrine()->getRepository(Posts::class)->findAllPosts();
+
+        return $this->render('posts/show_posts.html.twig', ['posts' => $paginator->paginate(
+            $posts,
+            $request->query->getInt('page', 1),
+            12
+        )]);
     }
 
     /**

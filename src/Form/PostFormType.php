@@ -1,6 +1,7 @@
 <?php
 namespace App\Form;
 
+use App\Entity\Posts;
 use Symfony\Component\Form\AbstractType;
 
 use Symfony\Component\Form\Extension\Core\Type\FileType;
@@ -30,8 +31,9 @@ class PostFormType extends AbstractType
                         'image/png',
                     ],
                     'mimeTypesMessage' => 'Please upload a valid image file',
+                    'maxSizeMessage' => 'Chuj',
                 ])
-            ]])
+            ],])
             ;
     }
 }

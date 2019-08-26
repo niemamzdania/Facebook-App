@@ -1,0 +1,5 @@
+{% if post == true %}
+    <h1>{{ post.Title }}</h1>
+    <p style="font-weight: bold;">{{ post.Date|date("F jS \\a\\t g:ia") }}</p>
+    <p>{{ post.Content }}</p>
+{% endif %}
