@@ -20,7 +20,7 @@ use Facebook\Facebook;
 class PostsController extends AbstractController
 {
     /**
-     * @Route("/post/send", name="send_post")
+     * @Route("/post/send/{id}", name="send_post")
      */
     public function send_post(PaginatorInterface $paginator)
     {

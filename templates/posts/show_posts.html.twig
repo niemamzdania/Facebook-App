@@ -91,15 +91,15 @@
                                         <bold>Are you sure?</bold>
                                     </h2>
                                     <h5>Do you want to send post?</h5>
-                                    <a class="delete" id="{{ post.id }}">
-                                        <button class="btn-lg btn-outline-primary mt-5 mr-2" type="button">Send</button>
+                                    <a class="send" id="{{ post.id }}">
+                                        <button class="btn-lg btn-outline-primary mt-5 mr-2" data-dismiss="modal" type="button">Send</button>
                                     </a>
                                     <button class="btn-lg btn-outline-secondary mt-5 ml-2" data-dismiss="modal" type="button">Cancel</button>
                                 </div>
                             </div>
                         </div>
                     </div>
-                    <!-- Delete post modal -->
+                    <!-- Send post modal -->
                 {% endfor %}
             </tbody>
         </table>
@@ -110,7 +110,8 @@
     <script>
         $(document).ready(function () {
             $(".page-link").attr("href", "#");
-            $(".page-link").click(function () {
+
+            $(".page-link").click(function () { // $("#/posts").trigger("click");
                 let html = $(this).html();
                 let url = "/posts?page=".concat(html);
                 $.ajax({
@@ -120,19 +121,30 @@
                     }
                 });
             });
-
         });
+        function mainpage() { // $("#/posts").trigger("click");
+            $.ajax({
+                url: "/posts",
+                success: function (data) {
+                    $(".content").html(data);
+                }
+            });
+        }
         $(".delete").click(function () {
             let number = $(this).attr("id");
             $.ajax({
                 url: "/post/delete/".concat(number),
                 success: function (data) {
-                    $.ajax({
-                        url: "/posts",
-                        success: function (data) {
-                            $(".content").html(data);
-                        }
-                    });
+                    mainpage();
+                }
+            });
+        });
+        $(".send").click(function () {
+            let number = $(this).attr("id");
+            $.ajax({
+                url: "/post/send/".concat(number),
+                success: function (data) {
+                    mainpage();
                 }
             });
         });
