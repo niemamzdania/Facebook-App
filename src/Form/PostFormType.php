@@ -17,7 +17,6 @@ class PostFormType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->setMethod('POST')
             ->add('id', HiddenType::class)
             ->add('Title', TextType::class, array('attr' => array('class' => 'form-control mb-3')))
             ->add('Content', TextareaType::class, array('required' => false, 'attr' => array('class' => 'form-control')))
@@ -29,6 +28,7 @@ class PostFormType extends AbstractType
                     'maxSize' => '2048k',
                     'mimeTypes' => [
                         'image/jpg',
+                        'image/jpeg',
                         'image/png',
                     ],
                     'mimeTypesMessage' => 'Please upload a valid image file',

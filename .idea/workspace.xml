@@ -3,16 +3,19 @@
   <component name="ChangeListManager">
     <list default="true" id="9679a1ab-2270-47ff-adb7-a743d0f823b2" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/composer.json" beforeDir="false" afterPath="$PROJECT_DIR$/composer.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/composer.lock" beforeDir="false" afterPath="$PROJECT_DIR$/composer.lock" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/config/packages/framework.yaml" beforeDir="false" afterPath="$PROJECT_DIR$/config/packages/framework.yaml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/config/services.yaml" beforeDir="false" afterPath="$PROJECT_DIR$/config/services.yaml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/uploads/photos/2019-08/6cf6317b422134c000f1ada4e1a87aad.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/uploads/photos/2019-08/977bfa3751347b1450b67d8b1e4cbc60.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Controller/PostsController.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Controller/PostsController.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/Controller/UsersController.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Controller/UsersController.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Entity/Users.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Entity/Users.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Form/LoginFormType.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Form/LoginFormType.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Form/AccessTokenFormType.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Form/AccessTokenFormType.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Form/AppIdFormType.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Form/AppIdFormType.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Form/AppSecretFormType.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Form/AppSecretFormType.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Form/PageIdFormType.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Form/PageIdFormType.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/Form/PasswordFormType.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Form/PasswordFormType.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/Form/PostFormType.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Form/PostFormType.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Migrations/Version20190812210845.php" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/templates/mainpage/sidebar.html.twig" beforeDir="false" afterPath="$PROJECT_DIR$/templates/mainpage/sidebar.html.twig" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Migrations/Version20190826111203.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Service/PostsService.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Service/PostsService.php" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -220,6 +223,7 @@
       <workItem from="1566558684681" duration="1316000" />
       <workItem from="1566809918711" duration="114000" />
       <workItem from="1566814075508" duration="9331000" />
+      <workItem from="1566833060015" duration="17613000" />
     </task>
     <servers />
   </component>

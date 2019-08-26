@@ -21,7 +21,6 @@ class PasswordFormType extends AbstractType
                 'first_options'  => array('label' => 'Password', 'attr' => array('class' => 'form-control')),
                 'second_options' => array('label' => 'Repeat Password', 'attr' => array('class' => 'form-control')),
             ])
-            ->add('Edit', SubmitType::class, array('label' => 'Edit data', 'attr' => array('class' => 'btn btn-primary mt-3')))
             ->getForm();
     }
 }

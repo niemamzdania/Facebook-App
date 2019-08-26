@@ -38,12 +38,8 @@ class UsersController extends AbstractController
             return new Response('Forbidden access');
         }
 
-        //$loginForm = $this->createForm(LoginFormType::class, $user);
-
-        $loginForm = $this->createForm(LoginFormType::class, $user, array('method' => 'POST', 'action' => $this->generateUrl('save_user')));
-        $passwordForm = $this->createForm(PasswordFormType::class, $user, array('method' => 'POST', 'action' => $this->generateUrl('save_user')));
-
-        //$passwordForm = $this->createForm(PasswordFormType::class, $user);
+        $loginForm = $this->createForm(LoginFormType::class, $user);
+        $passwordForm = $this->createForm(PasswordFormType::class, $user);
         $emailForm = $this->createForm(EmailFormType::class, $user);
 
         $loginForm->handleRequest($request);
@@ -74,15 +70,6 @@ class UsersController extends AbstractController
             'passwordForm' => $passwordForm->createView(),
             'emailForm' => $emailForm->createView()
         ]);
-    }
-
-    /**
-     * @Route("/user/save", name="save_user")
-     * @IsGranted("IS_AUTHENTICATED_FULLY")
-     */
-    public function save_user(Request $request)
-    {
-        dd($request);
     }
 
     /**

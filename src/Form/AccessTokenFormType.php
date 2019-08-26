@@ -10,7 +10,7 @@ class AccessTokenFormType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('userAccessToken', TextType::class, array('attr' => array('class' => 'form-control mb-3')))
+            ->add('userAccessToken', TextType::class, ['attr' => ['class' => 'form-control mb-3'], 'required' => false])
             ->getForm();
     }
 }

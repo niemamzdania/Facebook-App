@@ -10,7 +10,7 @@ class AppSecretFormType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('appSecret', TextType::class, array('attr' => array('class' => 'form-control mb-3')))
+            ->add('appSecret', TextType::class, ['attr' => ['class' => 'form-control mb-3'], 'required' => false])
             ->getForm();
     }
 }

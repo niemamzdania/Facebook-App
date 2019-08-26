@@ -5,14 +5,19 @@ namespace App\Service;
 use App\Entity\Photos;
 use Symfony\Component\Finder\Finder;
 use Symfony\Component\Filesystem\Filesystem;
+use Symfony\Component\HttpFoundation\File\File;
 
 class PostsService
 {
-    public function saveNewPost($entityManager, $post, $directory, $request)
+    public function saveNewPost($entityManager, $post, $directory, $tempDirectory, $request)
     {
+        $session = $request->getSession();
+
+        $realPath = $tempDirectory . '/' . $session->get('file')['post_form']['name']['name'];
+
         $date = new \DateTime();
 
-        $data = $request->request->get('post_form');
+        $data = $session->get('data');
 
         $post->setTitle($data['Title']);
         $post->setContent($data['Content']);
@@ -21,7 +26,7 @@ class PostsService
         $entityManager->persist($post);
         $entityManager->flush();
 
-        $file = $request->files->get('post_form')['name'];
+        $file = new File($realPath);
 
         if ($file) {
             $photo = new Photos();
@@ -32,7 +37,7 @@ class PostsService
             $fileName = md5(time());
             $fileName = substr($fileName, 0, 32);
 
-            $extension = $request->files->get('post_form')['name']->guessExtension();
+            $extension = $file->guessExtension();
             $fileName = $fileName . "." . $extension;
 
             $file->move($directory, $fileName);

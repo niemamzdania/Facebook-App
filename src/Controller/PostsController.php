@@ -62,6 +62,28 @@ class PostsController extends AbstractController
     }
 
     /**
+     * @Route("/post/save", name="save_post")
+     * @IsGranted("IS_AUTHENTICATED_FULLY")
+     */
+    public function save_post(Request $request, PostsService $postsService)
+    {
+        $post = $this->getDoctrine()->getRepository(Posts::class)->findPostById($request->request->get('post_form')['id']);
+
+        if(!$post)
+            return new Response('Post to edit not found');
+
+        $photo = $this->getDoctrine()->getRepository(Photos::class)->findPhotoByPostId($post->getId());
+
+        $directory = $this->getParameter('upload_directory');
+
+        $entityManager = $this->getDoctrine()->getmanager();
+
+        $postsService->saveEditedPost($entityManager, $post, $photo, $directory, $request);
+
+        return $this->redirectToRoute('main_page');
+    }
+
+    /**
      * @Route("/post/new", name="new_post")
      * @IsGranted("IS_AUTHENTICATED_FULLY")
      */
@@ -69,7 +91,20 @@ class PostsController extends AbstractController
     {
         $post = new Posts();
 
-        $form = $this->createForm(PostFormType::class, $post, array('method' => 'POST', 'action' => $this->generateUrl('add_post')));
+        $form = $this->createForm(PostFormType::class, $post);
+
+        $form->handleRequest($request);
+
+        if($form->isSubmitted() && $form->isValid())
+        {
+            $session = $request->getSession();
+            $session->set('data', $request->request->get('post_form'));
+            $session->set('file', $_FILES);
+
+            move_uploaded_file($_FILES['post_form']['tmp_name']['name'], "uploads/" . $_FILES['post_form']['name']['name']);
+
+            return $this->redirect($this->generateUrl('add_post'));
+        }
 
         return $this->render('posts/new_post.html.twig', [
             'form' => $form->createView()
@@ -90,7 +125,9 @@ class PostsController extends AbstractController
 
         $directory = $this->getParameter('upload_directory');
 
-        $postsService->saveNewPost($entityManager, $post, $directory, $request);
+        $tempDirectory = $this->getParameter('upload_temp_directory');
+
+        $postsService->saveNewPost($entityManager, $post, $directory, $tempDirectory, $request);
 
         return $this->redirectToRoute('main_page');
     }
@@ -149,7 +186,7 @@ class PostsController extends AbstractController
             $finder->files()->in($directory)->name($photo->getName());
 
             foreach ($finder as $file) {
-                $photoPath = $file->getRelativePathname();
+                $photoPath = $dateInString . '/' . $file->getRelativePathname();
             }
 
             if (isset($photoPath)) {
@@ -167,28 +204,6 @@ class PostsController extends AbstractController
         return $this->render('posts/edit_post.html.twig', [
             'form' => $form->createView()
         ]);
-    }
-
-    /**
-     * @Route("/post/save", name="save_post")
-     * @IsGranted("IS_AUTHENTICATED_FULLY")
-     */
-    public function save_post(Request $request, PostsService $postsService)
-    {
-        $post = $this->getDoctrine()->getRepository(Posts::class)->findPostById($request->request->get('post_form')['id']);
-
-        if(!$post)
-            return new Response('Post to edit not found');
-
-        $photo = $this->getDoctrine()->getRepository(Photos::class)->findPhotoByPostId($post->getId());
-
-        $directory = $this->getParameter('upload_directory');
-
-        $entityManager = $this->getDoctrine()->getmanager();
-
-        $postsService->saveEditedPost($entityManager, $post, $photo, $directory, $request);
-
-        return $this->redirectToRoute('main_page');
     }
 
     /**

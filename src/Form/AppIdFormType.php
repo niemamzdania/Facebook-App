@@ -10,7 +10,7 @@ class AppIdFormType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('appId', TextType::class, array('attr' => array('class' => 'form-control mb-3')))
+            ->add('appId', TextType::class, ['attr' => ['class' => 'form-control mb-3'], 'required' => false])
             ->getForm();
     }
 }
