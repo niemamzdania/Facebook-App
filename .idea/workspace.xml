@@ -3,7 +3,14 @@
   <component name="ChangeListManager">
     <list default="true" id="9679a1ab-2270-47ff-adb7-a743d0f823b2" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Controller/PostsController.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Controller/PostsController.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Form/PostFormType.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Form/PostFormType.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Service/PostsService.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Service/PostsService.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/templates/mainpage/main.html.twig" beforeDir="false" afterPath="$PROJECT_DIR$/templates/mainpage/main.html.twig" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/templates/mainpage/sidebar.html.twig" beforeDir="false" afterPath="$PROJECT_DIR$/templates/mainpage/sidebar.html.twig" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/templates/posts/new_post.html.twig" beforeDir="false" afterPath="$PROJECT_DIR$/templates/posts/new_post.html.twig" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/templates/posts/show_posts.html.twig" beforeDir="false" afterPath="$PROJECT_DIR$/templates/posts/show_posts.html.twig" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/templates/users/edit_facebook.html.twig" beforeDir="false" afterPath="$PROJECT_DIR$/templates/users/edit_facebook.html.twig" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/templates/users/edit_user.html.twig" beforeDir="false" afterPath="$PROJECT_DIR$/templates/users/edit_user.html.twig" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -20,13 +27,6 @@
   </component>
   <component name="FavoritesManager">
     <favorites_list name="Facebook-App" />
-  </component>
-  <component name="FindInProjectRecents">
-    <findStrings>
-      <find>def</find>
-      <find>uniq</find>
-      <find>user</find>
-    </findStrings>
   </component>
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
@@ -213,6 +213,7 @@
       <workItem from="1566809918711" duration="114000" />
       <workItem from="1566814075508" duration="9331000" />
       <workItem from="1566833060015" duration="17613000" />
+      <workItem from="1566899805909" duration="7982000" />
     </task>
     <servers />
   </component>

@@ -101,7 +101,9 @@ class PostsController extends AbstractController
             $session->set('data', $request->request->get('post_form'));
             $session->set('file', $_FILES);
 
-            move_uploaded_file($_FILES['post_form']['tmp_name']['name'], "uploads/" . $_FILES['post_form']['name']['name']);
+            if(isset($_FILES['post_form'])) {
+                move_uploaded_file($_FILES['post_form']['tmp_name']['name'], "uploads/" . $_FILES['post_form']['name']['name']);
+            }
 
             return $this->redirect($this->generateUrl('add_post'));
         }
@@ -129,7 +131,7 @@ class PostsController extends AbstractController
 
         $postsService->saveNewPost($entityManager, $post, $directory, $tempDirectory, $request);
 
-        return $this->redirectToRoute('main_page');
+        return $this->redirectToRoute('show_posts');
     }
 
     /**
@@ -244,7 +246,7 @@ class PostsController extends AbstractController
         $entityManager->remove($post);
         $entityManager->flush();
 
-        return new Response("Ok");
-        //return $this->redirectToRoute('main_page');
+
+        return $this->redirectToRoute('show_posts');
     }
 }

@@ -32,6 +32,7 @@ class PostFormType extends AbstractType
                         'image/png',
                     ],
                     'mimeTypesMessage' => 'Please upload a valid image file',
+                    'maxSizeMessage' => 'File size is too large. The maximum file size is 2048 kB.'
                 ])
             ],])
             ;

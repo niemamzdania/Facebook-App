@@ -13,7 +13,10 @@ class PostsService
     {
         $session = $request->getSession();
 
-        $realPath = $tempDirectory . '/' . $session->get('file')['post_form']['name']['name'];
+        if($session->get('file')['post_form']['name']['name'] != NULL) {
+            $realPath = $tempDirectory . '/' . $session->get('file')['post_form']['name']['name'];
+            $file = new File($realPath);
+        }
 
         $date = new \DateTime();
 
@@ -26,9 +29,7 @@ class PostsService
         $entityManager->persist($post);
         $entityManager->flush();
 
-        $file = new File($realPath);
-
-        if ($file) {
+        if (isset($file)) {
             $photo = new Photos();
 
             $dateInString = $date->format('Y-m');

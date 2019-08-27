@@ -1,4 +1,5 @@
-{% block styles %}
+{% extends 'mainpage/main.html.twig' %}
+{% block content %}
     <style>
         tr th:first-child {
             text-align: left;
@@ -21,8 +22,6 @@
             color: white;
         }
     </style>
-{% endblock %}
-{% block body %}
     <div class="table">
         <table class="table table-striped">
             <thead>
@@ -48,12 +47,12 @@
                         </td>
 
                         <td>
-                            <button class="btn btn-outline-danger delete_post" data-target="#exampleModalCenterDelete" data-toggle="modal" type="button">
+                            <button class="btn btn-outline-danger action_post" id="{{ post.id }}" data-target="#exampleModalCenterDelete" data-toggle="modal" type="button">
                                 <i class="fas fa-trash-alt"></i>
                             </button>
                         </td>
                         <td>
-                            <button class="btn btn-outline-primary send_post" data-target="#exampleModalCenterSend" data-toggle="modal" type="button">
+                            <button class="btn btn-outline-primary action_post" id="{{ post.id }}" data-target="#exampleModalCenterSend" data-toggle="modal" type="button" >
                                 <i class="fas fa-share-alt"></i>
                             </button>
                         </td>
@@ -70,8 +69,8 @@
                                         <bold>Are you sure?</bold>
                                     </h2>
                                     <h5>Do you want to delete post?</h5>
-                                    <a class="delete" id="{{ post.id }}">
-                                        <button class="btn-lg btn-outline-danger mt-5 mr-2" data-dismiss="modal" type="button">Delete</button>
+                                    <a class="action" id="/post/delete/">
+                                        <button class="delete btn-lg btn-outline-danger mt-5 mr-2">Delete</button>
                                     </a>
                                     <button class="btn-lg btn-outline-secondary mt-5 ml-2" data-dismiss="modal" type="button">Cancel</button>
                                 </div>
@@ -91,8 +90,8 @@
                                         <bold>Are you sure?</bold>
                                     </h2>
                                     <h5>Do you want to send post?</h5>
-                                    <a class="send" id="{{ post.id }}">
-                                        <button class="btn-lg btn-outline-primary mt-5 mr-2" data-dismiss="modal" type="button">Send</button>
+                                    <a class="action" id="/post/send/">
+                                        <button class="send btn-lg btn-outline-primary mt-5 mr-2" data-dismiss="modal" type="button">Send</button>
                                     </a>
                                     <button class="btn-lg btn-outline-secondary mt-5 ml-2" data-dismiss="modal" type="button">Cancel</button>
                                 </div>
@@ -108,46 +107,26 @@
         {{ knp_pagination_render(posts) }}
     </div>
     <script>
-        $(document).ready(function () {
-            $(".page-link").attr("href", "#");
+        let number;
 
-            $(".page-link").click(function () { // $("#/posts").trigger("click");
-                let html = $(this).html();
-                let url = "/posts?page=".concat(html);
-                $.ajax({
-                    url: url,
-                    success: function (data) {
-                        $(".content").html(data);
-                    }
-                });
-            });
-        });
-        function mainpage() { // $("#/posts").trigger("click");
-            $.ajax({
-                url: "/posts",
-                success: function (data) {
-                    $(".content").html(data);
-                }
-            });
+        document.querySelector(".action_post").onclick = function() {myFunction(this.id)};
+
+        function myFunction(clicked_id) {
+            number = clicked_id;
+            alert(number);
         }
-        $(".delete").click(function () {
-            let number = $(this).attr("id");
-            $.ajax({
-                url: "/post/delete/".concat(number),
-                success: function (data) {
-                    mainpage();
-                }
-            });
-        });
-        $(".send").click(function () {
-            let number = $(this).attr("id");
-            $.ajax({
-                url: "/post/send/".concat(number),
-                success: function (data) {
-                    mainpage();
-                }
-            });
-        });
-    </script>
 
+        {# document.querySelector(".delete").onclick = function() {myFunction1()};
+
+        function myFunction1() {
+            alert(number);
+            window.location.href = '/post/delete/'.concat(number);
+        }
+
+        document.querySelector(".send").onclick = function() {myFunction2()};
+
+        function myFunction2() {
+            window.location.href = '/post/send/'.concat(number);
+        }#}
+    </script>
 {% endblock %}
