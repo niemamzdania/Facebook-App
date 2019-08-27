@@ -51,8 +51,15 @@ class PostsService
         }
     }
 
-    public function saveEditedPost($entityManager, $post, $photo, $directory, $request)
+    public function saveEditedPost($entityManager, $post, $photo, $directory, $tempDirectory, $request)
     {
+        $session = $request->getSession();
+
+        if($session->get('file')['post_form']['name']['name'] != NULL) {
+            $realPath = $tempDirectory . '/' . $session->get('file')['post_form']['name']['name'];
+            $file = new File($realPath);
+        }
+
         $date = $post->getDate();
         $dateInString = $date->format('Y-m');
         $currentDate = new \DateTime();
@@ -61,15 +68,13 @@ class PostsService
         $fileName = md5(time());
         $fileName = substr($fileName, 0, 32);
 
-        $file = $request->files->get('post_form')['name'];
-
-        if(!$photo && $file)
+        if(!$photo && isset($file))
         {
             $photo = new Photos();
 
             $directory = $directory . "/" . $currentDateInString;
 
-            $extension = $request->files->get('post_form')['name']->guessExtension();
+            $extension = $file->guessExtension();
             $fileName = $fileName . "." . $extension;
 
             $file->move($directory, $fileName);
@@ -80,7 +85,7 @@ class PostsService
             $entityManager->persist($photo);
             $entityManager->flush();
         }
-        elseif($photo && $file)
+        elseif($photo && isset($file))
         {
             $oldDirectory = $directory . "/" . $dateInString;
 
@@ -93,7 +98,7 @@ class PostsService
                 $fileSystem->remove([$currentPhoto->getPathname()]);
             }
 
-            $extension = $request->files->get('post_form')['name']->guessExtension();
+            $extension = $file->guessExtension();
             $fileName = $fileName . "." . $extension;
 
             $directory = $directory . "/" . $currentDateInString;
@@ -105,9 +110,11 @@ class PostsService
             $entityManager->flush();
         }
 
-        $post->setTitle($request->request->get('post_form')['Title']);
-        $post->setContent($request->request->get('post_form')['Content']);
-        $post->setDate($currentDate);
+        $data = $session->get('data');
+
+        $post->setTitle($data['Title']);
+        $post->setContent($data['Content']);
+        $post->setDate($date);
 
         $entityManager->flush();
     }

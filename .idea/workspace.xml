@@ -6,12 +6,6 @@
       <change beforePath="$PROJECT_DIR$/src/Controller/PostsController.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Controller/PostsController.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/Form/PostFormType.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Form/PostFormType.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/Service/PostsService.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Service/PostsService.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/templates/mainpage/main.html.twig" beforeDir="false" afterPath="$PROJECT_DIR$/templates/mainpage/main.html.twig" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/templates/mainpage/sidebar.html.twig" beforeDir="false" afterPath="$PROJECT_DIR$/templates/mainpage/sidebar.html.twig" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/templates/posts/new_post.html.twig" beforeDir="false" afterPath="$PROJECT_DIR$/templates/posts/new_post.html.twig" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/templates/posts/show_posts.html.twig" beforeDir="false" afterPath="$PROJECT_DIR$/templates/posts/show_posts.html.twig" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/templates/users/edit_facebook.html.twig" beforeDir="false" afterPath="$PROJECT_DIR$/templates/users/edit_facebook.html.twig" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/templates/users/edit_user.html.twig" beforeDir="false" afterPath="$PROJECT_DIR$/templates/users/edit_user.html.twig" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -213,7 +207,7 @@
       <workItem from="1566809918711" duration="114000" />
       <workItem from="1566814075508" duration="9331000" />
       <workItem from="1566833060015" duration="17613000" />
-      <workItem from="1566899805909" duration="7982000" />
+      <workItem from="1566899805909" duration="12601000" />
     </task>
     <servers />
   </component>

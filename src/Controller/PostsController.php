@@ -67,7 +67,9 @@ class PostsController extends AbstractController
      */
     public function save_post(Request $request, PostsService $postsService)
     {
-        $post = $this->getDoctrine()->getRepository(Posts::class)->findPostById($request->request->get('post_form')['id']);
+        $session = $request->getSession();
+
+        $post = $this->getDoctrine()->getRepository(Posts::class)->findPostById($session->get('id'));
 
         if(!$post)
             return new Response('Post to edit not found');
@@ -78,9 +80,11 @@ class PostsController extends AbstractController
 
         $entityManager = $this->getDoctrine()->getmanager();
 
-        $postsService->saveEditedPost($entityManager, $post, $photo, $directory, $request);
+        $tempDirectory = $this->getParameter('upload_temp_directory');
 
-        return $this->redirectToRoute('main_page');
+        $postsService->saveEditedPost($entityManager, $post, $photo, $directory, $tempDirectory, $request);
+
+        return $this->redirectToRoute('show_posts');
     }
 
     /**
@@ -165,15 +169,31 @@ class PostsController extends AbstractController
      * @Route("/post/edit/{id}", name="edit_post")
      * @IsGranted("IS_AUTHENTICATED_FULLY")
      */
-    public function edit_post(Posts $post)
+    public function edit_post(Posts $post, Request $request)
     {
         if ($this->getUser() != $post->getUser()) {
             return new Response('Forbidden access');
         }
 
-        $photo = $this->getDoctrine()->getRepository(Photos::class)->findPhotoByPostId($post->getId());
+        $form = $this->createForm(PostFormType::class, $post);
 
-        $form = $this->createForm(PostFormType::class, $post, array('method' => 'POST', 'action' => $this->generateUrl('save_post')));
+        $form->handleRequest($request);
+
+        if($form->isSubmitted() && $form->isValid())
+        {
+            $session = $request->getSession();
+            $session->set('data', $request->request->get('post_form'));
+            $session->set('id', $post->getId());
+            $session->set('file', $_FILES);
+
+            if(isset($_FILES['post_form'])) {
+                move_uploaded_file($_FILES['post_form']['tmp_name']['name'], "uploads/" . $_FILES['post_form']['name']['name']);
+            }
+
+            return $this->redirect($this->generateUrl('save_post'));
+        }
+
+        $photo = $this->getDoctrine()->getRepository(Photos::class)->findPhotoByPostId($post->getId());
 
         if ($photo) {
             $directory = $this->getParameter('upload_directory');
