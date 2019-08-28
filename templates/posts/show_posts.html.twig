@@ -47,12 +47,12 @@
                         </td>
 
                         <td>
-                            <button class="btn btn-outline-danger action_post" id="{{ post.id }}" data-target="#exampleModalCenterDelete" data-toggle="modal" type="button">
+                            <button onclick="get_number(this.id)" class="btn btn-outline-danger action_post" id="{{ post.id }}" data-target="#exampleModalCenterDelete" data-toggle="modal" type="button">
                                 <i class="fas fa-trash-alt"></i>
                             </button>
                         </td>
                         <td>
-                            <button class="btn btn-outline-primary action_post" id="{{ post.id }}" data-target="#exampleModalCenterSend" data-toggle="modal" type="button" >
+                            <button onclick="get_number(this.id)" class="btn btn-outline-primary action_post" id="{{ post.id }}" data-target="#exampleModalCenterSend" data-toggle="modal" type="button" >
                                 <i class="fas fa-share-alt"></i>
                             </button>
                         </td>
@@ -109,24 +109,20 @@
     <script>
         let number;
 
-        document.querySelector(".action_post").onclick = function() {myFunction(this.id)};
-
-        function myFunction(clicked_id) {
+        function get_number(clicked_id) {
             number = clicked_id;
-            alert(number);
         }
 
-        {# document.querySelector(".delete").onclick = function() {myFunction1()};
+        document.querySelector(".delete").onclick = function() {delete_trigger()};
 
-        function myFunction1() {
-            alert(number);
+        function delete_trigger() {
             window.location.href = '/post/delete/'.concat(number);
         }
 
-        document.querySelector(".send").onclick = function() {myFunction2()};
+        document.querySelector(".send").onclick = function() {send_trigger()};
 
-        function myFunction2() {
+        function send_trigger() {
             window.location.href = '/post/send/'.concat(number);
-        }#}
+        }
     </script>
 {% endblock %}

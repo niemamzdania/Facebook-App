@@ -17,22 +17,43 @@ use Symfony\Component\Routing\Annotation\Route;
 use Knp\Component\Pager\PaginatorInterface;
 use Facebook\Facebook;
 
+
 class PostsController extends AbstractController
 {
     /**
      * @Route("/post/send/{id}", name="send_post")
      */
-    public function send_post(PaginatorInterface $paginator)
+    public function send_post(PaginatorInterface $paginator, $id)
     {
-        $appId = '1305065672989564';
-        $appSecret = '7bd264052cfb10caa9b0e15d54867f0e';
-        $pageId = '107637360600429';
-        $userAccessToken = 'EAASi80fY23wBAFM3rKkDmTZAr7aDZAZCRYT6nvjk0Vo8JLZCY9DJKd2s1VVJ1K73PeXe6QlsZC3oDnwzZCrHLxxZAoPZBF1nhRnycRCjUGqpBWHhHWkI11PmVKHvDY3PKZBzb56PEWgr8ZCCbZBZBYx18pyZAIN6Ff1rbb4R5oLIOwZBDJNZAkK8BU1CUfNnZC5C3CBEmaJeijSHK0iOfekzpMErHNIYszfK36MCwOPKtCKaZC5suygZDZD';
+        $user = $this->getUser();
+               
+        $appId = $user->getAppId();
+        $appSecret = $user->getAppSecret();
+        $pageId = $user->getPageId();
+        $userAccessToken = $user->getUserAccessToken();
+
+        $post = $this->getDoctrine()->getRepository(Posts::Class)->find($id);
+        $message = $post->getContent();
+        $photo = $this->getDoctrine()->getRepository(Photos::Class)->findPhotoByPostId($post->getId()); 
+        
+        $directory = $this->getParameter('upload_directory');
+        $date = $post->getDate();
+        $dateInString = $date->format('Y-m');
+        $directory = $directory . '/' . $dateInString;
+        
+        $finder = new Finder();
+        $finder->files()->in($directory)->name($photo->getName());
+
+        foreach ($finder as $currentPhoto) {
+            //dd($currentPhoto);
+            $photoPath = $currentPhoto->getPathName();
+            //dd($photoPath);
+        }
 
         $fb = new Facebook([
             'app_id' => $appId,
             'app_secret' => $appSecret,
-            'default_graph_version' => 'v2.5'
+            'default_graph_version' => 'v4.0'
         ]);
 
         $longLivedToken = $fb->getOAuth2Client()->getLongLivedAccessToken($userAccessToken);
@@ -49,16 +70,18 @@ class PostsController extends AbstractController
             'app_secret' => $appSecret,
             'default_graph_version' => 'v4.0'
         ]);
+        
+        $picture = 'http://www.codexworld.com/wp-content/uploads/2015/12/www-codexworld-com-programming-blog.png';
 
         $fb->setDefaultAccessToken($foreverPageAccessToken);
         $fb->sendRequest('POST', "$pageId/feed", [
-            'message' => 'Test Post',
-            //'link' => 'http://blog.damirmiladinov.com',
+            'message' => $message,
+            'url' => $photoPath,
         ]);
+        //http://127.0.0.1:8000/uploads/photos/2019-08/9f83dd59bd856af25ecd7425a0e52c47.png
+        //var_dump($fb->sendRequest('GET', '/debug_token', ['input_token' => $foreverPageAccessToken])->getDecodedBody());
 
-        var_dump($fb->sendRequest('GET', '/debug_token', ['input_token' => $foreverPageAccessToken])->getDecodedBody());
-
-        return new Response("ok");
+        return $this->redirectToRoute('show_posts');
     }
 
     /**
