@@ -1,6 +1,10 @@
 {% extends 'mainpage/main.html.twig' %}
 {% block content %}
     <style>
+       .modal-backdrop{
+            display:none;
+            z-index: -1;
+        }
         tr th:first-child {
             text-align: left;
         }
@@ -23,8 +27,9 @@
         }
         .loader {
             display: none;
-            position: sticky;
-            margin:auto;
+            position: absolute;
+            top:43%;
+            left:50%;
             border: 16px solid #f3f3f3;
             border-radius: 50%;
             border-top: 16px solid #3498db;
@@ -32,11 +37,13 @@
             height: 120px;
             -webkit-animation: spin 2s linear infinite; /* Safari */
             animation: spin 2s linear infinite;
+            z-index: 19999992;
         }
          .loader_show {
             display: block;
-            position: sticky;
-            margin:auto;
+            position: absolute;
+            top:43%;
+            left:50%;
             border: 16px solid #f3f3f3;
             border-radius: 50%;
             border-top: 16px solid #3498db;
@@ -44,6 +51,7 @@
             height: 120px;
             -webkit-animation: spin 2s linear infinite; /* Safari */
             animation: spin 2s linear infinite;
+            z-index: 19999992;
         }
 
       @keyframes spin {
@@ -55,7 +63,7 @@
             }
         }
     </style>
-    <div class="table" style="z-index:-1;">
+    <div class="table">
         <table class="table table-striped">
             <thead>
                 <tr style="text-align: center;">
