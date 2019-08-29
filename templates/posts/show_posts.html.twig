@@ -22,6 +22,21 @@
             color: white;
         }
         .loader {
+            display: none;
+            position: sticky;
+            margin:auto;
+            border: 16px solid #f3f3f3;
+            border-radius: 50%;
+            border-top: 16px solid #3498db;
+            width: 120px;
+            height: 120px;
+            -webkit-animation: spin 2s linear infinite; /* Safari */
+            animation: spin 2s linear infinite;
+        }
+         .loader_show {
+            display: block;
+            position: sticky;
+            margin:auto;
             border: 16px solid #f3f3f3;
             border-radius: 50%;
             border-top: 16px solid #3498db;
@@ -40,7 +55,7 @@
             }
         }
     </style>
-    <div class="table">
+    <div class="table" style="z-index:-1;">
         <table class="table table-striped">
             <thead>
                 <tr style="text-align: center;">
@@ -124,7 +139,7 @@
     <div class="row d-flex justify-content-center w-100 paginator">
         {{ knp_pagination_render(posts) }}
     </div>
-    <div style="position: fixed;" class="loader"></div>
+   <div class="loader"></div>
     <script>
         let number;
 
@@ -135,17 +150,26 @@
         document.querySelector(".delete").onclick = function () {
             delete_trigger()
         };
+        
 
         function delete_trigger() {
             window.location.href = '/post/delete/'.concat(number);
         }
 
         document.querySelector(".send").onclick = function () {
-            send_trigger()
+            //send_trigger()
+            loader()
         };
 
+        function loader() {
+            document.querySelector(".loader").classList.toggle("loader_show");
+            send_trigger();
+        }
+
         function send_trigger() {
+            //alert("send");
             window.location.href = '/post/send/'.concat(number);
         }
+
     </script>
 {% endblock %}
