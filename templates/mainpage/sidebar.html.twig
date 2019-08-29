@@ -86,7 +86,27 @@
                             </li>
                         </ul>
                     </li>
-
+                    <!--*********************************************************-->
+                    {% if is_granted('ROLE_ADMIN') %}
+                        <li class="nav-item  active treeview menu-open">
+                            <a class="nav-link" href="#">
+                                <i class="nav-icon fa fa-edit"></i>
+                                <p>
+                                    Admin
+                                </p>
+                            </a>
+                            <ul class="nav nav-treeview" style="display: block;">
+                                <li class="nav-item archive">
+                                    <a class="nav-link button" href="{{ path('show_users') }}"
+                                       id="{{ path('show_users') }}">
+                                        <i class="fa fa-circle-o nav-icon"></i>
+                                        <p>Users list</p>
+                                    </a>
+                                </li>
+                            </ul>
+                        </li>
+                    {% endif %}
+                    <!--*********************************************************-->
                 </ul>
             </nav>
         </div>
