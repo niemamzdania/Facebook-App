@@ -93,7 +93,8 @@ class PostsController extends AbstractController
         $session = $request->getSession();
 
         $post = $this->getDoctrine()->getRepository(Posts::class)->findPostById($session->get('id'));
-
+        $post_number = $post->getId();
+        
         if(!$post)
             return new Response('Post to edit not found');
 
@@ -107,7 +108,7 @@ class PostsController extends AbstractController
 
         $postsService->saveEditedPost($entityManager, $post, $photo, $directory, $tempDirectory, $request);
 
-        return $this->redirectToRoute('show_posts');
+        return $this->redirect('/post/edit/'.$post_number);
     }
 
     /**
@@ -169,6 +170,25 @@ class PostsController extends AbstractController
     {
         if ($this->getUser() != $post->getUser()) {
             return new Response('Forbidden access');
+        }
+
+        $photo = $this->getDoctrine()->getRepository(Photos::Class)->findPhotoByPostId($post->getId());
+
+        if($photo!=NULL)
+        {
+        $directory = $this->getParameter('upload_directory');
+        $date = $post->getDate();
+        $dateInString = $date->format('Y-m');
+        $directory = $directory . "/" . $dateInString;
+    
+        $finder = new Finder();
+
+            $finder->files()->in($directory)->name($photo->getName());
+
+            foreach ($finder as $file) {
+                $photoPath = $dateInString . '/' . $file->getRelativePathname();
+            }
+            return $this->render('posts/show_post.html.twig', ['post' => $post, 'photoPath' => $photoPath]);
         }
 
         return $this->render('posts/show_post.html.twig', ['post' => $post]);

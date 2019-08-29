@@ -21,6 +21,24 @@
         .delete_post:send {
             color: white;
         }
+        .loader {
+            border: 16px solid #f3f3f3;
+            border-radius: 50%;
+            border-top: 16px solid #3498db;
+            width: 120px;
+            height: 120px;
+            -webkit-animation: spin 2s linear infinite; /* Safari */
+            animation: spin 2s linear infinite;
+        }
+
+      @keyframes spin {
+            0% {
+                transform: rotate(0deg);
+            }
+            100% {
+                transform: rotate(360deg);
+            }
+        }
     </style>
     <div class="table">
         <table class="table table-striped">
@@ -40,7 +58,7 @@
                         <td>{{ post.Title }}</td>
                         <td>{{ post.Date|date("d/m/Y H:i") }}</td>
                         <td>
-                            <a class="btn btn-success" href="#">Show Post</a>
+                            <a class="btn btn-success" href="/post/{{post.id}}">Show Post</a>
                         </td>
                         <td>
                             <a class="btn btn-warning" href="/post/edit/{{ post.id }}">Edit Post</a>
@@ -52,7 +70,7 @@
                             </button>
                         </td>
                         <td>
-                            <button onclick="get_number(this.id)" class="btn btn-outline-primary action_post" id="{{ post.id }}" data-target="#exampleModalCenterSend" data-toggle="modal" type="button" >
+                            <button onclick="get_number(this.id)" class="btn btn-outline-primary action_post" id="{{ post.id }}" data-target="#exampleModalCenterSend" data-toggle="modal" type="button">
                                 <i class="fas fa-share-alt"></i>
                             </button>
                         </td>
@@ -106,6 +124,7 @@
     <div class="row d-flex justify-content-center w-100 paginator">
         {{ knp_pagination_render(posts) }}
     </div>
+    <div style="position: fixed;" class="loader"></div>
     <script>
         let number;
 
@@ -113,13 +132,17 @@
             number = clicked_id;
         }
 
-        document.querySelector(".delete").onclick = function() {delete_trigger()};
+        document.querySelector(".delete").onclick = function () {
+            delete_trigger()
+        };
 
         function delete_trigger() {
             window.location.href = '/post/delete/'.concat(number);
         }
 
-        document.querySelector(".send").onclick = function() {send_trigger()};
+        document.querySelector(".send").onclick = function () {
+            send_trigger()
+        };
 
         function send_trigger() {
             window.location.href = '/post/send/'.concat(number);
