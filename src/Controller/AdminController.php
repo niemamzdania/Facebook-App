@@ -33,7 +33,7 @@ class AdminController extends AbstractController
             return new Response('Forbidden access');
         }
 
-        dd('It is only test. Do you really want to delete user?');
+        //dd('It is only test. Do you really want to delete user?');
 
         $entityManager = $this->getDoctrine()->getManager();
         $entityManager->remove($user);

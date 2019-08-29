@@ -3,6 +3,9 @@
 namespace App\Entity;
 
 use Symfony\Component\Security\Core\User\UserInterface;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
+
+use Symfony\Component\Validator\Constraints as Assert;
 
 use Doctrine\ORM\Mapping as ORM;
 
@@ -11,6 +14,10 @@ use Doctrine\ORM\Mapping as ORM;
  *
  * @ORM\Table(name="users", uniqueConstraints={@ORM\UniqueConstraint(name="UNIQ_1483A5E9AA08CB10", columns={"login"}), @ORM\UniqueConstraint(name="UNIQ_1483A5E9E7927C74", columns={"email"})})
  * @ORM\Entity(repositoryClass="App\Repository\UsersRepository")
+ * @UniqueEntity(
+ *     fields={"email"},
+ *     message="This e-mail adress exist"
+ * )
  */
 class Users implements UserInterface
 {
@@ -48,6 +55,7 @@ class Users implements UserInterface
      * @var string
      *
      * @ORM\Column(name="email", type="string", length=50, nullable=false)
+     * @Assert\Email()
      */
     private $email;
 

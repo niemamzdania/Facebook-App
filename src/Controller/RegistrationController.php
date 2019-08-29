@@ -34,18 +34,14 @@ class RegistrationController extends AbstractController
                 )
             );
 
-            $user->setRoles(['ROLE_USER']);
+            $role = [$request->request->get('registration_form')['roles']];
+            $user->setRoles($role);
 
             $entityManager = $this->getDoctrine()->getManager();
             $entityManager->persist($user);
             $entityManager->flush();
 
-            return $guardHandler->authenticateUserAndHandleSuccess(
-                $user,
-                $request,
-                $authenticator,
-                'main'
-            );
+            return $this->redirectToRoute('show_users');
         }
 
         return $this->render('registration/register.html.twig', [

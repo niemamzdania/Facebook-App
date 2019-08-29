@@ -7,6 +7,7 @@
             <th scope="col">id</th>
             <th scope="col">login</th>
             <th scope="col">e-mail</th>
+            <th scope="col">Role</th>
             <th scope="col">Delete</th>
         </tr>
         </thead>
@@ -16,6 +17,11 @@
                 <th>{{ user.id }}</th>
                 <td>{{ user.login }}</td>
                 <td>{{ user.email }}</td>
+                {% if user.roles[0] == "ROLE_ADMIN" %}
+                    <td>Admin</td>
+                {% elseif user.roles[0] == "ROLE_USER" %}
+                    <td>User</td>
+                {% endif %}
                 <td><a class="btn btn-danger" href="{{ path('delete_user', {id: user.id}) }}">Delete</a></td>
             </tr>
         {% endfor %}
