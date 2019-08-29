@@ -7,7 +7,8 @@
         </a>
         <div class="sidebar">
             <nav class="mt-2">
-                <ul class="nav nav-pills nav-sidebar flex-column" data-accordion="false" data-widget="treeview" role="menu">
+                <ul class="nav nav-pills nav-sidebar flex-column" data-accordion="false" data-widget="treeview"
+                    role="menu">
                     <li class="nav-item  active treeview menu-open">
                         <a class="nav-link" href="#">
                             <i class="nav-icon fa fa-edit"></i>
@@ -29,7 +30,8 @@
                                 </a>
                             </li>
                             <li class="nav-item archive">
-                                <a class="nav-link button" href="/facebook/edit/{{ app.user.id }}" id="/facebook/edit/{{ app.user.id }}">
+                                <a class="nav-link button" href="/facebook/edit/{{ app.user.id }}"
+                                   id="/facebook/edit/{{ app.user.id }}">
                                     <i class="fa fa-circle-o nav-icon"></i>
                                     <p>Archieves</p>
                                 </a>
@@ -69,20 +71,49 @@
                         </a>
                         <ul class="nav nav-treeview" style="display: block;">
                             <li class="nav-item archive">
-                                <a class="nav-link button" href="/user/edit/{{ app.user.id }}" id="/user/edit/{{ app.user.id }}">
+                                <a class="nav-link button" href="/user/edit/{{ app.user.id }}"
+                                   id="/user/edit/{{ app.user.id }}">
                                     <i class="fa fa-circle-o nav-icon"></i>
                                     <p>Account data</p>
                                 </a>
                             </li>
                             <li class="nav-item archive">
-                                <a class="nav-link button" href="/facebook/edit/{{ app.user.id }}" id="/facebook/edit/{{ app.user.id }}">
+                                <a class="nav-link button" href="/facebook/edit/{{ app.user.id }}"
+                                   id="/facebook/edit/{{ app.user.id }}">
                                     <i class="fa fa-circle-o nav-icon"></i>
                                     <p>Facebook</p>
                                 </a>
                             </li>
                         </ul>
                     </li>
-
+                    <!--*********************************************************-->
+                    {% if is_granted('ROLE_ADMIN') %}
+                        <li class="nav-item  active treeview menu-open">
+                            <a class="nav-link" href="#">
+                                <i class="nav-icon fa fa-edit"></i>
+                                <p>
+                                    Admin
+                                </p>
+                            </a>
+                            <ul class="nav nav-treeview" style="display: block;">
+                                <li class="nav-item archive">
+                                    <a class="nav-link button" href="{{ path('show_users') }}"
+                                       id="{{ path('show_users') }}">
+                                        <i class="fa fa-circle-o nav-icon"></i>
+                                        <p>Users list</p>
+                                    </a>
+                                </li>
+                            </ul>
+                        </li>
+                        <li class="nav-item archive">
+                            <a class="nav-link button" href="{{ path('app_register') }}"
+                               id="{{ path('app_register') }}">
+                                <i class="fa fa-circle-o nav-icon"></i>
+                                <p>Create user</p>
+                            </a>
+                        </li>
+                    {% endif %}
+                    <!--*********************************************************-->
                 </ul>
             </nav>
         </div>

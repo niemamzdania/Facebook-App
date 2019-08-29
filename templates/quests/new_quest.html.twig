@@ -1,25 +1,22 @@
-<div class="container-fluid mt-5" style="background: white; padding: 30px; border: 1px solid lightgray; border-top: 3px solid gray; border-top-left-radius: 5px; border-top-right-radius: 5px;">
-
-    <h1 class="mb-5">Add new Quest</h1>
-
+<div class="container">
     <form action="{{ path('add_quest') }}" method="POST">
-        <label for="inputContent">Content:</label>
-        <input
-        class="form-control" id="inputContent" name="Content" required type="text">
-
-        {# <div class="row">Content:<input type="textarea"  required></div>#}
-        <div class="mt-4">
-            <label for="inputContent">Date:</label><input class="form-control" max="2019-12-31" min="2019-07-16" name="EndDate" required type="date"></div>
-        <div class="row">
-            <select name="Status" required style="display:none;">
-                <option value="0">0%</option>
-                <option value="20">20%</option>
-                <option value="40">40%</option>
-                <option value="60">60%</option>
-                <option value="80">80%</option>
-                <option value="100">100%</option>
+        <div class="row">Content:<input type="textarea" name="Content" value="{{ quest.Content }}" required></div>
+        <div class="row">Date:<input type="date" min="{{ minDate }}" max="{{ maxDate }}" name="EndDate" required></div>
+        <div class="row"><select name="Status" required>
+                <option value=0 {% if quest.Status == 0 %}selected{% endif %}>0%</option>
+                <option value=20 {% if quest.Status == 20 %}selected{% endif %}>20%</option>
+                <option value=40 {% if quest.Status == 40 %}selected{% endif %}>40%</option>
+                <option value=60 {% if quest.Status == 60 %}selected{% endif %}>60%</option>
+                <option value=80 {% if quest.Status == 80 %}selected{% endif %}>80%</option>
+                <option value=100 {% if quest.Status == 100 %}selected{% endif %}>100%</option>
             </select>
         </div>
-        <div><input class="btn btn-dark mt-4" type="submit" value="Submit"></div>
+        <div class="row"><select name="user" required>
+                {% for user in users %}
+                    <option value="{{ user.id }}">{{ user.login }}</option>
+                {% endfor %}
+            </select>
+        </div>
+        <div class="row"><input type="submit" value="Submit"></div>
     </form>
 </div>

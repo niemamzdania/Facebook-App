@@ -22,19 +22,17 @@ class QuestsRepository extends ServiceEntityRepository
     // /**
     //  * @return Quests[] Returns an array of Quests objects
     //  */
-    /*
-    public function findByExampleField($value)
+
+    public function findByUserId($user_id)
     {
         return $this->createQueryBuilder('q')
-            ->andWhere('q.exampleField = :val')
-            ->setParameter('val', $value)
-            ->orderBy('q.id', 'ASC')
-            ->setMaxResults(10)
+            ->andWhere('q.user = :val')
+            ->setParameter('val', $user_id)
+            ->orderBy('q.endDate', 'ASC')
             ->getQuery()
             ->getResult()
         ;
     }
-    */
 
     public function findQuestById($id): ?Quests
     {

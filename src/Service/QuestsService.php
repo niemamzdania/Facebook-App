@@ -19,14 +19,21 @@ class QuestsService
         $entityManager->flush();
     }
 
-    public function saveEditedQuest($entityManager, $quest, $data)
+    public function saveEditedQuest($entityManager, $quest, $user, $request)
     {
-        $date = new \DateTime($data['EndDate']);
-
         $quest->setAddDate(new \DateTime());
-        $quest->setEndDate($date);
-        $quest->setContent($data['Content']);
-        $quest->setStatus($data['Status']);
+        $quest->setStatus($request->request->get('Status'));
+        dd($user->se);
+
+        if($user->getRoles() == ["ROLE_ADMIN"])
+        {
+            dd('asdasd');
+            $dateInString = $request->request->get('EndDate');
+            $date = new \DateTime($dateInString);
+
+            $quest->setEndDate($date);
+            $quest->setContent($request->request->get('Content'));
+        }
 
         $entityManager->flush();
     }

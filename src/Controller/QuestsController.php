@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\Entity\Quests;
+use App\Entity\Users;
 
 use App\Service\QuestsService;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
@@ -14,12 +15,41 @@ use Symfony\Component\Routing\Annotation\Route;
 class QuestsController extends AbstractController
 {
     /**
+     * @Route("/quests/{id}", name="show_quests")
+     * @IsGranted("IS_AUTHENTICATED_FULLY")
+     */
+    public function show_quests($id)
+    {
+        if ($id != $this->getUser()->getId())
+            return new Response('Forbidden access');
+
+        $quests = $this->getDoctrine()->getRepository(Quests::class)->findByUserId($id);
+
+        dd($quests);
+
+        return $this->render('quests/show_quests.html.twig', ['quests' => $quests]);
+    }
+
+    /**
      * @Route("/quest/new", name="new_quest")
      * @IsGranted("ROLE_ADMIN")
      */
     public function show_form_quest()
     {
-        return $this->render('quests/new_quest.html.twig');
+        $quest = new Quests();
+
+        $date = new \DateTime();
+        $dateInString = $date->format('Y-m-d');
+
+        $futureDate = date('Y-m-d', strtotime('+1 year'));
+        $futureDate = date('Y-m-d', strtotime('+1 year', strtotime($dateInString)));
+
+        $users = $this->getDoctrine()->getRepository(Users::class)->findAllUsers();
+
+        if ($users)
+            return $this->render('quests/new_quest.html.twig', ['users' => $users, 'quest' => $quest, 'minDate' => $dateInString, 'maxDate' => $futureDate]);
+
+        return new Response('No employees to add them the task');
     }
 
     /**
@@ -30,7 +60,11 @@ class QuestsController extends AbstractController
     {
         $quest = new Quests();
 
-        $quest->setUser($this->getUser());
+        $userId = $request->request->get('user');
+
+        $user = $this->getDoctrine()->getRepository(Users::class)->findUserById($userId);
+
+        $quest->setUser($user);
 
         $entityManager = $this->getDoctrine()->getManager();
 
@@ -45,26 +79,43 @@ class QuestsController extends AbstractController
      */
     public function edit_quest(Request $request, Quests $quest)
     {
-        if ($this->getUser() != $quest->getUser()) {
+        if ($this->getUser() != $quest->getUser() &&
+            !$this->isGranted("ROLE_ADMIN")) {
             return new Response('Forbidden access');
         }
 
-        return $this->render('quests/edit_quest.html.twig', ['quest' => $quest]);
+        $date = new \DateTime();
+        $dateInString = $date->format('Y-m-d');
+
+        $futureDate = date('Y-m-d', strtotime('+1 year'));
+        $futureDate = date('Y-m-d', strtotime('+1 year', strtotime($dateInString)));
+
+        $users = $this->getDoctrine()->getRepository(Users::class)->findAllUsers();
+
+        return $this->render('quests/edit_quest.html.twig', ['users' => $users, 'quest' => $quest, 'minDate' => $dateInString, 'maxDate' => $futureDate]);
     }
 
     /**
      * @Route("/quest/save", name="save_quest")
      * @IsGranted("IS_AUTHENTICATED_FULLY")
      */
-    public function save_post(QuestsService $questsService)
+    public function save_post(QuestsService $questsService, Request $request)
     {
-        $quest = $this->getDoctrine()->getRepository(Quests::class)->findQuestById($_POST['id']);
+        $quest = $this->getDoctrine()->getRepository(Quests::class)->findQuestById($request->request->get('id'));
 
-        $quest->setUser($this->getUser());
+        if($this->isGranted("ROLE_ADMIN")) {
+            $userId = $request->request->get('user');
+            $user = $this->getDoctrine()->getRepository(Users::class)->findUserById($userId);
+        }
+        elseif ($this->isGranted("ROLE_USER")){
+            $user = $this->getUser();
+        }
+
+        $quest->setUser($user);
 
         $entityManager = $this->getDoctrine()->getmanager();
 
-        $questsService->saveEditedQuest($entityManager, $quest, $_POST);
+        $questsService->saveEditedQuest($entityManager, $quest, $user, $request);
 
         return $this->redirectToRoute('main_page');
     }

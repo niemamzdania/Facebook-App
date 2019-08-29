@@ -1,16 +1,27 @@
-{% extends 'base.html.twig' %}
-
-{% block title %}Register{% endblock %}
-
-{% block body %}
-    <h1>Register</h1>
-
-    <div class="container">
-        {{ form_start(registrationForm) }}
-        {{ form_row(registrationForm.login) }}
-        {{ form_row(registrationForm.email) }}
-        {{ form_row(registrationForm.plainPassword) }}
-        <button class="btn">Register</button>
+{% extends 'mainpage/main.html.twig' %}
+{% block content %}
+    <style>
+        .container-fluid {
+            background: white;
+            padding: 30px;
+            border: 1px solid lightgray;
+            border-top: 3px solid gray;
+            border-top-left-radius: 5px;
+            border-top-right-radius: 5px;
+        }
+    </style>
+    <div class="container-fluid mt-5">
+        <h1>Create new user</h1>
+        {{ form_start(registrationForm, {'start_attr': {'class': 'mt-3'}}) }}
+        {{ form_row(registrationForm.login, {'row_attr': {'class': 'mt-2'}}) }}
+        {{ form_row(registrationForm.email, {'row_attr': {'class': 'mt-2'}}) }}
+        <div class="mt-2">{{ form_row(registrationForm.plainPassword) }}</div>
+        <div class="mt-2 mb-2" style="font-weight: bold;">Role:</div>
+        <select class="browser-default custom-select" name="roles" required>
+            <option value="ROLE_ADMIN" selected>Admin</option>
+            <option value="ROLE_USER">User</option>
+        </select>
+        <button class="btn btn-dark mt-3">Register</button>
         {{ form_end(registrationForm) }}
     </div>
 {% endblock %}
