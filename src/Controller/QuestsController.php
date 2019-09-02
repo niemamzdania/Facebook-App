@@ -99,23 +99,19 @@ class QuestsController extends AbstractController
      * @Route("/quest/save", name="save_quest")
      * @IsGranted("IS_AUTHENTICATED_FULLY")
      */
-    public function save_post(QuestsService $questsService, Request $request)
+    public function save_quest(QuestsService $questsService, Request $request)
     {
         $quest = $this->getDoctrine()->getRepository(Quests::class)->findQuestById($request->request->get('id'));
 
         if($this->isGranted("ROLE_ADMIN")) {
             $userId = $request->request->get('user');
             $user = $this->getDoctrine()->getRepository(Users::class)->findUserById($userId);
+            $quest->setUser($user);
         }
-        elseif ($this->isGranted("ROLE_USER")){
-            $user = $this->getUser();
-        }
-
-        $quest->setUser($user);
 
         $entityManager = $this->getDoctrine()->getmanager();
 
-        $questsService->saveEditedQuest($entityManager, $quest, $user, $request);
+        $questsService->saveEditedQuest($entityManager, $quest, $request);
 
         return $this->redirectToRoute('main_page');
     }

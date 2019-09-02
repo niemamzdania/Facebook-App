@@ -2,17 +2,10 @@
 {% block content %}
     <form class="form form_new_quest mt-3" action="{{ path('add_quest') }}" method="POST">
         <h1 class="mb-3">Create new quest</h1>
-        <div class="row">Content:<input class="form-control" type="textarea" name="Content" value="{{ quest.Content }}" required></div>
-        <div class="row mb-3">Date:<input class="form-control" type="date" min="{{ minDate }}" max="{{ maxDate }}" name="EndDate" required></div>
-        <div class="row mb-3">Progress:<select class="form-control" name="Status" required>
-                <option value=0 {% if quest.Status == 0 %}selected{% endif %}>0%</option>
-                <option value=20 {% if quest.Status == 20 %}selected{% endif %}>20%</option>
-                <option value=40 {% if quest.Status == 40 %}selected{% endif %}>40%</option>
-                <option value=60 {% if quest.Status == 60 %}selected{% endif %}>60%</option>
-                <option value=80 {% if quest.Status == 80 %}selected{% endif %}>80%</option>
-                <option value=100 {% if quest.Status == 100 %}selected{% endif %}>100%</option>
-            </select>
-        </div>
+        <div class="row">Content:<input class="form-control" type="textarea" name="Content" value="{{ quest.Content }}"
+                                        required></div>
+        <div class="row mb-3">Date:<input class="form-control" type="date" min="{{ minDate }}" max="{{ maxDate }}"
+                                          name="EndDate" required></div>
         <div class="row">Select user:<select class="form-control" name="user" required>
                 {% for user in users %}
                     <option value="{{ user.id }}">{{ user.login }}</option>

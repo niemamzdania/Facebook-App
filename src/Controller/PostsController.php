@@ -79,7 +79,7 @@ class PostsController extends AbstractController
         $fb->setDefaultAccessToken($foreverPageAccessToken);
         $fb->sendRequest('POST', "$pageId/feed", [
             'message' => $message,
-            //'url' => $photoPath,
+            'photo' => 'https://images.pexels.com/photos/1040626/pexels-photo-1040626.jpeg',
         ]);
         //http://127.0.0.1:8000/uploads/photos/2019-08/9f83dd59bd856af25ecd7425a0e52c47.png
         //var_dump($fb->sendRequest('GET', '/debug_token', ['input_token' => $foreverPageAccessToken])->getDecodedBody());
