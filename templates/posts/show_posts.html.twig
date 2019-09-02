@@ -1,45 +1,5 @@
 {% extends 'mainpage/main.html.twig' %}
 {% block content %}
-    <style>
-        tr th:first-child {
-            text-align: left;
-        }
-        tr td:first-child {
-            text-align: left;
-        }
-        .delete_post {
-            color: red;
-            transition: all 0.5s;
-        }
-        .delete_post:hover {
-            color: white;
-        }
-        .send_post {
-            color: blue;
-            transition: all 0.5s;
-        }
-        .delete_post:send {
-            color: white;
-        }
-        .loader {
-            border: 16px solid #f3f3f3;
-            border-radius: 50%;
-            border-top: 16px solid #3498db;
-            width: 120px;
-            height: 120px;
-            -webkit-animation: spin 2s linear infinite; /* Safari */
-            animation: spin 2s linear infinite;
-        }
-
-      @keyframes spin {
-            0% {
-                transform: rotate(0deg);
-            }
-            100% {
-                transform: rotate(360deg);
-            }
-        }
-    </style>
     <div class="table">
         <table class="table table-striped">
             <thead>
@@ -124,7 +84,7 @@
     <div class="row d-flex justify-content-center w-100 paginator">
         {{ knp_pagination_render(posts) }}
     </div>
-    <div style="position: fixed;" class="loader"></div>
+   <div class="loader"></div>
     <script>
         let number;
 
@@ -135,17 +95,24 @@
         document.querySelector(".delete").onclick = function () {
             delete_trigger()
         };
+        
 
         function delete_trigger() {
             window.location.href = '/post/delete/'.concat(number);
         }
 
         document.querySelector(".send").onclick = function () {
-            send_trigger()
+            loader()
         };
+
+        function loader() {
+            document.querySelector(".loader").classList.toggle("loader_show");
+            send_trigger();
+        }
 
         function send_trigger() {
             window.location.href = '/post/send/'.concat(number);
         }
+
     </script>
 {% endblock %}

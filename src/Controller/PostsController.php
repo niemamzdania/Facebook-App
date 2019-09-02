@@ -36,18 +36,21 @@ class PostsController extends AbstractController
         $message = $post->getContent();
         $photo = $this->getDoctrine()->getRepository(Photos::Class)->findPhotoByPostId($post->getId()); 
         
-        $directory = $this->getParameter('upload_directory');
-        $date = $post->getDate();
-        $dateInString = $date->format('Y-m');
-        $directory = $directory . '/' . $dateInString;
-        
-        $finder = new Finder();
-        $finder->files()->in($directory)->name($photo->getName());
+        if($photo!=NULL)
+            {
+                $directory = $this->getParameter('upload_directory');
+                $date = $post->getDate();
+                $dateInString = $date->format('Y-m');
+                $directory = $directory . '/' . $dateInString;
+                
+                $finder = new Finder();
+                $finder->files()->in($directory)->name($photo->getName());
 
-        foreach ($finder as $currentPhoto) {
-            //dd($currentPhoto);
-            $photoPath = $currentPhoto->getPathName();
-            //dd($photoPath);
+                foreach ($finder as $currentPhoto) {
+                    //dd($currentPhoto);
+                    $photoPath = $currentPhoto->getPathName();
+                    //dd($photoPath);
+            }
         }
 
         $fb = new Facebook([
@@ -76,11 +79,11 @@ class PostsController extends AbstractController
         $fb->setDefaultAccessToken($foreverPageAccessToken);
         $fb->sendRequest('POST', "$pageId/feed", [
             'message' => $message,
-            'url' => $photoPath,
+            //'url' => $photoPath,
         ]);
         //http://127.0.0.1:8000/uploads/photos/2019-08/9f83dd59bd856af25ecd7425a0e52c47.png
         //var_dump($fb->sendRequest('GET', '/debug_token', ['input_token' => $foreverPageAccessToken])->getDecodedBody());
-
+        
         return $this->redirectToRoute('show_posts');
     }
 

@@ -10,7 +10,7 @@ class MainController extends AbstractController
 {
     /**
      * @Route("/", name="main_page")
-     * @IsGranted("IS_AUTHENTICATED_ANONYMOUSLY")
+     * @IsGranted("IS_AUTHENTICATED_FULLY")
      */
     public function mainpage()
     {
