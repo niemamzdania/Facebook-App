@@ -3,23 +3,7 @@
   <component name="ChangeListManager">
     <list default="true" id="9679a1ab-2270-47ff-adb7-a743d0f823b2" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/public/uploads/photos/2019-08/0e3fcd801b51e4c1a216be1bdf054db7.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/public/uploads/photos/2019-08/1454e945d13b9f70aa8e3a2f7ed5a099.jpeg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/public/uploads/photos/2019-08/4bba6ef5f56154e5b7ec7a9a2d3f4651.jpeg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/public/uploads/photos/2019-08/6d1e039a4088708553cb1e1c67671eb0.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/public/uploads/photos/2019-08/9aba17db0fe12b8e82b0a2220dcbb339.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/public/uploads/photos/2019-08/a875d691ea133bf6f7b0e229341dd1b5.jpeg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/public/uploads/photos/2019-08/b6e92ebd3bc83e7d12162904a1d66015.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/public/uploads/photos/2019-09/ac24f18b3fc3ff90c9c0b498cb50b7a2.jpeg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/public/uploads/photos/2019-09/bc7bf93a1b77561e81500fb8c5fcc9b4.jpeg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/public/uploads/photos/2019-09/c3e5c0d6958a9ad2e38883b017f864a7.jpeg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/public/uploads/photos/2019-09/cd0c9f8d4b2dee895985d1f05ba5a025.jpeg" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/src/Controller/PostsController.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Controller/PostsController.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Controller/QuestsController.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Controller/QuestsController.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Service/QuestsService.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Service/QuestsService.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/templates/mainpage/sidebar.html.twig" beforeDir="false" afterPath="$PROJECT_DIR$/templates/mainpage/sidebar.html.twig" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/templates/quests/edit_quest.html.twig" beforeDir="false" afterPath="$PROJECT_DIR$/templates/quests/edit_quest.html.twig" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/templates/quests/new_quest.html.twig" beforeDir="false" afterPath="$PROJECT_DIR$/templates/quests/new_quest.html.twig" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -224,7 +208,7 @@
       <workItem from="1566899805909" duration="14620000" />
       <workItem from="1566973989590" duration="888000" />
       <workItem from="1567096763191" duration="281000" />
-      <workItem from="1567410489129" duration="5267000" />
+      <workItem from="1567410489129" duration="12083000" />
     </task>
     <servers />
   </component>
