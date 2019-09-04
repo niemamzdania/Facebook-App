@@ -108,4 +108,28 @@ class UsersController extends AbstractController
             'accessTokenForm' => $accessTokenForm->createView()
         ]);
     }
+    /** 
+    * @Route("/reset/password", name="reset_password")
+    */
+   public function reset_password(\Swift_Mailer $mailer)
+   {
+    $name = "name";
+    
+    $message = (new \Swift_Message('Hello Email'))
+    ->setFrom('send@example.com')
+    ->setTo('milewskimateusz28@gmail.com')
+    ->setBody(
+        $this->renderView(
+            'send.html.twig',
+            ['name' => $name]
+        ),
+        'text/html'
+    )
+
+;
+
+$mailer->send($message);
+return new response("ok");
+   }
+
 }
