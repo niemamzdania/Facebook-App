@@ -1,0 +1,16 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Reset your password
+{% endblock %}
+
+{% block body %}
+    <div class="container">
+        {% if message is defined %}
+            {{ message }}
+        {% endif %}
+        <form action="{{ path('reset') }}" method="POST">
+            <div class="row">Your email:<input type="email" name="Email"></div>
+            <div class="row"><input type="submit" value="Submit"></div>
+        </form>
+    </div>
+{% endblock %}
