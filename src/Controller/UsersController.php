@@ -130,7 +130,7 @@ class UsersController extends AbstractController
 
                 $message = (new \Swift_Message('Hello Email'))
                     ->setFrom('apkafacebook20@gmail.com')
-                    ->setTo('przemek.kaktus@gmail.com')
+                    ->setTo($recipient)
                     ->setBody(
                         "Your new password is: $password. You can login now with the new credentials.",
                         'text/html'
