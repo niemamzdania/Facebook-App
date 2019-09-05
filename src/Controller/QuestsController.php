@@ -11,6 +11,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Knp\Component\Pager\PaginatorInterface;
 
 class QuestsController extends AbstractController
 {
@@ -18,16 +19,18 @@ class QuestsController extends AbstractController
      * @Route("/quests/{id}", name="show_quests")
      * @IsGranted("IS_AUTHENTICATED_FULLY")
      */
-    public function show_quests($id)
+    public function show_quests($id,  PaginatorInterface $paginator, Request $request)
     {
         if ($id != $this->getUser()->getId())
             return new Response('Forbidden access');
 
         $quests = $this->getDoctrine()->getRepository(Quests::class)->findByUserId($id);
 
-        dd($quests);
-
-        return $this->render('quests/show_quests.html.twig', ['quests' => $quests]);
+        return $this->render('quests/show_quests.html.twig', ['quests' => $paginator->paginate(
+            $quests,
+            $request->query->getInt('page', 1),
+            8
+        )]);
     }
 
     /**
@@ -70,7 +73,7 @@ class QuestsController extends AbstractController
 
         $questsService->saveNewQuest($entityManager, $quest, $request);
 
-        return $this->redirectToRoute('show_posts');
+        return $this->redirectToRoute('show_quests',['id'=>$this->getUser()->getId()]);
     }
 
     /**

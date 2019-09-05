@@ -3,28 +3,100 @@
     <h1 style="margin: 25px;">Users list</h1>
     <table class="table table-striped">
         <thead>
-        <tr>
-            <th scope="col">id</th>
-            <th scope="col">login</th>
-            <th scope="col">e-mail</th>
-            <th scope="col">Role</th>
-            <th scope="col">Delete</th>
-        </tr>
+            <tr>
+                <th scope="col">id</th>
+                <th scope="col">login</th>
+                <th scope="col">e-mail</th>
+                <th scope="col">Role</th>
+                <th scope="col">Change email</th>
+                <th scope="col">Change Role</th>
+                <th scope="col">Delete</th>
+            </tr>
         </thead>
         <tbody>
-        {% for user in users %}
-            <tr>
-                <th>{{ user.id }}</th>
-                <td>{{ user.login }}</td>
-                <td>{{ user.email }}</td>
-                {% if user.roles[0] == "ROLE_ADMIN" %}
-                    <td>Admin</td>
-                {% elseif user.roles[0] == "ROLE_USER" %}
-                    <td>User</td>
-                {% endif %}
-                <td><a class="btn btn-danger" href="{{ path('delete_user', {id: user.id}) }}">Delete</a></td>
-            </tr>
-        {% endfor %}
+            {% for user in users %}
+                <tr>
+                    <th>{{ user.id }}</th>
+                    <td>{{ user.login }}</td>
+                    <td>{{ user.email }}</td>
+                    {% if user.roles[0] == "ROLE_ADMIN" %}
+                        <td>Admin</td>
+                    {% elseif user.roles[0] == "ROLE_USER" %}
+                        <td>User</td>
+                    {% endif %}
+                    <td>
+                        <a class="btn btn-warning" data-target="#exampleModalCenterChangeEmail" data-toggle="modal">Change email</a>
+                    </td>
+                    <td>
+                        <a class="btn btn-warning"  data-target="#exampleModalCenterChangeRole" data-toggle="modal">Change role</a>
+                    </td>
+                    <td>
+                        <a onclick="get_number(this.id)" class="btn btn-danger" id="{{user.id}}" data-target="#exampleModalCenterDelete" data-toggle="modal">Delete</a>
+                    </td>
+                </tr>
+            {% endfor %}
         </tbody>
     </table>
+    <!--Delete modal-->
+    <div aria-hidden="true" aria-labelledby="exampleModalCenterTitle" class="modal fade" id="exampleModalCenterDelete" role="dialog" tabindex="-1">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-body text-center">
+                    <h1>
+                        <i class="far fa-question-circle mt-2"></i>
+                    </h1>
+                    <h2 class="mt-4 mb-3">
+                        <bold>Are you sure?</bold>
+                    </h2>
+                    <h5>Do you want to delete post?</h5>
+                    <a class="action" id="/post/delete/">
+                        <button class="delete_user btn-lg btn-outline-danger mt-5 mr-2">Delete</button>
+                    </a>
+                    <button class="btn-lg btn-outline-secondary mt-5 ml-2" data-dismiss="modal" type="button">Cancel</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!--Delete modal-->
+    <!--Email modal-->
+     <div aria-hidden="true" aria-labelledby="exampleModalCenterTitle" class="modal fade" id="exampleModalCenterChangeEmail" role="dialog" tabindex="-1">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-body text-center">
+                    Email
+                    <button class="btn-lg btn-outline-secondary mt-5 ml-2" data-dismiss="modal" type="button">Cancel</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!--Email modal-->
+     <!--Role modal-->
+     <div aria-hidden="true" aria-labelledby="exampleModalCenterTitle" class="modal fade" id="exampleModalCenterChangeRole" role="dialog" tabindex="-1">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-body text-center">
+                    Role
+                    <button class="btn-lg btn-outline-secondary mt-5 ml-2" data-dismiss="modal" type="button">Cancel</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Role modal-->
+    <script>
+        let number;
+
+        function get_number(clicked_id) {
+            number = clicked_id;
+        }
+
+        document.querySelector(".delete_user").onclick = function () {
+            delete_trigger()
+        };
+
+
+        function delete_trigger() {
+            window.location.href = '/user/delete/'.concat(number);
+        }
+    </script>
+
 {% endblock %}

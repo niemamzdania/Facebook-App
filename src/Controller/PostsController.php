@@ -8,8 +8,6 @@ use App\Form\PostFormType;
 use App\Service\PostsService;
 
 use Facebook\Facebook;
-use Facebook\FacebookApp;
-use Facebook\FacebookRequest;
 use Facebook\FileUpload\FacebookFile;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -26,7 +24,7 @@ class PostsController extends AbstractController
     /**
      * @Route("/post/send/{id}", name="send_post")
      */
-    public function send_post(PaginatorInterface $paginator, $id)
+    public function send_post($id)
     {
         $user = $this->getUser();
 
@@ -49,9 +47,7 @@ class PostsController extends AbstractController
             $finder->files()->in($directory)->name($photo->getName());
 
             foreach ($finder as $currentPhoto) {
-                //dd($currentPhoto);
                 $photoPath = $currentPhoto->getPathName();
-                //dd($photoPath);
             }
         }
 
@@ -225,7 +221,7 @@ class PostsController extends AbstractController
         return $this->render('posts/show_posts.html.twig', ['posts' => $paginator->paginate(
             $posts,
             $request->query->getInt('page', 1),
-            12
+            8
         )]);
     }
 

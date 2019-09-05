@@ -1,0 +1,32 @@
+{% extends 'mainpage/main.html.twig' %}
+{% block content %}
+    <h1 style="margin:25px;">Show quests</h1>
+    <table class="table table-light">
+        <thead>
+            <tr style="text-align:center">               
+                <th scope="col">Deadline</th>
+                <th scope="col">Progress</th>
+                <th scope="col">Show</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for quests in quests %}
+                <tr style="text-align:center">
+                    <td>{{quests.endDate|date("m/d/Y") }}</td>
+                    <td>
+                        <div class="progress mt-2">
+                            <div class="progress-bar bg-success" role="progressbar" style="width: {{ quests.status }}%;" aria-valuenow="20" aria-valuemin="0" aria-valuemax="100">{{ quests.status }}%</div>
+                        </div>
+                    </td>
+                    <td>
+                        <button class="btn btn-warning">Show</button>
+                    </td> 
+                </tr>
+            </tbody>
+        {% endfor %}
+    </table>
+    <div class="row d-flex justify-content-center w-100 paginator mt-3">
+        {{ knp_pagination_render(quests) }}
+    </div>
+
+{% endblock %}

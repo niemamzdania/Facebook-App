@@ -23,7 +23,12 @@
     <!-- Content -->
     <div class="content-wrapper">
         <div class="content">
-            {% block content %}{% endblock %}
+            {% block content %}
+            <h1>Hi, {{app.user.login}}!</h1>
+            
+            
+            
+            {% endblock %}
         </div>
     </div>
     <!-- Content -->

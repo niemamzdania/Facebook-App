@@ -1,5 +1,6 @@
 {% extends 'mainpage/main.html.twig' %}
 {% block content %}
+    <h1 style="margin:25px;">Show posts</h1>
     <div class="table">
         <table class="table table-striped">
             <thead>
@@ -84,7 +85,7 @@
     <div class="row d-flex justify-content-center w-100 paginator">
         {{ knp_pagination_render(posts) }}
     </div>
-   <div class="loader"></div>
+    <div class="loader"></div>
     <script>
         let number;
 
@@ -95,7 +96,7 @@
         document.querySelector(".delete").onclick = function () {
             delete_trigger()
         };
-        
+
 
         function delete_trigger() {
             window.location.href = '/post/delete/'.concat(number);
@@ -113,6 +114,5 @@
         function send_trigger() {
             window.location.href = '/post/send/'.concat(number);
         }
-
     </script>
 {% endblock %}
