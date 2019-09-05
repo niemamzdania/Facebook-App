@@ -1,65 +1,140 @@
 <!DOCTYPE html>
 <html>
-<head>
-    <meta charset="UTF-8">
-    <title>
-        {% block title %}Welcome!
-        {% endblock %}
-    </title>
-    <!-- Assets -->
-    {% include 'mainpage/assets.html.twig' %}
-    <!-- Assets -->
-</head>
-{% block body %}
-<body class="hold-transition sidebar-mini">
-<div
-        class="wrapper" style="z-index: 5; position:relative;">
-    <!-- Navbar -->
-    {% include 'mainpage/navbar.html.twig' %}
-    <!-- /.navbar -->
-    <!-- Sidebar -->
-    {% include 'mainpage/sidebar.html.twig' %}
-    <!-- Sidebar -->
-    <!-- Content -->
-    <div class="content-wrapper">
-        <div class="content">
-            {% block content %}
-            <h1>Hi, {{app.user.login}}!</h1>
-            
-            
-            
+    <head>
+        <meta charset="UTF-8">
+        <title>
+            {% block title %}Welcome!
             {% endblock %}
-        </div>
-    </div>
-    <!-- Content -->
-    <!-- Footer -->
-    {% include 'mainpage/footer.html.twig' %}
-    <!-- Footer -->
-</div>
-{% endblock %}
-{% block javascripts %}
-    <script crossorigin="anonymous" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
-            src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
-    <script crossorigin="anonymous" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49"
-            src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js"></script>
-    <script crossorigin="anonymous" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy"
-            src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js"></script>
-    <script src="{{ asset('css/dist/js/adminlte.min.js') }}"></script>
-    <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+        </title>
+        <!-- Assets -->
+        {% include 'mainpage/assets.html.twig' %}
+        <!-- Assets -->
+    </head>
+    {% block body %}
+        <body class="hold-transition sidebar-mini">
+            <div
+                class="wrapper" style="z-index: 5; position:relative;">
+                <!-- Navbar -->
+                {% include 'mainpage/navbar.html.twig' %}
+                <!-- /.navbar -->
+                <!-- Sidebar -->
+                {% include 'mainpage/sidebar.html.twig' %}
+                <!-- Sidebar -->
+                <!-- Content -->
+                    <div class="content-wrapper"> <div class="content">
+                        {% block content %}
+                            <style>
 
-    <script>
-        $(".button").click(function () {
-            let url = $(this).attr('id');
+                                .content-wrapper {
+                                    background-image: url('{{asset('images/9VhZtYR.jpg')}}');
+                                    background-size: cover;
+                                    
+                                    color: white;
+                                    text-align: center;
 
-            $.ajax({
-                url: url,
-                success: function (result) {
-                    $(".content").html(result);
-                }
-            });
-        });
-    </script>
+                                }
+                                .hello {
+                                    margin-top: 15%;
+                                    font-weight: 400;
+                                }
+                            </style>
+                            <body onload="startTime()">
+                                <div class="hello">
+                                   
+                                    <div id="clockdate">
+                                        <div style="font-size:25px;" class="clockdate-wrapper">
+                                            <div style="font-size: 90px;" id="clock"></div>
+                                            <div style="font-size: 50px;" id="date"></div>
+                                        </div>
+                                    </div>
+                                     <h5 style="font-size:30px;">Hello, {{app.user.login}}</h5>
+                                </div>
+                            </body>
+                            <script>
+                                function startTime() {
+                                    var today = new Date();
+                                    var hr = today.getHours();
+                                    var min = today.getMinutes();
+                                    var sec = today.getSeconds();
+                                    ap = (hr < 12) ? "<span>AM</span>" : "<span>PM</span>";
+                                    hr = (hr == 0) ? 12 : hr;
+                                    hr = (hr > 12) ? hr - 12 : hr;
+                                    // Add a zero in front of numbers<10
+                                    hr = checkTime(hr);
+                                    min = checkTime(min);
+                                    sec = checkTime(sec);
+                                    document.getElementById("clock").innerHTML = hr + ":" + min /*+ ":" + sec + " " + ap*/;
 
-{% endblock %}
-</body>
+                                    var months = [
+                                        'January',
+                                        'February',
+                                        'March',
+                                        'April',
+                                        'May',
+                                        'June',
+                                        'July',
+                                        'August',
+                                        'September',
+                                        'October',
+                                        'November',
+                                        'December'
+                                    ];
+                                    var days = [
+                                        'Sun',
+                                        'Mon',
+                                        'Tue',
+                                        'Wed',
+                                        'Thu',
+                                        'Fri',
+                                        'Sat'
+                                    ];
+                                    var curWeekDay = days[today.getDay()];
+                                    var curDay = today.getDate();
+                                    var curMonth = months[today.getMonth()];
+                                    var curYear = today.getFullYear();
+                                    var date = curWeekDay + ", " + curDay + " " + curMonth + " " + curYear;
+                                    document.getElementById("date").innerHTML = date;
+
+                                    var time = setTimeout(function () {
+                                        startTime()
+                                    }, 500);
+                                }
+                                function checkTime(i) {
+                                    if (i < 10) {
+                                        i = "0" + i;
+                                    }
+                                    return i;
+                                }
+                            </script>
+                        {% endblock %}
+                    </div>
+                </div>
+                <!-- Content -->
+                <!-- Footer -->
+                {% include 'mainpage/footer.html.twig' %}
+                <!-- Footer -->
+            </div>
+        {% endblock %}
+        {% block javascripts %}
+            <script crossorigin="anonymous" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
+            <script crossorigin="anonymous" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js"></script>
+            <script crossorigin="anonymous" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy" src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js"></script>
+            <script src="{{ asset('css/dist/js/adminlte.min.js') }}"></script>
+            <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+
+            <script>
+                $(".button").click(function () {
+                    let url = $(this).attr('id');
+
+                    $.ajax({
+                        url: url,
+                        success: function (result) {
+                            $(".content").html(result);
+                        }
+                    });
+                });
+            </script>
+
+        {% endblock %}
+    </body>
 </html>
