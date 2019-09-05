@@ -3,7 +3,7 @@
     <form class="form form_new_quest mt-3" action="{{ path('add_quest') }}" method="POST">
         <h1 class="mb-3">Create new quest</h1>
         <div class="row">Content:<input class="form-control" type="textarea" name="Content" value="{{ quest.Content }}"
-                                        required></div>
+                                        maxlength="200" required></div>
         <div class="row mb-3">Date:<input class="form-control" type="date" min="{{ minDate }}" max="{{ maxDate }}"
                                           name="EndDate" required></div>
         <div class="row">Select user:<select class="form-control" name="user" required>
