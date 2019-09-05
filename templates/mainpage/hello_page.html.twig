@@ -1,0 +1,96 @@
+<style>
+    .fa-bars{
+      display: none;
+    }
+    .close{
+        pointer-events: none;
+        cursor: default;
+    }
+    .content-wrapper {
+        background-image: url('{{asset('images/9VhZtYR.jpg')}}');
+        background-size: cover;
+
+        color: white;
+        text-align: center;
+
+    }
+    .hello {
+        margin-top: 15%;
+        font-weight: 400;
+    }
+</style>
+<body onload="startTime()">
+    <div class="hello">
+
+        <div id="clockdate">
+            <div style="font-size:25px;" class="clockdate-wrapper">
+                <div style="font-size: 90px;" id="clock"></div>
+                <div style="font-size: 50px;" id="date"></div>
+            </div>
+        </div>
+        <h5 style="font-size:30px;">Hello,
+            {{app.user.login}}</h5>
+    </div>
+</body>
+<script>
+    function change_class() {
+        //document.body.classList.remove('sidebar-');
+        //document.body.classList.remove('sidebar-open');
+        document.body.classList.add('sidebar-collapse');
+    }
+    function startTime() {
+        change_class();
+        var today = new Date();
+        var hr = today.getHours();
+        var min = today.getMinutes();
+        var sec = today.getSeconds();
+        ap = (hr < 12) ? "<span>AM</span>" : "<span>PM</span>";
+        hr = (hr == 0) ? 12 : hr;
+        hr = (hr > 12) ? hr - 12 : hr;
+        // Add a zero in front of numbers<10
+        hr = checkTime(hr);
+        min = checkTime(min);
+        sec = checkTime(sec);
+        document.getElementById("clock").innerHTML = hr + ":" + min /*+ ":" + sec + " " + ap*/;
+
+        var months = [
+            'January',
+            'February',
+            'March',
+            'April',
+            'May',
+            'June',
+            'July',
+            'August',
+            'September',
+            'October',
+            'November',
+            'December'
+        ];
+        var days = [
+            'Sun',
+            'Mon',
+            'Tue',
+            'Wed',
+            'Thu',
+            'Fri',
+            'Sat'
+        ];
+        var curWeekDay = days[today.getDay()];
+        var curDay = today.getDate();
+        var curMonth = months[today.getMonth()];
+        var curYear = today.getFullYear();
+        var date = curWeekDay + ", " + curDay + " " + curMonth + " " + curYear;
+        document.getElementById("date").innerHTML = date;
+
+        var time = setTimeout(function () {
+            startTime()
+        }, 500);
+    }
+    function checkTime(i) {
+        if (i < 10) {
+            i = "0" + i;
+        }
+        return i;
+    }
+</script>
