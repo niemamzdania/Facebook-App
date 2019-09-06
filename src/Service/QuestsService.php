@@ -29,14 +29,13 @@ class QuestsService
     public function saveEditedQuest($entityManager, $quest, $request)
     {
         $quest->setAddDate(new \DateTime());
-        $quest->setStatus($request->request->get('Status'));
-        dd($request);
+        $quest->setStatus($request->request->get('Status') + 0);
 
         $dateInString = $request->request->get('EndDate');
         $date = new \DateTime($dateInString);
         $userInInt = $request->request->get('user') + 0;
         $user = new Users();
-        $user = $this->UsersRepository->findUserById($userInInt);
+        $user = $this->UsersRepository->findUserById(1);
 
         if($request->request->get('EndDate')) {
             $quest->setContent($request->request->get('Content'));

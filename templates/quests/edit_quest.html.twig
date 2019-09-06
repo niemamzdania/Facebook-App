@@ -5,19 +5,21 @@
         <form action="{{ path('save_quest') }}" method="POST">
             <input type="hidden" name="id" value="{{ quest.Id }}">
             {% if is_granted('ROLE_ADMIN') %}
-                Content:<textarea class="form-control" type="textarea" name="Content" value="{{ quest.Content }}" required></textarea>
+                Content:<input class="form-control" type="textarea" name="Content" value="{{ quest.Content }}" required>
                 Date:<input class="form-control" type="date" min="{{ minDate }}" max="{{ maxDate }}" name="EndDate" required>
                 Select user:
-                <select class="form-control form-control-lg">
-                    {% for user in users %}
-                        <option value="{{ user.id }}" selected>{{ user.login }}</option>
-                    {% endfor %}
-                </select>
+                <div>
+                    <select class="form-control form-control-lg" name="user" required>
+                        {% for user in users %}
+                            <option value="{{ user.id }}" selected>{{ user.login }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
             {% elseif is_granted('ROLE_USER') %}
                 {{ quest.Content }}
             {% endif %}
             Status:
-            <select class="form-control form-control-lg">
+            <select class="form-control" name="Status" form-control-lg">
                 <option value="0" {% if quest.Status == 0 %} selected {% endif %}>0%</option>
                 <option value="20" {% if quest.Status == 20 %} selected {% endif %}>20%</option>
                 <option value="40" {% if quest.Status == 40 %} selected {% endif %}>40%</option>
@@ -26,8 +28,8 @@
                 <option value="100" {% if quest.Status == 100 %} selected {% endif %}>100%</option>
             </select>
             <input class="btn btn-warning mt-4 mr-2" type="submit" value="Submit">
-            <a href="/quest/{{quest.id}}"><div class="btn btn-secondary mt-4">Back</div>    
+            <a href="/show/quest/{{quest.id}}"> <div class="btn btn-secondary mt-4">Back</div>
         </form>
-         
+
     </div>
 {% endblock %}

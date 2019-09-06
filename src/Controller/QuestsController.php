@@ -16,38 +16,16 @@ use Knp\Component\Pager\PaginatorInterface;
 class QuestsController extends AbstractController
 {
     /**
-     * @Route("/quest/edit/{id}", name="edit_quest")
-     * @IsGranted("IS_AUTHENTICATED_FULLY")
-     */
-    public function edit_quest(Request $request, Quests $quest)
-    {
-        if ($this->getUser() != $quest->getUser() &&
-            !$this->isGranted("ROLE_ADMIN")) {
-            return new Response('Forbidden access');
-        }
-
-        $date = new \DateTime();
-        $dateInString = $date->format('Y-m-d');
-
-        $futureDate = date('Y-m-d', strtotime('+1 year'));
-        $futureDate = date('Y-m-d', strtotime('+1 year', strtotime($dateInString)));
-
-        $users = $this->getDoctrine()->getRepository(Users::class)->findAllUsers();
-
-        return $this->render('quests/edit_quest.html.twig', ['users' => $users, 'quest' => $quest, 'minDate' => $dateInString, 'maxDate' => $futureDate]);
-    }
-    
-    /**
-     * @Route("/quest/{id}", name="show_quest")
+     * @Route("/show/quest/{id}", name="get_quest")
      * @IsGranted("IS_AUTHENTICATED_FULLY")
      */
     public function show_quest($id)
     {   
         $quest = $this->getDoctrine()->getRepository(Quests::class)->find($id);
 
-        return $this->render('quests/show_quest.html.twig',['quest'=>$quest]);
+        return $this->render('quests/show_one_quest.html.twig',['quest'=>$quest]);
     }
-    
+
     /**
      * @Route("/quests/{id}", name="show_quests")
      * @IsGranted("IS_AUTHENTICATED_FULLY")
@@ -109,12 +87,35 @@ class QuestsController extends AbstractController
         return $this->redirectToRoute('show_quests',['id'=>$this->getUser()->getId()]);
     }
 
+     /**
+     * @Route("/quest/edit/{id}", name="edit_quest")
+     * @IsGranted("IS_AUTHENTICATED_FULLY")
+     */
+    public function edit_quest(Request $request, Quests $quest)
+    {
+        if ($this->getUser() != $quest->getUser() &&
+            !$this->isGranted("ROLE_ADMIN")) {
+            return new Response('Forbidden access');
+        }
+
+        $date = new \DateTime();
+        $dateInString = $date->format('Y-m-d');
+
+        $futureDate = date('Y-m-d', strtotime('+1 year'));
+        $futureDate = date('Y-m-d', strtotime('+1 year', strtotime($dateInString)));
+
+        $users = $this->getDoctrine()->getRepository(Users::class)->findAllUsers();
+
+        return $this->render('quests/edit_quest.html.twig', ['users' => $users, 'quest' => $quest, 'minDate' => $dateInString, 'maxDate' => $futureDate]);
+    }
+
     /**
      * @Route("/quest/save", name="save_quest")
      * @IsGranted("IS_AUTHENTICATED_FULLY")
      */
     public function save_quest(QuestsService $questsService, Request $request)
     {
+        //dd($request);
         $quest = $this->getDoctrine()->getRepository(Quests::class)->findQuestById($request->request->get('id'));
 
         if($this->isGranted("ROLE_ADMIN")) {
@@ -127,7 +128,7 @@ class QuestsController extends AbstractController
 
         $questsService->saveEditedQuest($entityManager, $quest, $request);
 
-        return $this->redirectToRoute('main_page');
+        return $this->redirectToRoute('get_quest',['id'=>$quest->getId()]);
     }
 
     /**
@@ -144,6 +145,6 @@ class QuestsController extends AbstractController
         $entityManager->remove($quest);
         $entityManager->flush();
 
-        return $this->redirectToRoute('main_page');
+        return $this->redirectToRoute('show_quests',['id'=>$this->getUser()->getId()]);
     }
 }
