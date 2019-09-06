@@ -1,11 +1,4 @@
 <style>
-    .fa-bars{
-      display: none;
-    }
-    .close{
-        pointer-events: none;
-        cursor: default;
-    }
     .content-wrapper {
         background-image: url('{{asset('images/9VhZtYR.jpg')}}');
         background-size: cover;
@@ -34,9 +27,10 @@
 </body>
 <script>
     function change_class() {
+        //document.querySelector("navbar-nav").click(); 
         //document.body.classList.remove('sidebar-');
         //document.body.classList.remove('sidebar-open');
-        document.body.classList.add('sidebar-collapse');
+        //document.body.classList.add('sidebar-collapse');
     }
     function startTime() {
         change_class();
@@ -51,7 +45,7 @@
         hr = checkTime(hr);
         min = checkTime(min);
         sec = checkTime(sec);
-        document.getElementById("clock").innerHTML = hr + ":" + min /*+ ":" + sec + " " + ap*/;
+        document.getElementById("clock").innerHTML = hr + ":" + min + ":" + sec + " " + ap;
 
         var months = [
             'January',

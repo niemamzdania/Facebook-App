@@ -3,10 +3,13 @@
     <h1 style="margin:25px;">Show quests</h1>
     <table class="table table-light">
         <thead>
-            <tr style="text-align:center">               
+            <tr style="text-align:center">
                 <th scope="col">Deadline</th>
                 <th scope="col">Progress</th>
                 <th scope="col">Show</th>
+                {% if is_granted('ROLE_ADMIN') %}
+                    <th scope="col">Delete</th>
+                {% endif %}
             </tr>
         </thead>
         <tbody>
@@ -19,8 +22,13 @@
                         </div>
                     </td>
                     <td>
-                        <button class="btn btn-warning">Show</button>
-                    </td> 
+                        <a href="/quest/{{quests.id}}"><button class="btn btn-warning">Show</button></a>
+                    </td>
+                    {% if is_granted('ROLE_ADMIN') %}
+                        <td>
+                            <button class="btn btn-danger">Delete</button>
+                        </td>
+                    {% endif %}
                 </tr>
             </tbody>
         {% endfor %}

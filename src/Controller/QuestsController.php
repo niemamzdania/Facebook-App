@@ -16,6 +16,39 @@ use Knp\Component\Pager\PaginatorInterface;
 class QuestsController extends AbstractController
 {
     /**
+     * @Route("/quest/edit/{id}", name="edit_quest")
+     * @IsGranted("IS_AUTHENTICATED_FULLY")
+     */
+    public function edit_quest(Request $request, Quests $quest)
+    {
+        if ($this->getUser() != $quest->getUser() &&
+            !$this->isGranted("ROLE_ADMIN")) {
+            return new Response('Forbidden access');
+        }
+
+        $date = new \DateTime();
+        $dateInString = $date->format('Y-m-d');
+
+        $futureDate = date('Y-m-d', strtotime('+1 year'));
+        $futureDate = date('Y-m-d', strtotime('+1 year', strtotime($dateInString)));
+
+        $users = $this->getDoctrine()->getRepository(Users::class)->findAllUsers();
+
+        return $this->render('quests/edit_quest.html.twig', ['users' => $users, 'quest' => $quest, 'minDate' => $dateInString, 'maxDate' => $futureDate]);
+    }
+    
+    /**
+     * @Route("/quest/{id}", name="show_quest")
+     * @IsGranted("IS_AUTHENTICATED_FULLY")
+     */
+    public function show_quest($id)
+    {   
+        $quest = $this->getDoctrine()->getRepository(Quests::class)->find($id);
+
+        return $this->render('quests/show_quest.html.twig',['quest'=>$quest]);
+    }
+    
+    /**
      * @Route("/quests/{id}", name="show_quests")
      * @IsGranted("IS_AUTHENTICATED_FULLY")
      */
@@ -74,28 +107,6 @@ class QuestsController extends AbstractController
         $questsService->saveNewQuest($entityManager, $quest, $request);
 
         return $this->redirectToRoute('show_quests',['id'=>$this->getUser()->getId()]);
-    }
-
-    /**
-     * @Route("/quest/edit/{id}", name="edit_quest")
-     * @IsGranted("IS_AUTHENTICATED_FULLY")
-     */
-    public function edit_quest(Request $request, Quests $quest)
-    {
-        if ($this->getUser() != $quest->getUser() &&
-            !$this->isGranted("ROLE_ADMIN")) {
-            return new Response('Forbidden access');
-        }
-
-        $date = new \DateTime();
-        $dateInString = $date->format('Y-m-d');
-
-        $futureDate = date('Y-m-d', strtotime('+1 year'));
-        $futureDate = date('Y-m-d', strtotime('+1 year', strtotime($dateInString)));
-
-        $users = $this->getDoctrine()->getRepository(Users::class)->findAllUsers();
-
-        return $this->render('quests/edit_quest.html.twig', ['users' => $users, 'quest' => $quest, 'minDate' => $dateInString, 'maxDate' => $futureDate]);
     }
 
     /**
