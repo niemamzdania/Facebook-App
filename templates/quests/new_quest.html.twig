@@ -6,7 +6,7 @@
                                         maxlength="200" required></div>
         <div class="row mb-3">Date:<input class="form-control" type="date" min="{{ minDate }}" max="{{ maxDate }}"
                                           name="EndDate" required></div>
-        <div class="row">Select user:<select class="form-control" name="user" required>
+        <div class="row">Select user:<select class="browser-default custom-select" name="user" required>
                 {% for user in users %}
                     <option value="{{ user.id }}">{{ user.login }}</option>
                 {% endfor %}

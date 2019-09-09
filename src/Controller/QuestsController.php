@@ -104,9 +104,12 @@ class QuestsController extends AbstractController
         $futureDate = date('Y-m-d', strtotime('+1 year'));
         $futureDate = date('Y-m-d', strtotime('+1 year', strtotime($dateInString)));
 
+        $questDate = $quest->getEndDate();
+        $questDateInString = $questDate->format('Y-m-d');
+
         $users = $this->getDoctrine()->getRepository(Users::class)->findAllUsers();
 
-        return $this->render('quests/edit_quest.html.twig', ['users' => $users, 'quest' => $quest, 'minDate' => $dateInString, 'maxDate' => $futureDate]);
+        return $this->render('quests/edit_quest.html.twig', ['users' => $users, 'quest' => $quest, 'minDate' => $dateInString, 'maxDate' => $futureDate, 'questDate' => $questDateInString]);
     }
 
     /**
@@ -115,7 +118,6 @@ class QuestsController extends AbstractController
      */
     public function save_quest(QuestsService $questsService, Request $request)
     {
-        //dd($request);
         $quest = $this->getDoctrine()->getRepository(Quests::class)->findQuestById($request->request->get('id'));
 
         if($this->isGranted("ROLE_ADMIN")) {

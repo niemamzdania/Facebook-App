@@ -87,19 +87,6 @@ class PostsController extends AbstractController
             ]);
         }
 
-        /*******************
-         * $fb = new FacebookApp($appId, $appSecret);
-         *
-         * $qwe = new FacebookRequest($fb, $userAccessToken, array(
-         * 'source' => new \CURLFile($photoPath, 'image/png'),
-         * 'message' => 'User provided message'));
-         *
-         * $qqq = new Facebook();
-         *******************/
-
-        //http://127.0.0.1:8000/uploads/photos/2019-08/9f83dd59bd856af25ecd7425a0e52c47.png
-        //var_dump($fb->sendRequest('GET', '/debug_token', ['input_token' => $foreverPageAccessToken])->getDecodedBody());
-
         return $this->redirectToRoute('show_posts');
     }
 
@@ -272,7 +259,7 @@ class PostsController extends AbstractController
 
             if (isset($photoPath)) {
                 return $this->render('posts/edit_post.html.twig', [
-                    'form' => $form->createView(), 'photoPath' => $photoPath
+                    'form' => $form->createView(), 'photoPath' => $photoPath, 'id' => $post->getId(),
                 ]);
             } else {
                 $entityManager = $this->getDoctrine()->getManager();
@@ -282,7 +269,7 @@ class PostsController extends AbstractController
         }
 
         return $this->render('posts/edit_post.html.twig', [
-            'form' => $form->createView()
+            'form' => $form->createView(), 'id' => $post->getId(),
         ]);
     }
 
@@ -290,8 +277,7 @@ class PostsController extends AbstractController
      * @Route("/post/delete/{id}", name="delete_post")
      * @IsGranted("IS_AUTHENTICATED_FULLY")
      */
-    public
-    function delete_post(Posts $post)
+    public function delete_post(Posts $post, Request $request)
     {
         if ($this->getUser() != $post->getUser()) {
             return new Response('Forbidden access');
@@ -320,10 +306,13 @@ class PostsController extends AbstractController
             $entityManager->flush();
         }
 
-        $entityManager->remove($post);
-        $entityManager->flush();
+        if(!$request->request->get('onlyPhoto')) {
+            $entityManager->remove($post);
+            $entityManager->flush();
 
+            return $this->redirectToRoute('show_posts');
+        }
 
-        return $this->redirectToRoute('show_posts');
+        return $this->redirectToRoute('edit_post', ['id' => $post->getId()]);
     }
 }

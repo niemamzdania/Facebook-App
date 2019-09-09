@@ -6,10 +6,16 @@
             <input type="hidden" name="id" value="{{ quest.Id }}">
             {% if is_granted('ROLE_ADMIN') %}
                 Content:<input class="form-control" type="textarea" name="Content" value="{{ quest.Content }}" required>
-                Date:<input class="form-control" type="date" min="{{ minDate }}" max="{{ maxDate }}" name="EndDate" required>
+                Date:<input class="form-control" type="date" min="{{ minDate }}" max="{{ maxDate }}" name="EndDate"
+                    {% if questDate >= minDate %}
+                        value="{{ questDate }}"
+                    {% else %}
+                        value="{{ minDate }}"
+                    {% endif %}
+                            required>
                 Select user:
                 <div>
-                    <select class="form-control form-control-lg" name="user" required>
+                    <select class="browser-default custom-select" name="user" required>
                         {% for user in users %}
                             <option value="{{ user.id }}" selected>{{ user.login }}</option>
                         {% endfor %}
@@ -19,7 +25,7 @@
                 {{ quest.Content }}
             {% endif %}
             Status:
-            <select class="form-control" name="Status" form-control-lg">
+            <select class="browser-default custom-select" name="Status">
                 <option value="0" {% if quest.Status == 0 %} selected {% endif %}>0%</option>
                 <option value="20" {% if quest.Status == 20 %} selected {% endif %}>20%</option>
                 <option value="40" {% if quest.Status == 40 %} selected {% endif %}>40%</option>
@@ -28,7 +34,8 @@
                 <option value="100" {% if quest.Status == 100 %} selected {% endif %}>100%</option>
             </select>
             <input class="btn btn-warning mt-4 mr-2" type="submit" value="Submit">
-            <a href="/show/quest/{{quest.id}}"> <div class="btn btn-secondary mt-4">Back</div>
+            <a href="/show/quest/{{ quest.id }}">
+                <div class="btn btn-secondary mt-4">Back</div>
         </form>
 
     </div>
