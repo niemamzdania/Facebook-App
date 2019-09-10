@@ -5,7 +5,8 @@
         <form action="{{ path('save_quest') }}" method="POST">
             <input type="hidden" name="id" value="{{ quest.Id }}">
             {% if is_granted('ROLE_ADMIN') %}
-                Content:<input class="form-control" type="textarea" oninvalid="setCustomValidity('Content must be between 3 and 200 characters.')"
+                Content:<input class="form-control" type="textarea" oninput="setCustomValidity('')"
+                               oninvalid="setCustomValidity('Content must be between 3 and 200 characters.')"
                                minlength="3" maxlength="200" name="Content" value="{{ quest.Content }}" required>
                 Date:<input class="form-control" type="date" min="{{ minDate }}" max="{{ maxDate }}" name="EndDate"
                     {% if questDate >= minDate %}
