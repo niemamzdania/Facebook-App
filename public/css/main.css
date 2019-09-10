@@ -108,18 +108,24 @@ tr td:first-child {
 .show_image{
     display:inline-block;
     position: relative;
+    width: 60%;
 }
 .show_image img{
     transition: all 0.2s;
+    width: 100%;
+    border-radius: 5px;
+    border: 2px solid gray;
+    margin-bottom: 30px;
 }
 .zoom{
     opacity: 0;
     position: absolute;
     top: 50%;
     left: 50%;
-    transform: translate(-50%, -50%);
+    font-size: 45px;
     transition: all 0.4s;
     max-width: 100%;
+    transform: translate(-50%, -50%);
 }
 .show_image img:hover{
     filter: blur(5px);
@@ -128,7 +134,7 @@ tr td:first-child {
 .show_image img:hover ~.zoom{
     opacity: 1;
     font-size: 45px;
-    color: black;
+    color: red;
 }
 .zoom{
     pointer-events: none;
