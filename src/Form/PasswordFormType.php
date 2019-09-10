@@ -5,8 +5,6 @@ use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\Extension\Core\Type\RepeatedType;
 use Symfony\Component\Form\Extension\Core\Type\PasswordType;
-use Symfony\Component\Form\Extension\Core\Type\SubmitType;
-
 
 class PasswordFormType extends AbstractType
 {
@@ -18,8 +16,8 @@ class PasswordFormType extends AbstractType
                 'invalid_message' => 'The password fields must match.',
                 'options' => ['attr' => ['class' => 'password-field']],
                 'required' => true,
-                'first_options'  => array('label' => 'Password', 'attr' => array('class' => 'form-control')),
-                'second_options' => array('label' => 'Repeat Password', 'attr' => array('class' => 'form-control')),
+                'first_options'  => ['label' => 'Password', 'attr' => ['class' => 'form-control']],
+                'second_options' => ['label' => 'Repeat Password', 'attr' => ['class' => 'form-control']],
             ])
             ->getForm();
     }
