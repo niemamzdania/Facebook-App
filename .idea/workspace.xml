@@ -1,7 +1,23 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
+<<<<<<< HEAD
     <list default="true" id="9679a1ab-2270-47ff-adb7-a743d0f823b2" name="Default Changelist" comment="" />
+=======
+    <list default="true" id="9679a1ab-2270-47ff-adb7-a743d0f823b2" name="Default Changelist" comment="">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/uploads/photos/2019-09/7af37637511fc8ad3b797d7de5e473d1.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Entity/Posts.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Entity/Posts.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Entity/Quests.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Entity/Quests.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Entity/Users.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Entity/Users.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Form/EmailFormType.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Form/EmailFormType.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Form/LoginFormType.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Form/LoginFormType.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Form/PasswordFormType.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Form/PasswordFormType.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Form/PostFormType.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Form/PostFormType.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Form/RegistrationFormType.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Form/RegistrationFormType.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/templates/posts/edit_post.html.twig" beforeDir="false" afterPath="$PROJECT_DIR$/templates/posts/edit_post.html.twig" afterDir="false" />
+    </list>
+>>>>>>> backend
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -147,6 +163,9 @@
     <property name="settings.editor.selected.configurable" value="preferences.sourceCode.PostgreSQL" />
   </component>
   <component name="RecentsManager">
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/templates/users" />
+    </key>
     <key name="CopyFile.RECENT_KEYS">
       <recent name="$PROJECT_DIR$/templates/users" />
       <recent name="$PROJECT_DIR$/src/Controller" />
@@ -204,6 +223,14 @@
       <workItem from="1566833060015" duration="17613000" />
       <workItem from="1566899805909" duration="14620000" />
       <workItem from="1566973989590" duration="888000" />
+      <workItem from="1567096763191" duration="281000" />
+      <workItem from="1567410489129" duration="12083000" />
+      <workItem from="1567580390384" duration="9722000" />
+      <workItem from="1567691398268" duration="542000" />
+      <workItem from="1568013024814" duration="46000" />
+      <workItem from="1568013086826" duration="9196000" />
+      <workItem from="1568034154560" duration="861000" />
+      <workItem from="1568096696612" duration="1972000" />
     </task>
     <servers />
   </component>

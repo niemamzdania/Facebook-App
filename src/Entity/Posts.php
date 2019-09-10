@@ -2,6 +2,7 @@
 
 namespace App\Entity;
 
+use Symfony\Component\Validator\Constraints as Assert;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -25,6 +26,12 @@ class Posts
      * @var string
      *
      * @ORM\Column(name="title", type="string", length=50, nullable=false)
+     * @Assert\Length(
+     *     min = 3,
+     *     max = 50,
+     *     minMessage = "Title of post must be at least {{ limit }} characters long",
+     *     maxMessage = "Title of post connot be longer than {{ limit }} characters"
+     * )
      */
     private $title;
 

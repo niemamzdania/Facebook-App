@@ -1,6 +1,7 @@
 *{
     overflow: hidden;
 }
+
 /*Browse*/
 .main-footer{
     height: 40px;
@@ -140,9 +141,7 @@ tr td:first-child {
     border-top-left-radius: 5px;
     border-top-right-radius: 5px;
 }
-#post_form_name{
-    margin: 30px 10px;
-}
+
 /*New post*/
 .container_new_post {
     background: white;

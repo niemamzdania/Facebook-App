@@ -39,6 +39,6 @@ class AdminController extends AbstractController
         $entityManager->remove($user);
         $entityManager->flush();
 
-        return $this->redirectToRoute('main_page');
+        return $this->redirectToRoute('show_users');
     }
 }

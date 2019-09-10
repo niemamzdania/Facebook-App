@@ -46,19 +46,15 @@ class UsersController extends AbstractController
         $passwordForm->handleRequest($request);
         $emailForm->handleRequest($request);
 
-        if(($loginForm->isSubmitted() && $loginForm->isValid()) ||
-            ($emailForm->isSubmitted() && $emailForm->isValid()))
-        {
+        if (($loginForm->isSubmitted() && $loginForm->isValid()) ||
+            ($emailForm->isSubmitted() && $emailForm->isValid())) {
             $entityManager = $this->getDoctrine()->getManager();
             $entityManager->flush();
-        }
-
-        else if($passwordForm->isSubmitted() && $passwordForm->isValid())
-        {
+        } else if ($passwordForm->isSubmitted() && $passwordForm->isValid()) {
             $data = $passwordForm->getData();
 
             $user->setPassword(
-                $this->passwordEncoder->encodePassword($data, $data->getPassword())
+                $this->passwordEncoder->encodePassword($user, $data->getPassword())
             );
 
             $entityManager = $this->getDoctrine()->getManager();
@@ -92,11 +88,10 @@ class UsersController extends AbstractController
         $pageIdForm->handleRequest($request);
         $accessTokenForm->handleRequest($request);
 
-        if(($appIdForm->isSubmitted() && $appIdForm->isValid()) ||
+        if (($appIdForm->isSubmitted() && $appIdForm->isValid()) ||
             ($appSecretForm->isSubmitted() && $appSecretForm->isValid()) ||
             ($pageIdForm->isSubmitted() && $pageIdForm->isValid()) ||
-            ($accessTokenForm->isSubmitted() && $accessTokenForm->isValid()))
-        {
+            ($accessTokenForm->isSubmitted() && $accessTokenForm->isValid())) {
             $entityManager = $this->getDoctrine()->getManager();
             $entityManager->flush();
         }
@@ -107,5 +102,46 @@ class UsersController extends AbstractController
             'pageIdForm' => $pageIdForm->createView(),
             'accessTokenForm' => $accessTokenForm->createView()
         ]);
+    }
+
+    /**
+     * @Route("/reset", name="reset")
+     */
+    public function reset_password(\Swift_Mailer $mailer, Request $request)
+    {
+        if ($request->request->get('Email')) {
+            $recipient = $request->request->get('Email');
+
+            $user = $this->getDoctrine()->getRepository(Users::class)->findUserByEmail($recipient);
+
+            if (!$user)
+                return $this->render('users/reset.html.twig', ['message' => 'This e-mail adress not exist. Type another one.']);
+            else {
+                $password = md5(time());
+                $password = substr($password, 0, 8);
+
+                $user->setPassword(
+                    $this->passwordEncoder->encodePassword($user, $password)
+                );
+
+                $entityManager = $this->getDoctrine()->getManager();
+                $entityManager->persist($user);
+                $entityManager->flush();
+
+                $message = (new \Swift_Message('Hello Email'))
+                    ->setFrom('apkafacebook20@gmail.com')
+                    ->setTo($recipient)
+                    ->setBody(
+                        "Your new password is: $password. You can login now with the new credentials.",
+                        'text/html'
+                    );
+
+                $mailer->send($message);
+
+                return $this->redirectToRoute('app_login');
+            }
+        }
+
+        return $this->render('users/reset.html.twig');
     }
 }

@@ -1,0 +1,24 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Reset your password
+{% endblock %}
+
+{% block body %}
+    <link rel="stylesheet" href="{{ asset('css/login.css') }}">
+    <div id="LoginForm">
+        <div class="container">
+            <div class="login-form">
+                <div class="main-div">
+                    <form method="post">
+                        <h1 class="h3 mb-5 font-weight-normal">Reset password</h1>
+                        {% if message is defined %}
+                            <div class="alert alert-danger">  {{ message }}</div>
+                        {% endif %}
+                        <div class="row"><input type="email" class="form-control mt-4" placeholder="Your email" name="Email"></div>
+                        <div class="row"><input class="btn btn-lg btn-warning mt-4 w-100" type="submit" value="Submit"></div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

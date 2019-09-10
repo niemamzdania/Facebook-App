@@ -1,26 +1,42 @@
-<div class="container">
-    <form action="{{ path('save_quest') }}" method="POST">
-        <input type="hidden" name="id" value="{{ quest.Id }}">
-        {% if is_granted('ROLE_ADMIN') %}
-            <div class="row">Content:<input type="textarea" name="Content" value="{{ quest.Content }}" required></div>
-            <div class="row">Date:<input type="date" min="{{ minDate }}" max="{{ maxDate }}" name="EndDate" required>
-            </div>
-            <div class="row"><select name="user" required>
-                    {% for user in users %}
-                        <option value="{{ user.id }}" selected>{{ user.login }}</option>
-                    {% endfor %}
-                </select>
-            </div>
-        {% endif %}
-        <div class="row"><select name="Status" required>
-                <option value=0 {% if quest.Status == 0 %}selected{% endif %}>0%</option>
-                <option value=20 {% if quest.Status == 20 %}selected{% endif %}>20%</option>
-                <option value=40 {% if quest.Status == 40 %}selected{% endif %}>40%</option>
-                <option value=60 {% if quest.Status == 60 %}selected{% endif %}>60%</option>
-                <option value=80 {% if quest.Status == 80 %}selected{% endif %}>80%</option>
-                <option value=100 {% if quest.Status == 100 %}selected{% endif %}>100%</option>
+{% extends('mainpage/main.html.twig') %}
+{% block content %}
+    <div class="post_show">
+        <h1 style="margin: 15px;">Edit quest</h1>
+        <form action="{{ path('save_quest') }}" method="POST">
+            <input type="hidden" name="id" value="{{ quest.Id }}">
+            {% if is_granted('ROLE_ADMIN') %}
+                Content:<input class="form-control" type="textarea" name="Content" value="{{ quest.Content }}" required>
+                Date:<input class="form-control" type="date" min="{{ minDate }}" max="{{ maxDate }}" name="EndDate"
+                    {% if questDate >= minDate %}
+                        value="{{ questDate }}"
+                    {% else %}
+                        value="{{ minDate }}"
+                    {% endif %}
+                            required>
+                Select user:
+                <div>
+                    <select class="browser-default custom-select" name="user" required>
+                        {% for user in users %}
+                            <option value="{{ user.id }}" selected>{{ user.login }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+            {% elseif is_granted('ROLE_USER') %}
+                {{ quest.Content }}
+            {% endif %}
+            Status:
+            <select class="browser-default custom-select" name="Status">
+                <option value="0" {% if quest.Status == 0 %} selected {% endif %}>0%</option>
+                <option value="20" {% if quest.Status == 20 %} selected {% endif %}>20%</option>
+                <option value="40" {% if quest.Status == 40 %} selected {% endif %}>40%</option>
+                <option value="60" {% if quest.Status == 60 %} selected {% endif %}>60%</option>
+                <option value="80" {% if quest.Status == 80 %} selected {% endif %}>80%</option>
+                <option value="100" {% if quest.Status == 100 %} selected {% endif %}>100%</option>
             </select>
-        </div>
-        <div class="row"><input type="submit" value="Submit"></div>
-    </form>
-</div>
+            <input class="btn btn-warning mt-4 mr-2" type="submit" value="Submit">
+            <a href="/show/quest/{{ quest.id }}">
+                <div class="btn btn-secondary mt-4">Back</div>
+        </form>
+
+    </div>
+{% endblock %}

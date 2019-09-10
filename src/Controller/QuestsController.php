@@ -11,23 +11,37 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Knp\Component\Pager\PaginatorInterface;
 
 class QuestsController extends AbstractController
 {
     /**
+     * @Route("/show/quest/{id}", name="get_quest")
+     * @IsGranted("IS_AUTHENTICATED_FULLY")
+     */
+    public function show_quest($id)
+    {   
+        $quest = $this->getDoctrine()->getRepository(Quests::class)->find($id);
+
+        return $this->render('quests/show_one_quest.html.twig',['quest'=>$quest]);
+    }
+
+    /**
      * @Route("/quests/{id}", name="show_quests")
      * @IsGranted("IS_AUTHENTICATED_FULLY")
      */
-    public function show_quests($id)
+    public function show_quests($id,  PaginatorInterface $paginator, Request $request)
     {
         if ($id != $this->getUser()->getId())
             return new Response('Forbidden access');
 
         $quests = $this->getDoctrine()->getRepository(Quests::class)->findByUserId($id);
 
-        dd($quests);
-
-        return $this->render('quests/show_quests.html.twig', ['quests' => $quests]);
+        return $this->render('quests/show_quests.html.twig', ['quests' => $paginator->paginate(
+            $quests,
+            $request->query->getInt('page', 1),
+            8
+        )]);
     }
 
     /**
@@ -70,10 +84,10 @@ class QuestsController extends AbstractController
 
         $questsService->saveNewQuest($entityManager, $quest, $request);
 
-        return $this->redirectToRoute('show_posts');
+        return $this->redirectToRoute('show_quests',['id'=>$this->getUser()->getId()]);
     }
 
-    /**
+     /**
      * @Route("/quest/edit/{id}", name="edit_quest")
      * @IsGranted("IS_AUTHENTICATED_FULLY")
      */
@@ -90,34 +104,33 @@ class QuestsController extends AbstractController
         $futureDate = date('Y-m-d', strtotime('+1 year'));
         $futureDate = date('Y-m-d', strtotime('+1 year', strtotime($dateInString)));
 
+        $questDate = $quest->getEndDate();
+        $questDateInString = $questDate->format('Y-m-d');
+
         $users = $this->getDoctrine()->getRepository(Users::class)->findAllUsers();
 
-        return $this->render('quests/edit_quest.html.twig', ['users' => $users, 'quest' => $quest, 'minDate' => $dateInString, 'maxDate' => $futureDate]);
+        return $this->render('quests/edit_quest.html.twig', ['users' => $users, 'quest' => $quest, 'minDate' => $dateInString, 'maxDate' => $futureDate, 'questDate' => $questDateInString]);
     }
 
     /**
      * @Route("/quest/save", name="save_quest")
      * @IsGranted("IS_AUTHENTICATED_FULLY")
      */
-    public function save_post(QuestsService $questsService, Request $request)
+    public function save_quest(QuestsService $questsService, Request $request)
     {
         $quest = $this->getDoctrine()->getRepository(Quests::class)->findQuestById($request->request->get('id'));
 
         if($this->isGranted("ROLE_ADMIN")) {
             $userId = $request->request->get('user');
             $user = $this->getDoctrine()->getRepository(Users::class)->findUserById($userId);
+            $quest->setUser($user);
         }
-        elseif ($this->isGranted("ROLE_USER")){
-            $user = $this->getUser();
-        }
-
-        $quest->setUser($user);
 
         $entityManager = $this->getDoctrine()->getmanager();
 
-        $questsService->saveEditedQuest($entityManager, $quest, $user, $request);
+        $questsService->saveEditedQuest($entityManager, $quest, $request);
 
-        return $this->redirectToRoute('main_page');
+        return $this->redirectToRoute('get_quest',['id'=>$quest->getId()]);
     }
 
     /**
@@ -134,6 +147,6 @@ class QuestsController extends AbstractController
         $entityManager->remove($quest);
         $entityManager->flush();
 
-        return $this->redirectToRoute('main_page');
+        return $this->redirectToRoute('show_quests',['id'=>$this->getUser()->getId()]);
     }
 }
