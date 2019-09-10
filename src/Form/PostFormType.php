@@ -18,7 +18,7 @@ class PostFormType extends AbstractType
                 'constraints' => [
                     new Length([
                         'min' => 3,
-                        'max' => 4,
+                        'max' => 50,
                         'minMessage' => "Title of post must be at least {{ limit }} characters long",
                         'maxMessage' => "Title of post cannot be longer than {{ limit }} characters"
                     ])

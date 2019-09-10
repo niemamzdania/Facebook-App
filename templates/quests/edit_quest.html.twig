@@ -36,9 +36,9 @@
                 <option value="100" {% if quest.Status == 100 %} selected {% endif %}>100%</option>
             </select>
             <input class="btn btn-warning mt-4 mr-2" type="submit" value="Submit">
-            <a href="/show/quest/{{ quest.id }}">
+            <a href="{{ path('show_quest', {id: quest.id}) }}">
                 <div class="btn btn-secondary mt-4">Back</div>
+            </a>
         </form>
-
     </div>
 {% endblock %}

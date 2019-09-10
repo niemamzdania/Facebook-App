@@ -1,7 +1,7 @@
 {% block sidebar %}
     <aside class="main-sidebar sidebar-dark-primary elevation-4">
         <a class="brand-link" href="/">
-            <i class="fab fa-docker" style="margin-left: 19px; size:3x"></i>
+            <i class="fab fa-docker" style="margin-left: 19px; size: 3px"></i>
             <span class="brand-text font-weight-light" style="margin-left: 5px;">Pszemke.App!
             </span>
         </a>
@@ -41,7 +41,7 @@
                         </a>
                         <ul class="nav nav-treeview" style="display: block;">
                             <li class="nav-item archive">
-                                <a class="nav-link button" href="{{ path('show_quests', {id: app.user.Id}) }}">
+                                <a class="nav-link button" href="{{ path('show_user_quests', {id: app.user.Id}) }}">
                                     <i class="fa fa-circle-o nav-icon"></i>
                                     <p>Show Quests</p>
                                 </a>
@@ -97,6 +97,12 @@
                                     <a class="nav-link button" href="{{ path('new_quest') }}">
                                         <i class="fa fa-circle-o nav-icon"></i>
                                         <p>New Quest</p>
+                                    </a>
+                                </li>
+                                <li class="nav-item archive">
+                                    <a class="nav-link button" href="{{ path('show_all_quests') }}">
+                                        <i class="fa fa-circle-o nav-icon"></i>
+                                        <p>Quests list</p>
                                     </a>
                                 </li>
                             </ul>

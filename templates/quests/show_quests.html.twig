@@ -3,43 +3,54 @@
     <h1 style="margin:25px;">Show quests</h1>
     <table class="table table-light">
         <thead>
-            <tr style="text-align:center">
-                <th scope="col">Deadline</th>
-                <th scope="col">Progress</th>
-                <th scope="col">Show</th>
-                {% if is_granted('ROLE_ADMIN') %}
-                    <th scope="col">Delete</th>
-                {% endif %}
-            </tr>
+        <tr style="text-align:center">
+            {% if user is defined %}
+                <th scope="col">Worker</th>
+            {% endif %}
+            <th scope="col">Deadline</th>
+            <th scope="col">Progress</th>
+            <th scope="col">Show</th>
+            {% if is_granted('ROLE_ADMIN') %}
+                <th scope="col">Delete</th>
+            {% endif %}
+        </tr>
         </thead>
         <tbody>
-            {% for quests in quests %}
-                <tr style="text-align:center">
-                    <td>{{quests.endDate|date("m/d/Y") }}</td>
-                    <td>
-                        <div class="progress mt-2">
-                            <div class="progress-bar bg-success" role="progressbar" style="width: {{ quests.status }}%;" aria-valuenow="20" aria-valuemin="0" aria-valuemax="100">{{ quests.status }}%</div>
-                        </div>
-                    </td>
-                    <td>
-                        <a href="/show/quest/{{quests.id}}">
-                            <button class="btn btn-warning">Show</button>
-                        </a>
-                    </td>
-                    {% if is_granted('ROLE_ADMIN') %}
-                        <td>
-                            <button id="{{quests.id}}" onclick="get_number(this.id)" class="btn btn-danger" data-target="#exampleModalCenterDelete" data-toggle="modal">Delete</button>
-                        </td>
-                    {% endif %}
-                </tr>
-            </tbody>
+        {% for quest in quests %}
+        <tr style="text-align:center">
+            {% if user is defined %}
+                <td>{{ quest.user.login }}</td>
+            {% endif %}
+            <td>{{ quest.endDate|date("m/d/Y") }}</td>
+            <td>
+                <div class="progress mt-2">
+                    <div class="progress-bar bg-success" role="progressbar" style="width: {{ quest.status }}%;"
+                         aria-valuenow="20" aria-valuemin="0" aria-valuemax="100">{{ quest.status }}%
+                    </div>
+                </div>
+            </td>
+            <td>
+                <a href="{{ path('show_quest', {id: quest.id}) }}">
+                    <button class="btn btn-warning">Show</button>
+                </a>
+            </td>
+            {% if is_granted('ROLE_ADMIN') %}
+                <td>
+                    <button id="{{ quest.id }}" onclick="get_number(this.id)" class="btn btn-danger"
+                            data-target="#exampleModalCenterDelete" data-toggle="modal">Delete
+                    </button>
+                </td>
+            {% endif %}
+        </tr>
+        </tbody>
         {% endfor %}
     </table>
     <div class="row d-flex justify-content-center w-100 paginator mt-3">
         {{ knp_pagination_render(quests) }}
     </div>
     <!-- Delete post modal -->
-    <div aria-hidden="true" aria-labelledby="exampleModalCenterTitle" class="modal fade" id="exampleModalCenterDelete" role="dialog" tabindex="-1">
+    <div aria-hidden="true" aria-labelledby="exampleModalCenterTitle" class="modal fade" id="exampleModalCenterDelete"
+         role="dialog" tabindex="-1">
         <div class="modal-dialog modal-dialog-centered" role="document">
             <div class="modal-content">
                 <div class="modal-body text-center">
@@ -53,13 +64,14 @@
                     <a class="action" id="/post/delete/">
                         <button class="delete btn-lg btn-outline-danger mt-5 mr-2">Delete</button>
                     </a>
-                    <button class="btn-lg btn-outline-secondary mt-5 ml-2" data-dismiss="modal" type="button">Cancel</button>
+                    <button class="btn-lg btn-outline-secondary mt-5 ml-2" data-dismiss="modal" type="button">Cancel
+                    </button>
                 </div>
             </div>
         </div>
     </div>
     <!-- Delete post modal -->
-     <script>
+    <script>
         let number;
 
         function get_number(clicked_id) {
@@ -74,5 +86,4 @@
             window.location.href = '/quest/delete/'.concat(number);
         }
     </script>
-
 {% endblock %}

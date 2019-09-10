@@ -16,32 +16,24 @@ use Knp\Component\Pager\PaginatorInterface;
 class QuestsController extends AbstractController
 {
     /**
-     * @Route("/show/quest/{id}", name="get_quest")
-     * @IsGranted("IS_AUTHENTICATED_FULLY")
+     * @Route("/quest/add", name="add_quest")
+     * @IsGranted("ROLE_ADMIN")
      */
-    public function show_quest($id)
-    {   
-        $quest = $this->getDoctrine()->getRepository(Quests::class)->find($id);
-
-        return $this->render('quests/show_one_quest.html.twig',['quest'=>$quest]);
-    }
-
-    /**
-     * @Route("/quests/{id}", name="show_quests")
-     * @IsGranted("IS_AUTHENTICATED_FULLY")
-     */
-    public function show_quests($id,  PaginatorInterface $paginator, Request $request)
+    public function add_quest(Request $request, QuestsService $questsService)
     {
-        if ($id != $this->getUser()->getId())
-            return new Response('Forbidden access');
+        $quest = new Quests();
 
-        $quests = $this->getDoctrine()->getRepository(Quests::class)->findByUserId($id);
+        $userId = $request->request->get('user');
 
-        return $this->render('quests/show_quests.html.twig', ['quests' => $paginator->paginate(
-            $quests,
-            $request->query->getInt('page', 1),
-            8
-        )]);
+        $user = $this->getDoctrine()->getRepository(Users::class)->findUserById($userId);
+
+        $quest->setUser($user);
+
+        $entityManager = $this->getDoctrine()->getManager();
+
+        $questsService->saveNewQuest($entityManager, $quest, $request);
+
+        return $this->redirectToRoute('show_user_quests',['id'=>$this->getUser()->getId()]);
     }
 
     /**
@@ -67,24 +59,68 @@ class QuestsController extends AbstractController
     }
 
     /**
-     * @Route("/quest/add", name="add_quest")
-     * @IsGranted("ROLE_ADMIN")
+     * @Route("/quest/save", name="save_quest")
+     * @IsGranted("IS_AUTHENTICATED_FULLY")
      */
-    public function add_quest(Request $request, QuestsService $questsService)
+    public function save_quest(QuestsService $questsService, Request $request)
     {
-        $quest = new Quests();
+        $quest = $this->getDoctrine()->getRepository(Quests::class)->findQuestById($request->request->get('id'));
 
-        $userId = $request->request->get('user');
+        if($this->isGranted("ROLE_ADMIN")) {
+            $userId = $request->request->get('user');
+            $user = $this->getDoctrine()->getRepository(Users::class)->findUserById($userId);
+            $quest->setUser($user);
+        }
 
-        $user = $this->getDoctrine()->getRepository(Users::class)->findUserById($userId);
+        $entityManager = $this->getDoctrine()->getmanager();
 
-        $quest->setUser($user);
+        $questsService->saveEditedQuest($entityManager, $quest, $request);
 
-        $entityManager = $this->getDoctrine()->getManager();
+        return $this->redirectToRoute('show_quest',['id'=>$quest->getId()]);
+    }
 
-        $questsService->saveNewQuest($entityManager, $quest, $request);
+    /**
+     * @Route("/quests/all", name="show_all_quests")
+     * @IsGranted("IS_AUTHENTICATED_FULLY")
+     */
+    public function show_all_quests(PaginatorInterface $paginator, Request $request)
+    {
+        $quests = $this->getDoctrine()->getRepository(Quests::class)->findAllQuests();
 
-        return $this->redirectToRoute('show_quests',['id'=>$this->getUser()->getId()]);
+        return $this->render('quests/show_quests.html.twig', ['user' => 'user', 'quests' => $paginator->paginate(
+            $quests,
+            $request->query->getInt('page', 1),
+            8
+        )]);
+    }
+
+    /**
+     * @Route("/quest/{id}", name="show_quest")
+     * @IsGranted("IS_AUTHENTICATED_FULLY")
+     */
+    public function show_quest($id)
+    {   
+        $quest = $this->getDoctrine()->getRepository(Quests::class)->find($id);
+
+        return $this->render('quests/show_one_quest.html.twig', ['quest' => $quest]);
+    }
+
+    /**
+     * @Route("/quests/user/{id}", name="show_user_quests")
+     * @IsGranted("IS_AUTHENTICATED_FULLY")
+     */
+    public function show_user_quests($id,  PaginatorInterface $paginator, Request $request)
+    {
+        if ($id != $this->getUser()->getId())
+            return new Response('Forbidden access');
+
+        $quests = $this->getDoctrine()->getRepository(Quests::class)->findByUserId($id);
+
+        return $this->render('quests/show_quests.html.twig', ['quests' => $paginator->paginate(
+            $quests,
+            $request->query->getInt('page', 1),
+            8
+        )]);
     }
 
      /**
@@ -110,27 +146,6 @@ class QuestsController extends AbstractController
         $users = $this->getDoctrine()->getRepository(Users::class)->findAllUsers();
 
         return $this->render('quests/edit_quest.html.twig', ['users' => $users, 'quest' => $quest, 'minDate' => $dateInString, 'maxDate' => $futureDate, 'questDate' => $questDateInString]);
-    }
-
-    /**
-     * @Route("/quest/save", name="save_quest")
-     * @IsGranted("IS_AUTHENTICATED_FULLY")
-     */
-    public function save_quest(QuestsService $questsService, Request $request)
-    {
-        $quest = $this->getDoctrine()->getRepository(Quests::class)->findQuestById($request->request->get('id'));
-
-        if($this->isGranted("ROLE_ADMIN")) {
-            $userId = $request->request->get('user');
-            $user = $this->getDoctrine()->getRepository(Users::class)->findUserById($userId);
-            $quest->setUser($user);
-        }
-
-        $entityManager = $this->getDoctrine()->getmanager();
-
-        $questsService->saveEditedQuest($entityManager, $quest, $request);
-
-        return $this->redirectToRoute('get_quest',['id'=>$quest->getId()]);
     }
 
     /**

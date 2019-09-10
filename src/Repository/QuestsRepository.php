@@ -43,4 +43,13 @@ class QuestsRepository extends ServiceEntityRepository
             ->getOneOrNullResult()
             ;
     }
+
+    public function findAllQuests()
+    {
+        return $this->createQueryBuilder('q')
+            ->orderBy('q.endDate', 'ASC')
+            ->getQuery()
+            ->getResult()
+            ;
+    }
 }
