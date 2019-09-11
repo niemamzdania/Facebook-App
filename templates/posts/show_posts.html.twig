@@ -19,6 +19,7 @@
                     <th scope="col">Edit</th>
                     <th scope="col">Delete</th>
                     <th scope="col">Send</th>
+                    <th scope="col">Status</th>
                 </tr>
             </thead>
             <tbody>
@@ -42,6 +43,9 @@
                             <button onclick="get_number(this.id)" class="btn btn-outline-primary action_post" id="{{ post.id }}" data-target="#exampleModalCenterSend" data-toggle="modal" type="button">
                                 <i class="fas fa-share-alt"></i>
                             </button>
+                        </td>
+                        <td style = "font-size: 25px;">
+                            {% if post.status == 1 %}<i style = "color: green" class="far fa-thumbs-up"></i>{% else %}<i style = "color: red" class="far fa-thumbs-down"></i>{% endif %}
                         </td>
                     </tr>
                     <!-- Delete post modal -->

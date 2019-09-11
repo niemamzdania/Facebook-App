@@ -52,6 +52,11 @@ class Posts
      */
     private $user;
 
+    /**
+     * @ORM\Column(type="boolean")
+     */
+    private $status = false;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -101,6 +106,18 @@ class Posts
     public function setUser(?Users $user): self
     {
         $this->user = $user;
+
+        return $this;
+    }
+
+    public function getStatus(): ?bool
+    {
+        return $this->status;
+    }
+
+    public function setStatus(bool $status): self
+    {
+        $this->status = $status;
 
         return $this;
     }

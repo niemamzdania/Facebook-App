@@ -24,7 +24,7 @@ class PostsController extends AbstractController
     /**
      * @Route("/post/send/{id}", name="send_post")
      */
-    public function send_post($id, Session $session)
+    public function send_post(Posts $post, Session $session)
     {
         $user = $this->getUser();
 
@@ -33,7 +33,9 @@ class PostsController extends AbstractController
         $pageId = $user->getPageId();
         $userAccessToken = $user->getUserAccessToken();
 
-        $post = $this->getDoctrine()->getRepository(Posts::Class)->find($id);
+        $entityManager = $this->getDoctrine()->getManager();
+        $post->setStatus(true);
+        $entityManager->flush();
         $message = $post->getContent();
         $photo = $this->getDoctrine()->getRepository(Photos::Class)->findPhotoByPostId($post->getId());
 
