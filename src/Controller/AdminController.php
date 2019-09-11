@@ -9,9 +9,38 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\HttpFoundation\Session\Session;
+use Symfony\Component\HttpFoundation\Request;
 
 class AdminController extends AbstractController
 {
+    /**
+     * @Route("/edit/email/{id}", name="edit_email")
+     * @IsGranted("ROLE_ADMIN")
+     */
+    public function edit_email(Request $request, Users $user)
+    {
+        $email = $request->request->get('email');
+        $user->setEmail($email);
+        $entityManager = $this->getDoctrine()->getManager();
+        $entityManager->flush();
+
+        return $this->redirectToRoute('show_users');
+    }
+
+     /**
+     * @Route("/edit/role/{id}", name="edit_role")
+     * @IsGranted("ROLE_ADMIN")
+     */
+    public function edit_role(Request $request, Users $user)
+    {
+        $role = $request->request->get('roles');
+        $user->setRoles([$role]);
+        $entityManager = $this->getDoctrine()->getManager();
+        $entityManager->flush();
+
+        return $this->redirectToRoute('show_users');
+    }
+    
     /**
      * @Route("/users", name="show_users")
      * @IsGranted("ROLE_ADMIN")
