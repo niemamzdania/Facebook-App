@@ -1,5 +1,13 @@
 {% extends 'mainpage/main.html.twig' %}
 {% block content %}
+    {% if message is defined %}
+        <div class="mt-3 alert alert-primary alert-dismissible fade show" role="alert">
+            {{message}}
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+    {% endif %}
     <h1 style="margin: 25px;">Users list</h1>
     <table class="table table-striped">
         <thead>
@@ -28,7 +36,7 @@
                         <a class="btn btn-warning" data-target="#exampleModalCenterChangeEmail" data-toggle="modal">Change email</a>
                     </td>
                     <td>
-                        <a class="btn btn-warning"  data-target="#exampleModalCenterChangeRole" data-toggle="modal">Change role</a>
+                        <a class="btn btn-warning" data-target="#exampleModalCenterChangeRole" data-toggle="modal">Change role</a>
                     </td>
                     <td>
                         <a onclick="get_number(this.id)" class="btn btn-danger" id="{{user.id}}" data-target="#exampleModalCenterDelete" data-toggle="modal">Delete</a>
@@ -59,7 +67,7 @@
     </div>
     <!--Delete modal-->
     <!--Email modal-->
-     <div aria-hidden="true" aria-labelledby="exampleModalCenterTitle" class="modal fade" id="exampleModalCenterChangeEmail" role="dialog" tabindex="-1">
+    <div aria-hidden="true" aria-labelledby="exampleModalCenterTitle" class="modal fade" id="exampleModalCenterChangeEmail" role="dialog" tabindex="-1">
         <div class="modal-dialog modal-dialog-centered" role="document">
             <div class="modal-content">
                 <div class="modal-body text-center">
@@ -70,8 +78,8 @@
         </div>
     </div>
     <!--Email modal-->
-     <!--Role modal-->
-     <div aria-hidden="true" aria-labelledby="exampleModalCenterTitle" class="modal fade" id="exampleModalCenterChangeRole" role="dialog" tabindex="-1">
+    <!--Role modal-->
+    <div aria-hidden="true" aria-labelledby="exampleModalCenterTitle" class="modal fade" id="exampleModalCenterChangeRole" role="dialog" tabindex="-1">
         <div class="modal-dialog modal-dialog-centered" role="document">
             <div class="modal-content">
                 <div class="modal-body text-center">
