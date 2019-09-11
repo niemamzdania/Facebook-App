@@ -17,12 +17,13 @@ class AdminController extends AbstractController
      * @Route("/edit/email/{id}", name="edit_email")
      * @IsGranted("ROLE_ADMIN")
      */
-    public function edit_email(Request $request, Users $user)
+    public function edit_email(Request $request, Users $user, Session $session)
     {
         $email = $request->request->get('email');
         $user->setEmail($email);
         $entityManager = $this->getDoctrine()->getManager();
         $entityManager->flush();
+        $session->set('message', 'Email has been changed');
 
         return $this->redirectToRoute('show_users');
     }
@@ -31,12 +32,13 @@ class AdminController extends AbstractController
      * @Route("/edit/role/{id}", name="edit_role")
      * @IsGranted("ROLE_ADMIN")
      */
-    public function edit_role(Request $request, Users $user)
+    public function edit_role(Request $request, Users $user, Session $session)
     {
         $role = $request->request->get('roles');
         $user->setRoles([$role]);
         $entityManager = $this->getDoctrine()->getManager();
         $entityManager->flush();
+        $session->set('message', 'Role has been changed');
 
         return $this->redirectToRoute('show_users');
     }
