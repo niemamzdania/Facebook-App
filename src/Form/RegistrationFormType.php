@@ -28,6 +28,7 @@ class RegistrationFormType extends AbstractType
                     ])
                 ],
             ])
+            ->add('email', EmailType::class, ['attr' => ['class' => 'form-control']])
             ->add('plainPassword', RepeatedType::class, [
                 'type' => PasswordType::class,
                 'mapped' => false,
