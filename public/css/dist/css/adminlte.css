@@ -4663,8 +4663,6 @@ input[type="button"].btn-block {
   color: #202326;
 }
 
-
-
 .alert-info {
   color: #0c5460;
   background-color: #d1ecf1;
@@ -5734,16 +5732,14 @@ button.bg-secondary:focus {
   background-color: #545b62 !important;
 }
 
-.bg-success, .alert-success, .label-success {
+.bg-success, .label-success {
   background-color: #28a745 !important;
 }
 
-a.bg-success:hover, a.alert-success:hover, a.label-success:hover, a.bg-success:focus, a.alert-success:focus, a.label-success:focus,
+a.bg-success:hover, a.label-success:hover, a.bg-success:focus, a.label-success:focus,
 button.bg-success:hover,
-button.alert-success:hover,
 button.label-success:hover,
 button.bg-success:focus,
-button.alert-success:focus,
 button.label-success:focus {
   background-color: #1e7e34 !important;
 }
@@ -10969,13 +10965,13 @@ label:not(.form-check-label):not(.custom-file-label) {
   border-top: 3px solid #28a745;
 }
 
-.bg-success .btn-tool, .alert-success .btn-tool, .label-success .btn-tool,
+.bg-success .btn-tool, .label-success .btn-tool,
 .bg-success-gradient .btn-tool,
 .card-success:not(.card-outline) .btn-tool {
   color: rgba(255, 255, 255, 0.8);
 }
 
-.bg-success .btn-tool:hover, .alert-success .btn-tool:hover, .label-success .btn-tool:hover,
+.bg-success .btn-tool:hover, .label-success .btn-tool:hover,
 .bg-success-gradient .btn-tool:hover,
 .card-success:not(.card-outline) .btn-tool:hover {
   color: #ffffff;
@@ -11183,12 +11179,12 @@ label:not(.form-check-label):not(.custom-file-label) {
   background-color: #ffffff;
 }
 
-.info-box.bg-success, .info-box.alert-success, .info-box.label-success,
+.info-box.bg-success, .info-box.label-success,
 .info-box.bg-success-gradient {
   color: #ffffff;
 }
 
-.info-box.bg-success .progress-bar, .info-box.alert-success .progress-bar, .info-box.label-success .progress-bar,
+.info-box.bg-success .progress-bar, .info-box.label-success .progress-bar,
 .info-box.bg-success-gradient .progress-bar {
   background-color: #ffffff;
 }
@@ -11495,10 +11491,6 @@ label:not(.form-check-label):not(.custom-file-label) {
 .alert a {
   color: #ffffff;
   text-decoration: underline;
-}
-
-.alert-success {
-  border-color: #23923d;
 }
 
 .alert-danger,
@@ -12553,9 +12545,8 @@ a.text-muted:hover {
   color: #ffffff !important;
 }
 
-.bg-success, .alert-success, .label-success,
+.bg-success, .label-success,
 .bg-success a,
-.alert-success a,
 .label-success a {
   color: #ffffff !important;
 }
