@@ -17,7 +17,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Knp\Component\Pager\PaginatorInterface;
-
+use Symfony\Component\HttpFoundation\Session\Session;
 
 class PostsController extends AbstractController
 {
@@ -203,15 +203,28 @@ class PostsController extends AbstractController
     /**
      * @Route("/posts", name="show_posts")
      */
-    public function show_posts(Request $request, PaginatorInterface $paginator)
+    public function show_posts(Request $request, PaginatorInterface $paginator, Session $session)
     {
         $posts = $this->getDoctrine()->getRepository(Posts::class)->findAllPosts();
 
-        return $this->render('posts/show_posts.html.twig', ['posts' => $paginator->paginate(
-            $posts,
-            $request->query->getInt('page', 1),
-            8
-        )]);
+        if($session->get('message'))
+        {
+            $message = $session->get('message');
+            $session->remove('message');
+            return $this->render('posts/show_posts.html.twig', ['message' => $message, 'posts' => $paginator->paginate(
+                $posts,
+                $request->query->getInt('page', 1),
+                8
+            )]);
+        }
+        else
+        {
+            return $this->render('posts/show_posts.html.twig', ['posts' => $paginator->paginate(
+                $posts,
+                $request->query->getInt('page', 1),
+                8
+            )]);
+        }
     }
 
     /**
@@ -279,7 +292,7 @@ class PostsController extends AbstractController
      * @Route("/post/delete/{id}", name="delete_post")
      * @IsGranted("IS_AUTHENTICATED_FULLY")
      */
-    public function delete_post(Posts $post, Request $request)
+    public function delete_post(Posts $post, Request $request, Session $session)
     {
         if ($this->getUser() != $post->getUser()) {
             return new Response('Forbidden access');
@@ -311,6 +324,8 @@ class PostsController extends AbstractController
         if(!$request->request->get('onlyPhoto')) {
             $entityManager->remove($post);
             $entityManager->flush();
+            
+            $session->set('message', 'Post has been delete');
 
             return $this->redirectToRoute('show_posts');
         }

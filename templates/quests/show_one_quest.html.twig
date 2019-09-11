@@ -1,5 +1,13 @@
 {% extends 'mainpage/main.html.twig' %}
 {% block content %}
+    {% if message is defined %}
+        <div class="mt-3 alert alert-primary alert-dismissible fade show" role="alert">
+            {{message}}
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+    {% endif %}
     <div class="post_show">
         <h1 class="mb-5">Quest</h1>
 
