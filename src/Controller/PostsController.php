@@ -124,7 +124,7 @@ class PostsController extends AbstractController
      * @Route("/post/new", name="new_post")
      * @IsGranted("IS_AUTHENTICATED_FULLY")
      */
-    public function new_post(Request $request)
+    public function new_post(Request $request, Session $session)
     {
         $post = new Posts();
 
@@ -144,6 +144,8 @@ class PostsController extends AbstractController
             return $this->redirect($this->generateUrl('add_post'));
         }
         
+        $session->set('message','Post has been created');
+
         return $this->render('posts/new_post.html.twig', [
             'form' => $form->createView()
         ]);
@@ -217,7 +219,7 @@ class PostsController extends AbstractController
             return $this->render('posts/show_posts.html.twig', ['message' => $message, 'posts' => $paginator->paginate(
                 $posts,
                 $request->query->getInt('page', 1),
-                8
+                7
             )]);
         }
         else
