@@ -145,8 +145,6 @@ class PostsController extends AbstractController
 
             return $this->redirect($this->generateUrl('add_post'));
         }
-        
-        $session->set('message','Post has been created');
 
         return $this->render('posts/new_post.html.twig', [
             'form' => $form->createView()
@@ -157,7 +155,7 @@ class PostsController extends AbstractController
      * @Route("/post/add", name="add_post")
      * @IsGranted("IS_AUTHENTICATED_FULLY")
      */
-    public function add_post(Request $request, PostsService $postsService)
+    public function add_post(Session $session, Request $request, PostsService $postsService)
     {
         $post = new Posts();
 
@@ -170,6 +168,8 @@ class PostsController extends AbstractController
         $tempDirectory = $this->getParameter('upload_temp_directory');
 
         $postsService->saveNewPost($entityManager, $post, $directory, $tempDirectory, $request);
+
+        $session->set('message','Post has been created');
 
         return $this->redirectToRoute('show_posts');
     }
