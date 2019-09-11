@@ -24,7 +24,7 @@ class PostsController extends AbstractController
     /**
      * @Route("/post/send/{id}", name="send_post")
      */
-    public function send_post($id)
+    public function send_post($id, Session $session)
     {
         $user = $this->getUser();
 
@@ -86,6 +86,8 @@ class PostsController extends AbstractController
                 'message' => $message,
             ]);
         }
+        
+        $session->set('message','Post has been send');
 
         return $this->redirectToRoute('show_posts');
     }
@@ -94,7 +96,7 @@ class PostsController extends AbstractController
      * @Route("/post/save", name="save_post")
      * @IsGranted("IS_AUTHENTICATED_FULLY")
      */
-    public function save_post(Request $request, PostsService $postsService)
+    public function save_post(Request $request, PostsService $postsService, Session $session)
     {
         $session = $request->getSession();
 
@@ -113,8 +115,9 @@ class PostsController extends AbstractController
         $tempDirectory = $this->getParameter('upload_temp_directory');
 
         $postsService->saveEditedPost($entityManager, $post, $photo, $directory, $tempDirectory, $request);
+        $session->set('message','Post has been edited');
 
-        return $this->redirect('/post/edit/' . $post_number);
+        return $this->redirectToRoute('edit_post',['id' => $post_number]);
     }
 
     /**
@@ -231,7 +234,7 @@ class PostsController extends AbstractController
      * @Route("/post/edit/{id}", name="edit_post")
      * @IsGranted("IS_AUTHENTICATED_FULLY")
      */
-    public function edit_post(Posts $post, Request $request)
+    public function edit_post(Posts $post, Request $request, Session $session)
     {
         if ($this->getUser() != $post->getUser()) {
             return new Response('Forbidden access');
@@ -255,6 +258,12 @@ class PostsController extends AbstractController
         }
 
         $photo = $this->getDoctrine()->getRepository(Photos::class)->findPhotoByPostId($post->getId());
+        
+        $message = "";
+        if($session->get('message')){ 
+            $message = $session->get('message');
+            $session->remove('message');
+        }
 
         if ($photo) {
             $directory = $this->getParameter('upload_directory');
@@ -271,10 +280,10 @@ class PostsController extends AbstractController
             foreach ($finder as $file) {
                 $photoPath = $dateInString . '/' . $file->getRelativePathname();
             }
-
+            
             if (isset($photoPath)) {
                 return $this->render('posts/edit_post.html.twig', [
-                    'form' => $form->createView(), 'photoPath' => $photoPath, 'id' => $post->getId(),
+                    'form' => $form->createView(), 'photoPath' => $photoPath, 'message' => $message,'id' => $post->getId(),
                 ]);
             } else {
                 $entityManager = $this->getDoctrine()->getManager();
@@ -284,7 +293,7 @@ class PostsController extends AbstractController
         }
 
         return $this->render('posts/edit_post.html.twig', [
-            'form' => $form->createView(), 'id' => $post->getId(),
+            'form' => $form->createView(), 'message' => $message,'id' => $post->getId(),
         ]);
     }
 
