@@ -28,7 +28,16 @@ class RegistrationFormType extends AbstractType
                     ])
                 ],
             ])
-            ->add('email', EmailType::class, ['attr' => ['class' => 'form-control']])
+            ->add('email', EmailType::class, ['attr' => ['class' => 'form-control'],
+                'constraints' => [
+                    new Length([
+                        'min' => 3,
+                        'max' => 50,
+                        'minMessage' => "Email must be at least {{ limit }} characters long",
+                        'maxMessage' => "Email cannot be longer than {{ limit }} characters"
+                    ])
+                ],
+            ])
             ->add('plainPassword', RepeatedType::class, [
                 'type' => PasswordType::class,
                 'mapped' => false,

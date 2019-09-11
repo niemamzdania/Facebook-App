@@ -20,6 +20,15 @@ class AdminController extends AbstractController
     public function edit_email(Request $request, Users $user, Session $session)
     {
         $email = $request->request->get('email');
+
+        $repeat = $this->getDoctrine()->getRepository(Users::class)->findUserByEmail($email);
+
+        if($repeat) {
+            $session->set('error', 'This e-mail exist, please enter another one.');
+
+            return $this->redirectToRoute('show_users');
+        }
+
         $user->setEmail($email);
         $entityManager = $this->getDoctrine()->getManager();
         $entityManager->flush();
@@ -57,6 +66,13 @@ class AdminController extends AbstractController
             $session->remove('message');
 
             return $this->render('users/show_users.html.twig', ['users' => $users, 'message' => $message]);
+        }
+        elseif ($session->get('error'))
+        {
+            $error = $session->get('error');
+            $session->remove('error');
+
+            return $this->render('users/show_users.html.twig', ['users' => $users, 'error' => $error]);
         }
         else
         {

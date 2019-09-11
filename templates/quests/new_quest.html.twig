@@ -1,17 +1,20 @@
 {% extends 'mainpage/main.html.twig' %}
 {% block content %}
-    <form class="form form_new_quest mt-3" action="{{ path('add_quest') }}" method="POST">
+    <form class="form form_new_quest mt-3 font-weight-bold" action="{{ path('add_quest') }}" method="POST">
         <h1 class="mb-3">Create new quest</h1>
-        <div class="row">Content:<input class="form-control" type="textarea" oninvalid="setCustomValidity('Content must be between 3 and 200 characters.')"
-                                        minlength="3" maxlength="200" name="Content" value="{{ quest.Content }}" required></div>
-        <div class="row mb-3">Date:<input class="form-control" type="date" min="{{ minDate }}" max="{{ maxDate }}"
-                                          name="EndDate" required></div>
-        <div class="row">Select user:<select class="browser-default custom-select" name="user" required>
-                {% for user in users %}
-                    <option value="{{ user.id }}">{{ user.login }}</option>
-                {% endfor %}
-            </select>
-        </div>
+        <div class="mt-3 mb-2">Content:</div>
+        <input class="form-control" type="textarea"
+               oninvalid="setCustomValidity('Content must be between 3 and 200 characters.')"
+               minlength="3" maxlength="200" name="Content" value="{{ quest.Content }}" required>
+        <div class="mt-3 mb-2">Date:</div>
+        <input class="form-control" type="date" min="{{ minDate }}" max="{{ maxDate }}"
+               name="EndDate" required>
+        <div class="mt-3 mb-2">Select user:</div>
+        <select class="browser-default custom-select" name="user" required>
+            {% for user in users %}
+                <option value="{{ user.id }}">{{ user.login }}</option>
+            {% endfor %}
+        </select>
         <div class="row"><input class="btn btn-lg btn-secondary mt-4" type="submit" value="Submit"></div>
     </form>
 {% endblock %}

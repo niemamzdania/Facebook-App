@@ -2,20 +2,22 @@
 {% block content %}
     <div class="post_show">
         <h1 style="margin: 15px;">Edit quest</h1>
-        <form action="{{ path('save_quest') }}" method="POST">
+        <form class="font-weight-bold" action="{{ path('save_quest') }}" method="POST">
             <input type="hidden" name="id" value="{{ quest.Id }}">
             {% if is_granted('ROLE_ADMIN') %}
-                Content:<input class="form-control" type="textarea" oninput="setCustomValidity('')"
+                <div class="mt-3 mb-2">Content:</div>
+                <input class="form-control" type="textarea" oninput="setCustomValidity('')"
                                oninvalid="setCustomValidity('Content must be between 3 and 200 characters.')"
                                minlength="3" maxlength="200" name="Content" value="{{ quest.Content }}" required>
-                Date:<input class="form-control" type="date" min="{{ minDate }}" max="{{ maxDate }}" name="EndDate"
+                <div class="mt-3 mb-2">Date:</div>
+                <input class="form-control" type="date" min="{{ minDate }}" max="{{ maxDate }}" name="EndDate"
                     {% if questDate >= minDate %}
                         value="{{ questDate }}"
                     {% else %}
                         value="{{ minDate }}"
                     {% endif %}
                             required>
-                Select user:
+                <div class="mt-3 mb-2">Select user:</div>
                 <div>
                     <select class="browser-default custom-select" name="user" required>
                         {% for user in users %}
@@ -26,7 +28,7 @@
             {% elseif is_granted('ROLE_USER') %}
                 {{ quest.Content }}
             {% endif %}
-            Status:
+            <div class="mt-3 mb-2">Status:</div>
             <select class="browser-default custom-select" name="Status">
                 <option value="0" {% if quest.Status == 0 %} selected {% endif %}>0%</option>
                 <option value="20" {% if quest.Status == 20 %} selected {% endif %}>20%</option>

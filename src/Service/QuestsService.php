@@ -21,7 +21,6 @@ class QuestsService
 
     public function saveEditedQuest($entityManager, $quest, $request)
     {
-        $quest->setAddDate(new \DateTime());
         $quest->setStatus($request->request->get('Status') + 0);
 
         $dateInString = $request->request->get('EndDate');
