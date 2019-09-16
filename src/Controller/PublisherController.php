@@ -2,6 +2,8 @@
 
 namespace App\Controller;
 
+use App\Entity\Users;
+
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -16,7 +18,7 @@ class PublisherController extends AbstractController
      */
     public function publish(Publisher $publisher, $topic, Request $request)
     {
-        $publisher(new Update($topic, $request->request->get('Content')));
+        $publisher(new Update('1e9', $request->request->get('Content')));
         return new Response('success');
     }
 
@@ -37,11 +39,20 @@ class PublisherController extends AbstractController
      */
     public function chat()
     {
-        return $this->render('chat/index.html.twig', [
-            'config' => [
-                'topic' => '1e9',
-                'publishRoute' => $this->generateUrl('publisher', ['topic' => '1e9'])
-            ]
-        ]);
+        $users = $this->getDoctrine()->getRepository(Users::class)->findAllUsers();
+
+        return $this->render('chat/index.html.twig', ['users' => $users]);
+    }
+
+    /**
+     * @Route("/ping", name="ping", methods={"POST"})
+     */
+    public function ping(Publisher $publisher)
+    {
+        $update = new Update('1e9', "[]");
+
+        $publisher($update);
+
+        return $this->redirectToRoute('chat');
     }
 }
