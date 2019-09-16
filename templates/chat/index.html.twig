@@ -1,7 +1,5 @@
 {% extends('mainpage/main.html.twig') %}
 {% block content %}
-
-
     <h1>Chat example</h1>
 
     <form>
@@ -14,7 +12,10 @@
     <div id="messages">
         No messages
     </div>
-    <script type="application/json" id="config">{{ config|json_encode()|raw }}</script>
+    <script type="application/json" id="config">
+    {{ config|json_encode()|raw }}
+
+    </script>
     <script>
         const {topic, publishRoute} = JSON.parse(document.getElementById('config').textContent);
 
@@ -51,6 +52,4 @@
             this.elements.message.focus();
         }
     </script>
-
-
 {% endblock %}

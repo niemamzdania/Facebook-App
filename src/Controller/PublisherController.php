@@ -16,8 +16,19 @@ class PublisherController extends AbstractController
      */
     public function publish(Publisher $publisher, $topic, Request $request)
     {
+        $publisher(new Update($topic, $request->request->get('Content')));
+        return new Response('success');
+    }
 
-        $publisher(new Update($topic, $request->getContent()));
+    /**
+     * @Route("/publish2/{topic}", name="publisher2")
+     */
+    public function publish2(Publisher $publisher, $topic, Request $request)
+    {
+        $content = "Content";
+
+        $publisher(new Update($topic, $content));
+        //dd($publisher);
         return new Response('success');
     }
 
