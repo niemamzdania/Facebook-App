@@ -1,20 +1,34 @@
 {% extends('mainpage/main.html.twig') %}
 {% block content %}
     <h1>Chat example</h1>
-    <form action="{{ path('publisher', {topic: topic}) }}" method="POST">
-        <input type="text" name="Content" required>
-        <button class="btn btn-secondary">Ping!</button>
-    </form>
-
-    <div class="interceptedMessages"></div>
-
+    <div class="container-fluid">
+        <div class="row" style="height: 100%;">
+            <div class="col-4" style="border: 2px solid gray; height: 100%; padding: 0;">
+                <h3>FbChat!</h3>
+                {% for user in users %}
+                    <div style="border-top: 2px solid gray; height: 100%; padding: 5px;"><i class="fas fa-user"></i>
+                        <h4>{{ user.email }}</h4></div>
+                {% endfor %}
+            </div>
+            <div class="col-8" style="border: 2px solid gray; padding: 0;">
+                <div style="border-bottom: 2px solid gray;">
+                    <h3>Conversation</h3>
+                </div>
+                <div class="interceptedMessages"></div>
+                <form action="{{ path('publisher', {topic: topic}) }}" method="POST">
+                    <input type="text" name="Content" required>
+                    <button class="btn btn-secondary">Ping!</button>
+                </form>
+            </div>
+        </div>
+    </div>
     <script>
         const url = new URL('http://localhost:8080/hub');
         url.searchParams.append('topic', '1e9');
         const eventSource = new EventSource(url)
         eventSource.onmessage = e => {
             $interceptedMessage = e.data;
-            document.querySelector(".interceptedMessages").insertAdjacentHTML('beforeend', "<div>"+ $interceptedMessage+"</div>")
+            document.querySelector(".interceptedMessages").insertAdjacentHTML('beforeend', "<div>" + $interceptedMessage + "</div>")
         }
     </script>
 {% endblock %}
