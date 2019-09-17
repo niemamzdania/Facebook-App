@@ -4,6 +4,7 @@ namespace App\Controller;
 
 use App\Entity\Users;
 
+use Symfony\Component\HttpFoundation\Session\Session;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -16,43 +17,21 @@ class PublisherController extends AbstractController
     /**
      * @Route("/publish/{topic}", name="publisher", methods={"POST"})
      */
-    public function publish(Publisher $publisher, $topic, Request $request)
+    public function publish($topic, Publisher $publisher, Request $request, Session $session)
     {
-        $publisher(new Update('1e9', $request->request->get('Content')));
-        return new Response('success');
-    }
+        $update = new Update($topic, $request->request->get('Content'));
 
-    /**
-     * @Route("/publish2/{topic}", name="publisher2")
-     */
-    public function publish2(Publisher $publisher, $topic, Request $request)
-    {
-        $content = "Content";
+        $publisher($update);
 
-        $publisher(new Update($topic, $content));
-        //dd($publisher);
-        return new Response('success');
+        return $this->redirectToRoute('chat');
     }
 
     /**
      * @Route("/chat", name="chat")
      */
-    public function chat()
+    public function chat(Session $session)
     {
-        $users = $this->getDoctrine()->getRepository(Users::class)->findAllUsers();
 
-        return $this->render('chat/index.html.twig', ['users' => $users]);
-    }
-
-    /**
-     * @Route("/ping", name="ping", methods={"POST"})
-     */
-    public function ping(Publisher $publisher)
-    {
-        $update = new Update('1e9', "[]");
-
-        $publisher($update);
-
-        return $this->redirectToRoute('chat');
+        return $this->render('chat/index.html.twig', ['topic' => '1e9']);
     }
 }
