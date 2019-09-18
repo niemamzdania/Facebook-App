@@ -22,19 +22,28 @@ class ConversationsRepository extends ServiceEntityRepository
     // /**
     //  * @return Conversations[] Returns an array of Conversations objects
     //  */
-    /*
-    public function findByExampleField($value)
+
+    public function findByUserId($id)
     {
         return $this->createQueryBuilder('c')
-            ->andWhere('c.exampleField = :val')
-            ->setParameter('val', $value)
+            ->andWhere('c.user_1 = :val OR c.user_2 = :val')
+            ->setParameter('val', $id)
             ->orderBy('c.id', 'ASC')
-            ->setMaxResults(10)
             ->getQuery()
             ->getResult()
         ;
     }
-    */
+
+    public function findById($id)
+    {
+        return $this->createQueryBuilder('c')
+            ->andWhere('c.id = :val')
+            ->setParameter('val', $id)
+            ->getQuery()
+            ->getOneOrNullResult()
+            ;
+    }
+
 
     /*
     public function findOneBySomeField($value): ?Conversations

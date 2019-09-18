@@ -14,7 +14,8 @@
             font-size: 18px;
             font-weight: bold;
         }
-        .oldMessage{
+
+        .oldMessage {
             width: 60%;
             margin: 15px 15px;
             color: white;
@@ -30,21 +31,27 @@
     </style>
     <div class="container-fluid mt-5">
         <div class="row" style="min-height: 550px; max-height: 550px;">
-            <div class="col-3 ml-3" style="border: 1px solid lightgray; height: 100%; padding: 0; background: white; min-height: 550px; max-height: 550px;">
+            <div class="col-3 ml-3"
+                 style="border: 1px solid lightgray; height: 100%; padding: 0; background: white; min-height: 550px; max-height: 550px;">
                 <div class="mt-2 mb-2" style="text-align:center;">
                     <h3>Messages</h3>
                 </div>
                 <div class="users" style="overflow-y: scroll; overflow-y: scroll;min-height:450px; max-height: 450px;">
-                {% for user in users %}
-                    <div class="row" style="border-top: 1px solid lightgray; height: 100%; padding: 5px;">
-                        <div div="col-4" style="padding-top: 10px; padding-bottom: 10px;">
-                            <img class="ml-3" style="height: 30px; width: auto; border-radius:50%;" src="{{asset('images/user2.png')}}">
+                    {% for conversation in conversations %}
+                        <div class="row" style="border-top: 1px solid lightgray; height: 100%; padding: 5px;">
+                            <div div="col-4" style="padding-top: 10px; padding-bottom: 10px;">
+                                <img class="ml-3" style="height: 30px; width: auto; border-radius:50%;"
+                                     src="{{ asset('images/user2.png') }}">
+                            </div>
+                            <div class="col-8 ml-2" style="padding-top: 10px; padding-bottom: 10px;">
+                                {% if app.user.id == conversation.user1.Id %}
+                                    <a href="{{ path('one_chat', {conversation: conversation.Id}) }}"><h5>{{ conversation.user2.login }}</h5></a>
+                                {% elseif app.user.Id != conversation.user1.Id %}
+                                    <a href="{{ path('one_chat', {conversation: conversation.Id}) }}"><h5>{{ conversation.user1.login }}</h5></a>
+                                {% endif %}
+                            </div>
                         </div>
-                        <div class="col-8 ml-2" style="padding-top: 10px; padding-bottom: 10px;">
-                            <h5>{{ user.email }}</h5>
-                        </div>
-                    </div>
-                {% endfor %}
+                    {% endfor %}
                 </div>
             </div>
             <div class="col-8 ml-5" style="border: 1px solid lightgray; padding: 0; background: white;">
@@ -54,15 +61,16 @@
                     </div>
                 </div>
                 <div class="interceptedMessages" style="overflow-y: scroll;min-height:450px; max-height: 450px;">
-                    <div class="oldMessage">gjthogireghoirhegoirheoig</div>
-                    <div class="oldMessage">gjthogireghoirhegoirheoiggjthogireghoirhegoirheoig</div>
-                    <div class="oldMessage">gjthogireghoirhegoirheoiggjthogireghoirhegoirheoiggjthogireghoirhegoirheoiggjthogireghoirhegoirheoiggjthogireghoirhegoirheoig</div>
+
                 </div>
                 <div style="border-top: 1px solid lightgray;">
-                {#<form action="{{ path('send_message', {topic: topic}) }}" method="POST">#}
-                    <input style="width: 80%; border: none; padding-left: 15px;" type="text" class="messageInput" name="Content" required>
-                    <button onclick="sendMessage()" style="width: 19.6%; border-radius:0px;" class="btn btn-secondary button_send">Send</button>
-                {#</form>#}
+                    {#<form action="{{ path('send_message', {topic: topic}) }}" method="POST">#}
+                    <input style="width: 80%; border: none; padding-left: 15px;" type="text" class="messageInput"
+                           name="Content" required>
+                    <button onclick="sendMessage()" style="width: 19.6%; border-radius:0px;"
+                            class="btn btn-secondary button_send">Send
+                    </button>
+                    {#</form>#}
                 </div>
             </div>
         </div>
@@ -75,14 +83,15 @@
             $interceptedMessage = e.data;
             document.querySelector(".interceptedMessages").insertAdjacentHTML('beforeend', "<div class=" + "newMessage" + ">" + $interceptedMessage + "</div>")
         }
-        function sendMessage(){
-           let message = document.querySelector(".messageInput").value;
-           document.querySelector(".messageInput").value='';          
-           $.ajax({
-               url: "message/send/1e9",
-               method: "POST",
-               data: {Content: message},
-               });
+
+        function sendMessage() {
+            let message = document.querySelector(".messageInput").value;
+            document.querySelector(".messageInput").value = '';
+            $.ajax({
+                url: "message/send/1e9",
+                method: "POST",
+                data: {Content: message},
+            });
         }
     </script>
 {% endblock %}

@@ -22,19 +22,18 @@ class MessagesRepository extends ServiceEntityRepository
     // /**
     //  * @return Messages[] Returns an array of Messages objects
     //  */
-    /*
-    public function findByExampleField($value)
+
+    public function findMessageByConvId($convId)
     {
         return $this->createQueryBuilder('m')
-            ->andWhere('m.exampleField = :val')
-            ->setParameter('val', $value)
-            ->orderBy('m.id', 'ASC')
-            ->setMaxResults(10)
+            ->andWhere('m.conv_id = :val')
+            ->setParameter('val', $convId)
+            ->orderBy('m.time', 'ASC')
             ->getQuery()
             ->getResult()
         ;
     }
-    */
+
 
     /*
     public function findOneBySomeField($value): ?Messages
