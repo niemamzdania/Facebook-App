@@ -1,23 +1,86 @@
 {% extends('mainpage/main.html.twig') %}
 {% block content %}
-    <h1>Chat example</h1>
-    <div class="container-fluid">
-        <div class="row" style="height: 100%;">
-            <div class="col-4" style="border: 2px solid gray; height: 100%; padding: 0;">
-                <h3>FbChat!</h3>
-                {% for user in users %}
-                    <div style="border-top: 2px solid gray; height: 100%; padding: 5px;"><i class="fas fa-user"></i>
-                        <h4>{{ user.email }}</h4></div>
-                {% endfor %}
-            </div>
-            <div class="col-8" style="border: 2px solid gray; padding: 0;">
-                <div style="border-bottom: 2px solid gray;">
-                    <h3>Conversation</h3>
+    <style>
+        .newMessage {
+            background: gray;
+            width: 60%;
+            margin: 15px 15px;
+            color: white;
+            /*background: #00cc00;*/
+            padding: 10px;
+            border-radius: 5px;
+            min-height: 40px;
+            word-wrap: break-word;
+            font-size: 18px;
+            font-weight: bold;
+        }
+        .oldMessage{
+            width: 60%;
+            margin: 15px 15px;
+            color: white;
+            background: #00b300;
+            padding: 10px;
+            border-radius: 5px;
+            min-height: 40px;
+            word-wrap: break-word;
+            font-size: 18px;
+            font-weight: bold;
+            margin-left: 37%;
+        }
+    </style>
+    <div class="container-fluid mt-5">
+        <div class="row" style="min-height: 550px; max-height: 550px;">
+            <div class="col-3 ml-3" style="border: 1px solid lightgray; height: 100%; padding: 0; background: white; min-height: 550px; max-height: 550px;">
+                <div class="mt-2 mb-2" style="text-align:center;">
+                    <h3>Messages</h3>
                 </div>
-                <div class="interceptedMessages"></div>
+                <div class="users" style="overflow-y: scroll; overflow-y: scroll;min-height:450px; max-height: 450px;">
+                {% for user in users %}
+                    <div class="row" style="border-top: 1px solid lightgray; height: 100%; padding: 5px;">
+                        <div div="col-4" style="padding-top: 10px; padding-bottom: 10px;">
+                            <img class="ml-3" style="height: 30px; width: auto; border-radius:50%;" src="{{asset('images/user2.png')}}">
+                        </div>
+                        <div class="col-8 ml-2" style="padding-top: 10px; padding-bottom: 10px;">
+                            <h5>{{ user.email }}</h5>
+                        </div>
+                    </div>
+                {% endfor %}
+                 {% for user in users %}
+                    <div class="row" style="border-top: 1px solid lightgray; height: 100%; padding: 5px;">
+                        <div div="col-4" style="padding-top: 10px; padding-bottom: 10px;">
+                            <img class="ml-3" style="height: 30px; width: auto; border-radius:50%;" src="{{asset('images/user2.png')}}">
+                        </div>
+                        <div class="col-8 ml-2" style="padding-top: 10px; padding-bottom: 10px;">
+                            <h5>{{ user.email }}</h5>
+                        </div>
+                    </div>
+                {% endfor %}
+                 {% for user in users %}
+                    <div class="row" style="border-top: 1px solid lightgray; height: 100%; padding: 5px;">
+                        <div div="col-4" style="padding-top: 10px; padding-bottom: 10px;">
+                            <img class="ml-3" style="height: 30px; width: auto; border-radius:50%;" src="{{asset('images/user2.png')}}">
+                        </div>
+                        <div class="col-8 ml-2" style="padding-top: 10px; padding-bottom: 10px;">
+                            <h5>{{ user.email }}</h5>
+                        </div>
+                    </div>
+                {% endfor %}
+                </div>
+            </div>
+            <div class="col-8 ml-5" style="border: 1px solid lightgray; padding: 0; background: white;">
+                <div style="border-bottom: 1px solid gray;">
+                    <div class="mt-2 mb-2" style="text-align:center;">
+                        <h3>Conversation</h3>
+                    </div>
+                </div>
+                <div class="interceptedMessages" style="overflow-y: scroll;min-height:450px; max-height: 450px;">
+                    <div class="oldMessage">gjthogireghoirhegoirheoig</div>
+                    <div class="oldMessage">gjthogireghoirhegoirheoiggjthogireghoirhegoirheoig</div>
+                    <div class="oldMessage">gjthogireghoirhegoirheoiggjthogireghoirhegoirheoiggjthogireghoirhegoirheoiggjthogireghoirhegoirheoiggjthogireghoirhegoirheoig</div>
+                </div>
                 <form action="{{ path('publisher', {topic: topic}) }}" method="POST">
-                    <input type="text" name="Content" required>
-                    <button class="btn btn-secondary">Ping!</button>
+                    <input style="width: 80%;" type="text" name="Content" required>
+                    <button style="width: 19%;" class="btn btn-secondary">Send</button>
                 </form>
             </div>
         </div>
@@ -28,7 +91,7 @@
         const eventSource = new EventSource(url)
         eventSource.onmessage = e => {
             $interceptedMessage = e.data;
-            document.querySelector(".interceptedMessages").insertAdjacentHTML('beforeend', "<div>" + $interceptedMessage + "</div>")
+            document.querySelector(".interceptedMessages").insertAdjacentHTML('beforeend', "<div class=" + "newMessage" + ">" + $interceptedMessage + "</div>")
         }
     </script>
 {% endblock %}
