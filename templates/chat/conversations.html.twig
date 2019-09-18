@@ -78,7 +78,7 @@
                     <div class="oldMessage">gjthogireghoirhegoirheoiggjthogireghoirhegoirheoig</div>
                     <div class="oldMessage">gjthogireghoirhegoirheoiggjthogireghoirhegoirheoiggjthogireghoirhegoirheoiggjthogireghoirhegoirheoiggjthogireghoirhegoirheoig</div>
                 </div>
-                <form action="{{ path('publisher', {topic: topic}) }}" method="POST">
+                <form action="{{ path('send_message', {topic: topic}) }}" method="POST">
                     <input style="width: 80%;" type="text" name="Content" required>
                     <button style="width: 19%;" class="btn btn-secondary">Send</button>
                 </form>

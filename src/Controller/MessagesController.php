@@ -12,10 +12,10 @@ use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Mercure\Publisher;
 use Symfony\Component\Mercure\Update;
 
-class PublisherController extends AbstractController
+class MessagesController extends AbstractController
 {
     /**
-     * @Route("/publish/{topic}", name="publisher", methods={"POST"})
+     * @Route("/message/send/{topic}", name="send_message", methods={"POST"})
      * @IsGranted("IS_AUTHENTICATED_FULLY")
      */
     public function publish($topic, Publisher $publisher, Request $request, Session $session)
@@ -35,6 +35,6 @@ class PublisherController extends AbstractController
     {
         $users = $this->getDoctrine()->getRepository(Users::class)->findAllUsers();
 
-        return $this->render('chat/index.html.twig', ['topic' => '1e9','users' => $users]);
+        return $this->render('chat/conversations.html.twig', ['topic' => '1e9','users' => $users]);
     }
 }
