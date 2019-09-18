@@ -45,26 +45,6 @@
                         </div>
                     </div>
                 {% endfor %}
-                 {% for user in users %}
-                    <div class="row" style="border-top: 1px solid lightgray; height: 100%; padding: 5px;">
-                        <div div="col-4" style="padding-top: 10px; padding-bottom: 10px;">
-                            <img class="ml-3" style="height: 30px; width: auto; border-radius:50%;" src="{{asset('images/user2.png')}}">
-                        </div>
-                        <div class="col-8 ml-2" style="padding-top: 10px; padding-bottom: 10px;">
-                            <h5>{{ user.email }}</h5>
-                        </div>
-                    </div>
-                {% endfor %}
-                 {% for user in users %}
-                    <div class="row" style="border-top: 1px solid lightgray; height: 100%; padding: 5px;">
-                        <div div="col-4" style="padding-top: 10px; padding-bottom: 10px;">
-                            <img class="ml-3" style="height: 30px; width: auto; border-radius:50%;" src="{{asset('images/user2.png')}}">
-                        </div>
-                        <div class="col-8 ml-2" style="padding-top: 10px; padding-bottom: 10px;">
-                            <h5>{{ user.email }}</h5>
-                        </div>
-                    </div>
-                {% endfor %}
                 </div>
             </div>
             <div class="col-8 ml-5" style="border: 1px solid lightgray; padding: 0; background: white;">
@@ -78,10 +58,12 @@
                     <div class="oldMessage">gjthogireghoirhegoirheoiggjthogireghoirhegoirheoig</div>
                     <div class="oldMessage">gjthogireghoirhegoirheoiggjthogireghoirhegoirheoiggjthogireghoirhegoirheoiggjthogireghoirhegoirheoiggjthogireghoirhegoirheoig</div>
                 </div>
-                <form action="{{ path('send_message', {topic: topic}) }}" method="POST">
-                    <input style="width: 80%;" type="text" name="Content" required>
-                    <button style="width: 19%;" class="btn btn-secondary">Send</button>
-                </form>
+                <div style="border-top: 1px solid lightgray;">
+                {#<form action="{{ path('send_message', {topic: topic}) }}" method="POST">#}
+                    <input style="width: 80%; border: none; padding-left: 15px;" type="text" class="messageInput" name="Content" required>
+                    <button onclick="sendMessage()" style="width: 19.6%; border-radius:0px;" class="btn btn-secondary button_send">Send</button>
+                {#</form>#}
+                </div>
             </div>
         </div>
     </div>
@@ -92,6 +74,15 @@
         eventSource.onmessage = e => {
             $interceptedMessage = e.data;
             document.querySelector(".interceptedMessages").insertAdjacentHTML('beforeend', "<div class=" + "newMessage" + ">" + $interceptedMessage + "</div>")
+        }
+        function sendMessage(){
+           let message = document.querySelector(".messageInput").value;
+           document.querySelector(".messageInput").value='';          
+           $.ajax({
+               url: "message/send/1e9",
+               method: "POST",
+               data: {Content: message},
+               });
         }
     </script>
 {% endblock %}

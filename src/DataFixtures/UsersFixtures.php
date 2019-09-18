@@ -5,10 +5,11 @@ namespace App\DataFixtures;
 use App\Entity\Users;
 
 use Doctrine\Bundle\FixturesBundle\Fixture;
+use Doctrine\Bundle\FixturesBundle\FixtureGroupInterface;
 use Doctrine\Common\Persistence\ObjectManager;
 use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 
-class UsersFixtures extends Fixture
+class UsersFixtures extends Fixture implements FixtureGroupInterface
 {
     private $passwordEncoder;
 
@@ -38,5 +39,10 @@ class UsersFixtures extends Fixture
         $manager->persist($user);
 
         $manager->flush();
+    }
+
+    public static function getGroups(): array
+    {
+        return ['group1'];
     }
 }

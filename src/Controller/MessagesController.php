@@ -3,6 +3,8 @@
 namespace App\Controller;
 
 use App\Entity\Users;
+use App\Entity\Conversations;
+use App\Entity\Messages;
 
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Component\HttpFoundation\Session\Session;
@@ -20,7 +22,9 @@ class MessagesController extends AbstractController
      */
     public function publish($topic, Publisher $publisher, Request $request, Session $session)
     {
-        $update = new Update($topic, $request->request->get('Content'));
+        $update = new Update((string)$topic, $request->request->get('Content'));
+
+
 
         $publisher($update);
 
@@ -35,6 +39,7 @@ class MessagesController extends AbstractController
     {
         $users = $this->getDoctrine()->getRepository(Users::class)->findAllUsers();
 
-        return $this->render('chat/conversations.html.twig', ['topic' => '1e9','users' => $users]);
+        return $this->render('chat/conversations.html.twig', ['topic' => '
+        ','users' => $users]);
     }
 }

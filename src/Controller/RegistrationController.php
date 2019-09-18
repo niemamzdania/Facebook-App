@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\Entity\Conversations;
 use App\Entity\Users;
 use App\Form\RegistrationFormType;
 use App\Security\LoginFormAuthenticator;
@@ -39,6 +40,20 @@ class RegistrationController extends AbstractController
 
             $entityManager = $this->getDoctrine()->getManager();
             $entityManager->persist($user);
+
+            //Create conversations for new user
+            $users = $this->getDoctrine()->getRepository(Users::class)->findAllUsers();
+
+            for($i = 0; $i < count($users); $i++)
+            {
+                if($users[$i] == $user)
+                    continue;
+                $conversation = new Conversations();
+                $conversation->setUser1($user);
+                $conversation->setUser2($users[$i]);
+                $entityManager->persist($conversation);
+            }
+
             $entityManager->flush();
             
             $session->set('message', 'User has been created');    
