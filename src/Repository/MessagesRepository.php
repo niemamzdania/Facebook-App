@@ -23,7 +23,7 @@ class MessagesRepository extends ServiceEntityRepository
     //  * @return Messages[] Returns an array of Messages objects
     //  */
 
-    public function findMessageByConvId($convId)
+    public function findMessagesByConvId($convId)
     {
         return $this->createQueryBuilder('m')
             ->andWhere('m.conv_id = :val')

@@ -22,7 +22,7 @@ class Messages
      *
      * @ORM\ManyToOne(targetEntity="Conversations")
      * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="conv_id", referencedColumnName="id")
+     *   @ORM\JoinColumn(name="conv_id", referencedColumnName="id", onDelete="CASCADE")
      * })
      */
     private $conv_id;
@@ -32,7 +32,7 @@ class Messages
      *
      * @ORM\ManyToOne(targetEntity="Users")
      * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="sender", referencedColumnName="id")
+     *   @ORM\JoinColumn(name="sender", referencedColumnName="id", onDelete="CASCADE")
      * })
      */
     private $sender;
@@ -42,7 +42,7 @@ class Messages
      *
      * @ORM\ManyToOne(targetEntity="Users")
      * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="recipient", referencedColumnName="id")
+     *   @ORM\JoinColumn(name="recipient", referencedColumnName="id", onDelete="CASCADE")
      * })
      */
     private $recipient;
@@ -57,12 +57,12 @@ class Messages
         return $this->id;
     }
 
-    public function getConvId(): ?int
+    public function getConvId(): ?Conversations
     {
         return $this->conv_id;
     }
 
-    public function setConvId(int $conv_id): self
+    public function setConvId(?Conversations $conv_id): self
     {
         $this->conv_id = $conv_id;
 

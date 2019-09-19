@@ -1,6 +1,7 @@
 <?php
 
 namespace App\Entity;
+use App\Entity\Users;
 
 use Doctrine\ORM\Mapping as ORM;
 
@@ -22,7 +23,7 @@ class Conversations
      *
      * @ORM\ManyToOne(targetEntity="Users")
      * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="user_1", referencedColumnName="id")
+     *   @ORM\JoinColumn(name="user_1", referencedColumnName="id", onDelete="CASCADE")
      * })
      */
     private $user_1;
@@ -32,7 +33,7 @@ class Conversations
      *
      * @ORM\ManyToOne(targetEntity="Users")
      * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="user_2", referencedColumnName="id")
+     *   @ORM\JoinColumn(name="user_2", referencedColumnName="id", onDelete="CASCADE")
      * })
      */
     private $user_2;

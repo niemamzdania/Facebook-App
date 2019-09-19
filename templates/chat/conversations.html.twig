@@ -34,7 +34,7 @@
             <div class="col-3 ml-3"
                  style="border: 1px solid lightgray; height: 100%; padding: 0; background: white; min-height: 550px; max-height: 550px;">
                 <div class="mt-2 mb-2" style="text-align:center;">
-                    <h3>Messages</h3>
+                    <h3>Conversations</h3>
                 </div>
                 <div class="users" style="overflow-y: scroll; overflow-y: scroll;min-height:450px; max-height: 450px;">
                     {% for conversation in conversations %}
@@ -57,20 +57,20 @@
             <div class="col-8 ml-5" style="border: 1px solid lightgray; padding: 0; background: white;">
                 <div style="border-bottom: 1px solid gray;">
                     <div class="mt-2 mb-2" style="text-align:center;">
-                        <h3>Conversation</h3>
+                        <h3>Messages</h3>
                     </div>
                 </div>
                 <div class="interceptedMessages" style="overflow-y: scroll;min-height:450px; max-height: 450px;">
 
                 </div>
                 <div style="border-top: 1px solid lightgray;">
-                    {#<form action="{{ path('send_message', {topic: topic}) }}" method="POST">#}
+                    <form action="{{ path('send_message', {topic: topic}) }}" method="POST">
                     <input style="width: 80%; border: none; padding-left: 15px;" type="text" class="messageInput"
                            name="Content" required>
                     <button onclick="sendMessage()" style="width: 19.6%; border-radius:0px;"
                             class="btn btn-secondary button_send">Send
                     </button>
-                    {#</form>#}
+                    </form>
                 </div>
             </div>
         </div>
@@ -84,14 +84,14 @@
             document.querySelector(".interceptedMessages").insertAdjacentHTML('beforeend', "<div class=" + "newMessage" + ">" + $interceptedMessage + "</div>")
         }
 
-        function sendMessage() {
+        /*function sendMessage() {
             let message = document.querySelector(".messageInput").value;
             document.querySelector(".messageInput").value = '';
             $.ajax({
-                url: "message/send/1e9",
+                url: "message/send/" + {{ topic }},
                 method: "POST",
                 data: {Content: message},
             });
-        }
+        }*/
     </script>
 {% endblock %}

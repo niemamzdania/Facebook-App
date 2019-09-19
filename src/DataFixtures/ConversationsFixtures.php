@@ -25,10 +25,9 @@ class ConversationsFixtures extends Fixture implements FixtureGroupInterface
                 $conversation->setUser1($users[$i]);
                 $conversation->setUser2($users[$j]);
                 $manager->persist($conversation);
+                $manager->flush();
             }
         }
-
-        $manager->flush();
     }
 
     public static function getGroups(): array

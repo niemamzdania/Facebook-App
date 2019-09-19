@@ -23,7 +23,7 @@ class ConversationsRepository extends ServiceEntityRepository
     //  * @return Conversations[] Returns an array of Conversations objects
     //  */
 
-    public function findByUserId($id)
+    public function findConvByUserId($id)
     {
         return $this->createQueryBuilder('c')
             ->andWhere('c.user_1 = :val OR c.user_2 = :val')
@@ -34,7 +34,7 @@ class ConversationsRepository extends ServiceEntityRepository
         ;
     }
 
-    public function findById($id)
+    public function findConvById($id)
     {
         return $this->createQueryBuilder('c')
             ->andWhere('c.id = :val')
