@@ -52,6 +52,11 @@ class Messages
      */
     private $time;
 
+    /**
+     * @ORM\Column(type="string", length=255)
+     */
+    private $content;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -101,6 +106,18 @@ class Messages
     public function setTime(\DateTimeInterface $time): self
     {
         $this->time = $time;
+
+        return $this;
+    }
+
+    public function getContent(): ?string
+    {
+        return $this->content;
+    }
+
+    public function setContent(string $content): self
+    {
+        $this->content = $content;
 
         return $this;
     }

@@ -45,9 +45,13 @@
                             </div>
                             <div class="col-8 ml-2" style="padding-top: 10px; padding-bottom: 10px;">
                                 {% if app.user.id == conversation.user1.Id %}
-                                    <a href="{{ path('one_chat', {conversation: conversation.Id}) }}"><h5>{{ conversation.user2.login }}</h5></a>
+                                    <a class="selectChat"
+                                       href="{{ path('one_chat', {conversation: conversation.Id}) }}">
+                                        <h5>{{ conversation.user2.login }}</h5></a>
                                 {% elseif app.user.Id != conversation.user1.Id %}
-                                    <a href="{{ path('one_chat', {conversation: conversation.Id}) }}"><h5>{{ conversation.user1.login }}</h5></a>
+                                    <a class="selectChat"
+                                       href="{{ path('one_chat', {conversation: conversation.Id}) }}">
+                                        <h5>{{ conversation.user1.login }}</h5></a>
                                 {% endif %}
                             </div>
                         </div>
@@ -61,37 +65,72 @@
                     </div>
                 </div>
                 <div class="interceptedMessages" style="overflow-y: scroll;min-height:450px; max-height: 450px;">
-
+                    {% if topic is defined %}
+                        {% for message in messages %}
+                            {% if message.Sender == app.user %}
+                                <div class="oldMessage">
+                                    {{ message.Content }}
+                                </div>
+                            {% else %}
+                                <div class="newMessage">
+                                    {{ message.Content }}
+                                </div>
+                            {% endif %}
+                        {% endfor %}
+                    {% else %}
+                        <h1>
+                            <center>Select Conversation</center>
+                        </h1>
+                    {% endif %}
                 </div>
-                <div style="border-top: 1px solid lightgray;">
-                    <form action="{{ path('send_message', {topic: topic}) }}" method="POST">
-                    <input style="width: 80%; border: none; padding-left: 15px;" type="text" class="messageInput"
-                           name="Content" required>
-                    <button onclick="sendMessage()" style="width: 19.6%; border-radius:0px;"
-                            class="btn btn-secondary button_send">Send
-                    </button>
-                    </form>
-                </div>
+                {% if topic is defined %}
+                    <div style="border-top: 1px solid lightgray;">
+                        <input style="width: 80%; border: none; padding-left: 15px;" type="text" class="messageInput"
+                               name="Content" required>
+                        <button onclick="sendMessage()" style="width: 19.6%; border-radius:0px;"
+                                class="btn btn-secondary button_send">Send
+                        </button>
+                    </div>
+                {% endif %}
             </div>
         </div>
     </div>
-    <script>
-        const url = new URL('http://localhost:8080/hub');
-        url.searchParams.append('topic', '1e9');
-        const eventSource = new EventSource(url)
-        eventSource.onmessage = e => {
-            $interceptedMessage = e.data;
-            document.querySelector(".interceptedMessages").insertAdjacentHTML('beforeend', "<div class=" + "newMessage" + ">" + $interceptedMessage + "</div>")
-        }
+    {% if topic is defined %}
+        <script>
+            window.onload = function () {
+                var scrolledDiv = document.querySelector(".interceptedMessages");
+                scrolledDiv.scrollTop = scrolledDiv.scrollHeight;
+            }
 
-        /*function sendMessage() {
-            let message = document.querySelector(".messageInput").value;
-            document.querySelector(".messageInput").value = '';
-            $.ajax({
-                url: "message/send/" + {{ topic }},
-                method: "POST",
-                data: {Content: message},
-            });
-        }*/
-    </script>
+            var messageFromInput = "";
+
+            const url = new URL('http://localhost:8080/hub');
+            url.searchParams.append('topic', {{ topic }});
+            const eventSource = new EventSource(url)
+            eventSource.onmessage = e => {
+                $interceptedMessage = e.data;
+
+                if (messageFromInput === $interceptedMessage) {
+                    document.querySelector(".interceptedMessages").insertAdjacentHTML('beforeend', "<div class=" + "oldMessage" + ">" + $interceptedMessage + "</div>")
+                } else {
+                    document.querySelector(".interceptedMessages").insertAdjacentHTML('beforeend', "<div class=" + "newMessage" + ">" + $interceptedMessage + "</div>")
+                }
+
+                var scrolledDiv = document.querySelector(".interceptedMessages");
+                scrolledDiv.scrollTop = scrolledDiv.scrollHeight;
+            }
+
+            function sendMessage() {
+                let message = document.querySelector(".messageInput").value;
+                messageFromInput = message;
+
+                $.ajax({
+                    url: "{{ path('send_message', {topic: topic}) }}",
+                    method: "POST",
+                    data: {Content: message},
+                });
+                document.querySelector(".messageInput").value = "";
+            }
+        </script>
+    {% endif %}
 {% endblock %}

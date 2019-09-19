@@ -21,7 +21,7 @@ class Conversations
     /**
      * @var \Users
      *
-     * @ORM\ManyToOne(targetEntity="Users")
+     * @ORM\ManyToOne(targetEntity="Users", fetch="EAGER")
      * @ORM\JoinColumns({
      *   @ORM\JoinColumn(name="user_1", referencedColumnName="id", onDelete="CASCADE")
      * })
@@ -31,7 +31,7 @@ class Conversations
     /**
      * @var \Users
      *
-     * @ORM\ManyToOne(targetEntity="Users")
+     * @ORM\ManyToOne(targetEntity="Users", fetch="EAGER")
      * @ORM\JoinColumns({
      *   @ORM\JoinColumn(name="user_2", referencedColumnName="id", onDelete="CASCADE")
      * })
