@@ -119,7 +119,7 @@ class PostsController extends AbstractController
         $postsService->saveEditedPost($entityManager, $post, $photo, $directory, $tempDirectory, $request);
         $session->set('message','Post has been edited');
 
-        return $this->redirectToRoute('edit_post',['id' => $post_number]);
+        return $this->redirectToRoute('edit_post',['id' => $post_number, 'message' => $session->get('message')]);
     }
 
     /**
@@ -262,8 +262,7 @@ class PostsController extends AbstractController
         }
 
         $photo = $this->getDoctrine()->getRepository(Photos::class)->findPhotoByPostId($post->getId());
-        
-        $message = "";
+
         if($session->get('message')){ 
             $message = $session->get('message');
             $session->remove('message');
@@ -286,9 +285,16 @@ class PostsController extends AbstractController
             }
             
             if (isset($photoPath)) {
-                return $this->render('posts/edit_post.html.twig', [
-                    'form' => $form->createView(), 'photoPath' => $photoPath, 'message' => $message,'id' => $post->getId(),
-                ]);
+                if(isset($message)) {
+                    return $this->render('posts/edit_post.html.twig', [
+                        'form' => $form->createView(), 'photoPath' => $photoPath, 'message' => $message, 'id' => $post->getId(),
+                    ]);
+                }
+                else{
+                    return $this->render('posts/edit_post.html.twig', [
+                        'form' => $form->createView(), 'photoPath' => $photoPath, 'id' => $post->getId(),
+                    ]);
+                }
             } else {
                 $entityManager = $this->getDoctrine()->getManager();
                 $entityManager->remove($photo);
@@ -296,9 +302,16 @@ class PostsController extends AbstractController
             }
         }
 
-        return $this->render('posts/edit_post.html.twig', [
-            'form' => $form->createView(), 'message' => $message,'id' => $post->getId(),
-        ]);
+        if(isset($message)){
+            return $this->render('posts/edit_post.html.twig', [
+                'form' => $form->createView(), 'id' => $post->getId(), 'message' => $message,
+            ]);
+        }
+        else{
+            return $this->render('posts/edit_post.html.twig', [
+                'form' => $form->createView(), 'id' => $post->getId(),
+            ]);
+        }
     }
 
     /**
