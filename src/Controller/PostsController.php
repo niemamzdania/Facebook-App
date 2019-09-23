@@ -180,10 +180,6 @@ class PostsController extends AbstractController
      */
     public function show_post(Request $request, Posts $post)
     {
-        if ($this->getUser() != $post->getUser()) {
-            return new Response('Forbidden access');
-        }
-
         $photo = $this->getDoctrine()->getRepository(Photos::Class)->findPhotoByPostId($post->getId());
 
         if ($photo != NULL) {

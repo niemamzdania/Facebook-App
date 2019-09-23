@@ -5,13 +5,13 @@
         <div class="row">
             <div class="col-6">
                 <h2>Content:</h2>
-                {{ quest.content }}
+                <h6>{{ quest.content }}</h6>
             </div>
             <div class="col-6">
                 <h2>Add date:</h2>
-                {{ quest.addDate|date("m/d/Y") }}
+                <h6>{{ quest.addDate|date("m/d/Y") }}</h6>
                 <h2 class="mt-3">Deadline:</h2>
-                {{ quest.endDate|date("m/d/Y") }}</br>
+                <h6>{{ quest.endDate|date("m/d/Y") }}</br></h6>
         </div>
     </div>
     <h2 class="mt-3">Progress:</h2>

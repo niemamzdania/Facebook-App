@@ -6,13 +6,13 @@
                 <h1>Post:</h1>
                 {% if post == true %}
                     <p style="font-weight: bold;"><h4>Date:</h4>
-                    {{ post.Date|date("F jS \\a\\t g:ia") }}</p>
+                    <h6>{{ post.Date|date("F jS \\a\\t g:ia") }}</h6></p>
                     <p><h4>Author:</h4>
-                    {{ post.User.Login }}</p>
+                <h6>{{ post.User.Login }}</h6></p>
                     <p><h4>Title:</h4>
-                    {{ post.Title }}</p>
+                    <h6>{{ post.Title }}</h6></p>
                     <p><h4>Content:</h4>
-                    {{ post.Content }}</p>
+                <h6>{{ post.Content }}</h6></p>
                 {% endif %}
             </div>
             <div class="col-6">
