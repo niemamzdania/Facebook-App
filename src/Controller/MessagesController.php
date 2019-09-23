@@ -23,26 +23,30 @@ class MessagesController extends AbstractController
      */
     public function send_message(Conversations $topic, Publisher $publisher, Request $request, Session $session)
     {
-        $update = new Update((string)$topic->getId(), $request->request->get('Content'));
+        $data = $request->request->get('Content');
 
-        $publisher($update);
+        if($data)
+        {
+            $update = new Update((string)$topic->getId(), $data);
+            $publisher($update);
 
-        $message = new Messages();
-        $message->setConvId($topic);
-        $message->setSender($this->getUser());
+            $message = new Messages();
+            $message->setConvId($topic);
+            $message->setSender($this->getUser());
 
-        $conversation = $this->getDoctrine()->getRepository(Conversations::class)->findConvById($topic);
+            $conversation = $this->getDoctrine()->getRepository(Conversations::class)->findConvById($topic);
 
-        if($conversation->getUser1() == $this->getUser())
-            $message->setRecipient($conversation->getUser2());
-        else $message->setRecipient($conversation->getUser1());
+            if($conversation->getUser1() == $this->getUser())
+                $message->setRecipient($conversation->getUser2());
+            else $message->setRecipient($conversation->getUser1());
 
-        $message->setTime(new \DateTime());
-        $message->setContent($request->request->get('Content'));
+            $message->setTime(new \DateTime());
+            $message->setContent($request->request->get('Content'));
 
-        $entityManager = $this->getDoctrine()->getManager();
-        $entityManager->persist($message);
-        $entityManager->flush();
+            $entityManager = $this->getDoctrine()->getManager();
+            $entityManager->persist($message);
+            $entityManager->flush();
+        }
 
         return new Response("Ok");
     }
@@ -68,10 +72,11 @@ class MessagesController extends AbstractController
     {
         $user = $this->getUser();
 
+        $id_conv = $conversation->getId();
         $conversations = $this->getDoctrine()->getRepository(Conversations::class)->findConvByUserId($user->getId());
 
         $messages = $this->getDoctrine()->getRepository(Messages::class)->findMessagesByConvId($conversation->getId());
 
-        return $this->render('chat/conversations.html.twig', ['topic' => (string)$conversation->getId(), 'conversations' => $conversations, 'messages' => $messages]);
+        return $this->render('chat/conversations.html.twig', ['topic' => (string)$conversation->getId(), 'conversations' => $conversations, 'messages' => $messages, 'id_conv'=> $id_conv]);
     }
 }

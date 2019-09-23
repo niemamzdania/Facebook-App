@@ -38,24 +38,29 @@
                 </div>
                 <div class="users" style="overflow-y: scroll; overflow-y: scroll;min-height:450px; max-height: 450px;">
                     {% for conversation in conversations %}
-                        <div class="row" style="border-top: 1px solid lightgray; height: 100%; padding: 5px;">
-                            <div div="col-4" style="padding-top: 10px; padding-bottom: 10px;">
-                                <img class="ml-3" style="height: 30px; width: auto; border-radius:50%;"
-                                     src="{{ asset('images/user2.png') }}">
+                    {% if app.user.id == conversation.user1.Id %}
+                    <a id="{{ conversation.Id }}" class="selectChat" style="color: black;"
+                       href="{{ path('one_chat', {conversation: conversation.Id}) }}">
+                        {% elseif app.user.Id != conversation.user1.Id %}
+                        <a id="{{ conversation.Id }}" class="selectChat" style="color: black;"
+                           href="{{ path('one_chat', {conversation: conversation.Id}) }}">
+                            {% endif %}
+                            <div class="row"
+                                 style="{% if id_conv is defined and conversation.id == id_conv %} background-color: lightgreen;{% endif %} border-top: 1px solid lightgray; height: 100%; padding: 5px;">
+                                <div div="col-4" style="padding-top: 10px; padding-bottom: 10px;">
+                                    <img class="ml-3" style="height: 30px; width: auto; border-radius:50%;"
+                                         src="{{ asset('images/user2.png') }}">
+                                </div>
+                                <div class="col-8 ml-2" style="padding-top: 10px; padding-bottom: 10px;">
+                                    {% if app.user.id == conversation.user1.Id %}
+                                        <h5>{{ conversation.user2.login }}</h5>
+                                    {% elseif app.user.Id != conversation.user1.Id %}
+                                        <h5>{{ conversation.user1.login }}</h5>
+                                    {% endif %}
+                                </div>
                             </div>
-                            <div class="col-8 ml-2" style="padding-top: 10px; padding-bottom: 10px;">
-                                {% if app.user.id == conversation.user1.Id %}
-                                    <a class="selectChat"
-                                       href="{{ path('one_chat', {conversation: conversation.Id}) }}">
-                                        <h5>{{ conversation.user2.login }}</h5></a>
-                                {% elseif app.user.Id != conversation.user1.Id %}
-                                    <a class="selectChat"
-                                       href="{{ path('one_chat', {conversation: conversation.Id}) }}">
-                                        <h5>{{ conversation.user1.login }}</h5></a>
-                                {% endif %}
-                            </div>
-                        </div>
-                    {% endfor %}
+                        </a>
+                        {% endfor %}
                 </div>
             </div>
             {% if topic is defined %}
@@ -89,42 +94,53 @@
             {% endif %}
         </div>
     </div>
-    {% if topic is defined %}
-        <script>
-            window.onload = function () {
-                var scrolledDiv = document.querySelector(".interceptedMessages");
-                scrolledDiv.scrollTop = scrolledDiv.scrollHeight;
+    <script>
+        {% if topic is defined %}
+        window.onload = function () {
+            var scrolledDiv = document.querySelector(".interceptedMessages");
+            scrolledDiv.scrollTop = scrolledDiv.scrollHeight;
+        }
+
+        var messageFromInput = "";
+
+        const url = new URL('http://localhost:8080/hub');
+        url.searchParams.append('topic', {{ topic }});
+        const eventSource = new EventSource(url)
+        eventSource.onmessage = e => {
+            $interceptedMessage = e.data;
+
+            if (messageFromInput === $interceptedMessage) {
+                document.querySelector(".interceptedMessages").insertAdjacentHTML('beforeend', "<div class=" + "oldMessage" + ">" + $interceptedMessage + "</div>")
+            } else {
+                document.querySelector(".interceptedMessages").insertAdjacentHTML('beforeend', "<div class=" + "newMessage" + ">" + $interceptedMessage + "</div>")
             }
 
-            var messageFromInput = "";
+            var scrolledDiv = document.querySelector(".interceptedMessages");
+            scrolledDiv.scrollTop = scrolledDiv.scrollHeight;
+        }
 
-            const url = new URL('http://localhost:8080/hub');
-            url.searchParams.append('topic', {{ topic }});
-            const eventSource = new EventSource(url)
-            eventSource.onmessage = e => {
-                $interceptedMessage = e.data;
-
-                if (messageFromInput === $interceptedMessage) {
-                    document.querySelector(".interceptedMessages").insertAdjacentHTML('beforeend', "<div class=" + "oldMessage" + ">" + $interceptedMessage + "</div>")
-                } else {
-                    document.querySelector(".interceptedMessages").insertAdjacentHTML('beforeend', "<div class=" + "newMessage" + ">" + $interceptedMessage + "</div>")
-                }
-
-                var scrolledDiv = document.querySelector(".interceptedMessages");
-                scrolledDiv.scrollTop = scrolledDiv.scrollHeight;
+        document.querySelector('.messageInput').addEventListener('keypress', function (event) {
+            if (event.keyCode == 13) {
+                sendMessage();
             }
+        });
 
-            function sendMessage() {
-                let message = document.querySelector(".messageInput").value;
-                messageFromInput = message;
+        function sendMessage() {
+            let message = document.querySelector(".messageInput").value;
+            messageFromInput = message;
 
-                $.ajax({
-                    url: "{{ path('send_message', {topic: topic}) }}",
-                    method: "POST",
-                    data: {Content: message},
-                });
-                document.querySelector(".messageInput").value = "";
-            }
-        </script>
-    {% endif %}
+            $.ajax({
+                url: "{{ path('send_message', {topic: topic}) }}",
+                method: "POST",
+                data: {Content: message},
+            });
+            document.querySelector(".messageInput").value = "";
+        }
+        {% elseif topic is not defined %}
+        window.onload = function () {
+            var convToSelect = document.getElementById({{ conversations[0].Id }});
+            convToSelect.click();
+        }
+        {% endif %}
+    </script>
 {% endblock %}
