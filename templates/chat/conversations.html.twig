@@ -34,7 +34,7 @@
             <div class="col-3 ml-3"
                  style="border: 1px solid lightgray; height: 100%; padding: 0; background: white; min-height: 550px; max-height: 550px;">
                 <div class="mt-2 mb-2" style="text-align:center;">
-                    <h3><span style="cursor: default;">Conversations</h3>
+                    <h3><span style="cursor: default;">Conversations</span></h3>
                 </div>
                 <div class="users" style="overflow-y: scroll; overflow-y: scroll;min-height:450px; max-height: 450px;">
                     {% for conversation in conversations %}
@@ -53,9 +53,9 @@
                                 </div>+
                                 <div class="col-8 ml-2" style="padding-top: 10px; padding-bottom: 10px;">
                                     {% if app.user.id == conversation.user1.Id %}
-                                        <h5>{{ conversation.user2.login }}</h5>
+                                        <h5 style="cursor: pointer;">{{ conversation.user2.login }}</h5>
                                     {% elseif app.user.Id != conversation.user1.Id %}
-                                        <h5>{{ conversation.user1.login }}</h5>
+                                        <h5 style="cursor: pointer;">{{ conversation.user1.login }}</h5>
                                     {% endif %}
                                 </div>
                             </div>
