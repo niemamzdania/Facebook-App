@@ -42,4 +42,15 @@ class PostsRepository extends ServiceEntityRepository
         ;
     }
 
+    public function findPostsByUserId($user_id)
+    {
+        return $this->createQueryBuilder('p')
+            ->andWhere('p.user = :val')
+            ->setParameter('val', $user_id)
+            ->orderBy('p.date', 'ASC')
+            ->getQuery()
+            ->getResult()
+            ;
+    }
+
 }

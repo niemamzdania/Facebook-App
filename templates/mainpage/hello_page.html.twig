@@ -7,23 +7,24 @@
         text-align: center;
 
     }
+
     .hello {
         margin-top: 15%;
         font-weight: 400;
     }
 </style>
 <body onload="startTime()">
-    <div class="hello">
+<div class="hello">
 
-        <div id="clockdate">
-            <div style="font-size:25px;" class="clockdate-wrapper">
-                <div style="font-size: 90px;" id="clock"></div>
-                <div style="font-size: 50px;" id="date"></div>
-            </div>
+    <div id="clockdate">
+        <div style="font-size:25px;" class="clockdate-wrapper">
+            <div style="font-size: 90px;" id="clock"></div>
+            <div style="font-size: 50px;" id="date"></div>
         </div>
-        <h5 style="font-size:30px;">{% trans %}Czesc{% endtrans %},
-            {{app.user.login}}</h5>
     </div>
+    <h5 style="font-size:30px;">{% trans %}Cześć{% endtrans %},
+        {{ app.user.login }}</h5>
+</div>
 </body>
 <script>
     function change_class() {
@@ -32,12 +33,14 @@
         //document.body.classList.remove('sidebar-open');
         //document.body.classList.add('sidebar-collapse');
     }
+
     function startTime() {
         change_class();
         var today = new Date();
         var hr = today.getHours();
         var min = today.getMinutes();
         var sec = today.getSeconds();
+        {% if app.request.locale == 'en' %}
         ap = (hr < 12) ? "<span>AM</span>" : "<span>PM</span>";
         hr = (hr == 0) ? 12 : hr;
         hr = (hr > 12) ? hr - 12 : hr;
@@ -70,6 +73,37 @@
             'Fri',
             'Sat'
         ];
+        {% else %}
+        hr = checkTime(hr);
+        min = checkTime(min);
+        sec = checkTime(sec);
+        document.getElementById("clock").innerHTML = hr + ":" + min + ":" + sec;
+
+        var months = [
+            'styczeń',
+            'lutego',
+            'marca',
+            'kwietnia',
+            'maja',
+            'czerwca',
+            'lipca',
+            'sierpnia',
+            'września',
+            'października',
+            'listopada',
+            'grudnia'
+        ];
+        var days = [
+            'Nd',
+            'Pn',
+            'Wt',
+            'Śr',
+            'Czw',
+            'Pt',
+            'Sob'
+        ];
+        {% endif %}
+
         var curWeekDay = days[today.getDay()];
         var curDay = today.getDate();
         var curMonth = months[today.getMonth()];
@@ -81,6 +115,7 @@
             startTime()
         }, 500);
     }
+
     function checkTime(i) {
         if (i < 10) {
             i = "0" + i;

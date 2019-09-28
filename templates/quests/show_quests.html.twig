@@ -16,34 +16,46 @@
         </tr>
         </thead>
         <tbody>
-        {% for quest in quests %}
-        <tr style="text-align:center">
-            {% if user is defined %}
-                <td>{{ quest.user.login }}</td>
-            {% endif %}
-            <td>{{ quest.endDate|date("m/d/Y") }}</td>
-            <td>
-                <div class="progress mt-2">
-                    <div class="progress-bar bg-success" role="progressbar" style="width: {{ quest.status }}%;"
-                         aria-valuenow="20" aria-valuemin="0" aria-valuemax="100">{{ quest.status }}%
-                    </div>
-                </div>
-            </td>
-            <td>
-                <a href="{{ path('show_quest', {id: quest.id}) }}">
-                    <button class="btn btn-warning">Show</button>
-                </a>
-            </td>
-            {% if is_granted('ROLE_ADMIN') %}
-                <td>
-                    <button id="{{ quest.id }}" onclick="get_number(this.id)" class="btn btn-danger"
-                            data-target="#exampleModalCenterDelete" data-toggle="modal">Delete
-                    </button>
-                </td>
-            {% endif %}
-        </tr>
+        {% if quests is empty %}
+            <tr>
+                <td><h4>No quests to show</h4></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+            </tr>
+        {% else %}
+            {% for quest in quests %}
+                <tr style="text-align:center">
+                    {% if user is defined %}
+                        <td>{{ quest.user.login }}</td>
+                    {% endif %}
+                    <td>{{ quest.endDate|date("m/d/Y") }}</td>
+                    <td>
+                        <div class="progress mt-2">
+                            <div class="progress-bar bg-success" role="progressbar" style="width: {{ quest.status }}%;"
+                                 aria-valuenow="20" aria-valuemin="0" aria-valuemax="100">{{ quest.status }}%
+                            </div>
+                        </div>
+                    </td>
+                    <td>
+                        <a href="{{ path('show_quest', {id: quest.id}) }}">
+                            <button class="btn btn-warning">Show</button>
+                        </a>
+                    </td>
+                    {% if is_granted('ROLE_ADMIN') %}
+                        <td>
+                            <button id="{{ quest.id }}" onclick="get_number(this.id)" class="btn btn-danger"
+                                    data-target="#exampleModalCenterDelete" data-toggle="modal">Delete
+                            </button>
+                        </td>
+                    {% endif %}
+                </tr>
+            {% endfor %}
+        {% endif %}
         </tbody>
-        {% endfor %}
     </table>
     <div class="row d-flex justify-content-center w-100 paginator mt-3">
         {{ knp_pagination_render(quests) }}

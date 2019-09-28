@@ -206,9 +206,37 @@ class PostsController extends AbstractController
     /**
      * @Route("/posts", name="show_posts")
      */
-    public function show_posts(Request $request, PaginatorInterface $paginator, Session $session)
+    public function show_all_posts(Request $request, PaginatorInterface $paginator, Session $session)
     {
         $posts = $this->getDoctrine()->getRepository(Posts::class)->findAllPosts();
+
+        if($session->get('message'))
+        {
+            $message = $session->get('message');
+            $session->remove('message');
+            return $this->render('posts/show_posts.html.twig', ['message' => $message, 'posts' => $paginator->paginate(
+                $posts,
+                $request->query->getInt('page', 1),
+                7
+            )]);
+        }
+        else
+        {
+            return $this->render('posts/show_posts.html.twig', ['posts' => $paginator->paginate(
+                $posts,
+                $request->query->getInt('page', 1),
+                8
+            )]);
+        }
+    }
+
+    /**
+     * @Route("/user/posts", name="show_user_posts")
+     * @IsGranted("IS_AUTHENTICATED_FULLY")
+     */
+    public function show_user_posts(Request $request, PaginatorInterface $paginator, Session $session)
+    {
+        $posts = $this->getDoctrine()->getRepository(Posts::class)->findPostsByUserId($this->getUser()->getId());
 
         if($session->get('message'))
         {

@@ -1,40 +1,11 @@
 {% extends('mainpage/main.html.twig') %}
 {% block content %}
-    <style>
-        .newMessage {
-            background: gray;
-            width: 60%;
-            margin: 15px 15px;
-            color: white;
-            /*background: #00cc00;*/
-            padding: 10px;
-            border-radius: 5px;
-            min-height: 40px;
-            word-wrap: break-word;
-            font-size: 18px;
-            font-weight: bold;
-        }
-
-        .oldMessage {
-            width: 60%;
-            margin: 15px 15px;
-            color: white;
-            background: #00b300;
-            padding: 10px;
-            border-radius: 5px;
-            min-height: 40px;
-            word-wrap: break-word;
-            font-size: 18px;
-            font-weight: bold;
-            margin-left: 37%;
-        }
-    </style>
     <div class="container-fluid mt-5">
         <div class="row" style="min-height: 550px; max-height: 550px;">
             <div class="col-3 ml-3"
                  style="border: 1px solid lightgray; height: 100%; padding: 0; background: white; min-height: 550px; max-height: 550px;">
                 <div class="mt-2 mb-2" style="text-align:center;">
-                    <h3><span style="cursor: default;">Conversations</span></h3>
+                    <h3><span style="cursor: default;">{% trans %}Konwersacje{% endtrans %}</span></h3>
                 </div>
                 <div class="users" style="overflow-y: scroll; overflow-y: scroll;min-height:450px; max-height: 450px;">
                     {% for conversation in conversations %}
@@ -50,7 +21,7 @@
                                 <div div="col-4" style="padding-top: 10px; padding-bottom: 10px;">
                                     <img class="ml-3" style="height: 30px; width: auto; border-radius:50%;"
                                          src="{{ asset('images/user2.png') }}">
-                                </div>+
+                                </div>
                                 <div class="col-8 ml-2" style="padding-top: 10px; padding-bottom: 10px;">
                                     {% if app.user.id == conversation.user1.Id %}
                                         <h5 style="cursor: pointer;">{{ conversation.user2.login }}</h5>
@@ -67,7 +38,7 @@
                 <div class="col-8 ml-5" style="border: 1px solid lightgray; padding: 0; background: white;">
                     <div style="border-bottom: 1px solid gray;">
                         <div class="mt-2 mb-2" style="text-align:center;">
-                            <h3><span style="cursor: default;">Messages</span></h3>
+                            <h3><span style="cursor: default;">{% trans %}Wiadomości{% endtrans %}</span></h3>
                         </div>
                     </div>
                     <div class="interceptedMessages" style="overflow-y: scroll;min-height:450px; max-height: 450px;">
