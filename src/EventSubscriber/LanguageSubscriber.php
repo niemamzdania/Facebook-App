@@ -16,7 +16,8 @@ class LanguageSubscriber implements EventSubscriberInterface
             return;
         }
 
-        $request->setLocale($request->getSession()->get('locale'));
+        if($request->getSession()->get('locale'))
+            $request->setLocale($request->getSession()->get('locale'));
     }
 
     public static function getSubscribedEvents()

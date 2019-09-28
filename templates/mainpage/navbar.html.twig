@@ -8,8 +8,24 @@
                 </a>
             </li>
             <li class="nav-item d-none d-sm-inline-block"></li>
-            <li><i class="fas fa-flag-usa">sss</i></li>
         </ul>
-       <a href="/logout" class="logout-button"> <i class="fas fa-sign-out-alt"></i></a>
+        {% if app.request.locale == 'pl_PL' %}
+            <a id="en" href="#" class="" onclick="changeLanguage(this.id)"><i
+                        style="position: absolute; right: 100px; top: 10px; font-size: 20px; color: black; margin: auto;">🇺🇸</i></a>
+        {% elseif app.request.locale == 'en' %}
+            <a id="pl_PL" href="#" class="" onclick="changeLanguage(this.id)"><i
+                        style="position: absolute; right: 100px; top: 10px; font-size: 20px; color: black; margin: auto;">🇵🇱</i></a>
+        {% endif %}
+        <a href="/logout" class="logout-button"> <i class="fas fa-sign-out-alt"></i></a>
     </nav>
+    <script>
+        function changeLanguage(clicked_id) {
+            let url = '{{ path('change_lang', {lang: 'clicked_id'}) }}';
+            url = url.replace("clicked_id", clicked_id);
+            $.ajax({
+                url: url,
+            });
+            location.reload();
+        }
+    </script>
 {% endblock %}

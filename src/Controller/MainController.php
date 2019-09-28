@@ -22,13 +22,12 @@ class MainController extends AbstractController
 
     /**
      * @Route("/changeLanguage/{lang}", name="change_lang")
-     * @IsGranted("IS_AUTHENTICATED_FULLY")
      */
     public function changeLanguage(Request $request, $lang)
     {
         $session = $request->getSession();
         $session->set('locale', $lang);
 
-        return $this->redirectToRoute('main_page');
+        return new Response("Ok");
     }
 }
