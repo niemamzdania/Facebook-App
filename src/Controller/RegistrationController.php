@@ -56,7 +56,7 @@ class RegistrationController extends AbstractController
 
             $entityManager->flush();
             
-            $session->set('message', 'User has been created');    
+            $session->set('message', 'Nowy użytkownik został utworzony');
 
             return $this->redirectToRoute('show_users');
         }

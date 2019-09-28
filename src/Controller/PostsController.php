@@ -89,7 +89,7 @@ class PostsController extends AbstractController
             ]);
         }
         
-        $session->set('message','Post has been send');
+        $session->set('message','Post został opublikowany');
 
         return $this->redirectToRoute('show_posts');
     }
@@ -117,7 +117,7 @@ class PostsController extends AbstractController
         $tempDirectory = $this->getParameter('upload_temp_directory');
 
         $postsService->saveEditedPost($entityManager, $post, $photo, $directory, $tempDirectory, $request);
-        $session->set('message','Post has been edited');
+        $session->set('message','Post został zmodyfikowany');
 
         return $this->redirectToRoute('edit_post',['id' => $post_number, 'message' => $session->get('message')]);
     }
@@ -169,7 +169,7 @@ class PostsController extends AbstractController
 
         $postsService->saveNewPost($entityManager, $post, $directory, $tempDirectory, $request);
 
-        $session->set('message','Post has been created');
+        $session->set('message','Post został poprawnie utworzony');
 
         return $this->redirectToRoute('show_posts');
     }
@@ -375,7 +375,7 @@ class PostsController extends AbstractController
             $entityManager->remove($post);
             $entityManager->flush();
             
-            $session->set('message', 'Post has been delete');
+            $session->set('message', 'Post został usunięty');
 
             return $this->redirectToRoute('show_posts');
         }

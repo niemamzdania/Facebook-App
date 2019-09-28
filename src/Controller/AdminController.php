@@ -24,7 +24,7 @@ class AdminController extends AbstractController
         $repeat = $this->getDoctrine()->getRepository(Users::class)->findUserByEmail($email);
 
         if($repeat) {
-            $session->set('error', 'This e-mail exist, please enter another one.');
+            $session->set('error', 'Ten adres e-mail istnieje w bazie danych, proszę podać inny.');
 
             return $this->redirectToRoute('show_users');
         }
@@ -47,7 +47,7 @@ class AdminController extends AbstractController
         $user->setRoles([$role]);
         $entityManager = $this->getDoctrine()->getManager();
         $entityManager->flush();
-        $session->set('message', 'Role has been changed');
+        $session->set('message', 'Rola została zmieniona');
 
         return $this->redirectToRoute('show_users');
     }
@@ -98,7 +98,7 @@ class AdminController extends AbstractController
         $entityManager->remove($user);
         $entityManager->flush();
 
-        $session->set('message', 'User has been deleted');
+        $session->set('message', 'Użytkownik został usunięty');
 
         return $this->redirectToRoute('show_users');
     }

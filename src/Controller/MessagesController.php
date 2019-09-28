@@ -25,8 +25,7 @@ class MessagesController extends AbstractController
     {
         $data = $request->request->get('Content');
 
-        if($data)
-        {
+        if ($data) {
             $update = new Update((string)$topic->getId(), $data);
             $publisher($update);
 
@@ -36,7 +35,7 @@ class MessagesController extends AbstractController
 
             $conversation = $this->getDoctrine()->getRepository(Conversations::class)->findConvById($topic);
 
-            if($conversation->getUser1() == $this->getUser())
+            if ($conversation->getUser1() == $this->getUser())
                 $message->setRecipient($conversation->getUser2());
             else $message->setRecipient($conversation->getUser1());
 
@@ -77,6 +76,7 @@ class MessagesController extends AbstractController
 
         $messages = $this->getDoctrine()->getRepository(Messages::class)->findMessagesByConvId($conversation->getId());
 
-        return $this->render('chat/conversations.html.twig', ['topic' => (string)$conversation->getId(), 'conversations' => $conversations, 'messages' => $messages, 'id_conv'=> $id_conv]);
+        return $this->render('chat/conversations.html.twig', ['topic' => (string)$conversation->getId(), 'conversations' => $conversations,
+            'messages' => $messages, 'id_conv' => $id_conv]);
     }
 }

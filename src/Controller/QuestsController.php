@@ -33,7 +33,7 @@ class QuestsController extends AbstractController
         $entityManager = $this->getDoctrine()->getManager();
 
         $questsService->saveNewQuest($entityManager, $quest, $request);
-        $session->set('message', 'Quest has been created');
+        $session->set('message', 'Zadanie zostało dodane');
 
         return $this->redirectToRoute('show_user_quests',['id'=>$this->getUser()->getId()]);
     }
@@ -42,7 +42,7 @@ class QuestsController extends AbstractController
      * @Route("/quest/new", name="new_quest")
      * @IsGranted("ROLE_ADMIN")
      */
-    public function show_form_quest()
+    public function show_form_quest(Request $request)
     {
         $quest = new Quests();
 
@@ -57,7 +57,9 @@ class QuestsController extends AbstractController
         if ($users)
             return $this->render('quests/new_quest.html.twig', ['users' => $users, 'quest' => $quest, 'minDate' => $dateInString, 'maxDate' => $futureDate]);
 
-        return new Response('No employees to add them the task');
+        if($request->getLocale() == 'en')
+            return new Response('No employees to add them the task.');
+        return new Response('Brak pracowników, którym można przydzielić zadanie.');
     }
 
     /**
@@ -77,7 +79,7 @@ class QuestsController extends AbstractController
         $entityManager = $this->getDoctrine()->getmanager();
 
         $questsService->saveEditedQuest($entityManager, $quest, $request);
-        $session->set('message','Quest has been edited');
+        $session->set('message','Zadanie zostało zmodyfikowane');
         
         return $this->redirectToRoute('show_quest',['id'=>$quest->getId()]);
     }
@@ -173,7 +175,8 @@ class QuestsController extends AbstractController
 
         $users = $this->getDoctrine()->getRepository(Users::class)->findAllUsers();
 
-        return $this->render('quests/edit_quest.html.twig', ['users' => $users, 'quest' => $quest, 'minDate' => $dateInString, 'maxDate' => $futureDate, 'questDate' => $questDateInString]);
+        return $this->render('quests/edit_quest.html.twig', ['users' => $users, 'quest' => $quest, 'minDate' => $dateInString,
+            'maxDate' => $futureDate, 'questDate' => $questDateInString]);
     }
 
     /**
@@ -190,7 +193,7 @@ class QuestsController extends AbstractController
         $entityManager->remove($quest);
         $entityManager->flush();
 
-        $session->set('message','Quest has been deleted');
+        $session->set('message','Zadanie zostało usunięte');
 
         return $this->redirectToRoute('show_user_quests',['id'=>$this->getUser()->getId()]);
     }

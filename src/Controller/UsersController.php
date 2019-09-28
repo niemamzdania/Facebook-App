@@ -74,9 +74,14 @@ class UsersController extends AbstractController
      */
     public function edit_facebook(Request $request, Users $user)
     {
-        if ($this->getUser() != $user) {
+        if ($this->getUser() != $user && $request->getLocale() == 'en') {
             return new Response('Forbidden access');
         }
+        if ($this->getUser() != $user && $request->getLocale() == 'pl_PL') {
+            return new Response('Dostęp zabroniony');
+        }
+        if($this->getUser() != $user)
+            return new Response('Dostęp wzbroniony');
 
         $appIdForm = $this->createForm(AppIdFormType::class, $user);
         $appSecretForm = $this->createForm(AppSecretFormType::class, $user);
@@ -114,8 +119,10 @@ class UsersController extends AbstractController
 
             $user = $this->getDoctrine()->getRepository(Users::class)->findUserByEmail($recipient);
 
-            if (!$user)
+            if (!$user && $request->getLocale() == 'en')
                 return $this->render('users/reset.html.twig', ['message' => 'This e-mail adress not exist. Type another one.']);
+            elseif (!$user && $request->getLocale() == 'pl_PL')
+                return $this->render('users/reset.html.twig', ['message' => 'Ten adres e-mail nie istnieje w bazie danych. Podaj właściwy.']);
             else {
                 $password = md5(time());
                 $password = substr($password, 0, 8);
@@ -128,11 +135,14 @@ class UsersController extends AbstractController
                 $entityManager->persist($user);
                 $entityManager->flush();
 
+                if($request->getLocale() == 'en')
+                    $body = "Your new password is: $password. You can login now with the new credentials.";
+                else $body = "Twoje nowe hasło to: $password. Możesz teraz zalogować się z nowymi danymi.";
                 $message = (new \Swift_Message('Hello Email'))
                     ->setFrom('apkafacebook20@gmail.com')
                     ->setTo($recipient)
                     ->setBody(
-                        "Your new password is: $password. You can login now with the new credentials.",
+                        $body,
                         'text/html'
                     );
 
