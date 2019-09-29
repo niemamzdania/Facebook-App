@@ -13,8 +13,8 @@ use Doctrine\ORM\Mapping as ORM;
  *
  * @ORM\Table(name="users", uniqueConstraints={@ORM\UniqueConstraint(name="UNIQ_1483A5E9AA08CB10", columns={"login"}), @ORM\UniqueConstraint(name="UNIQ_1483A5E9E7927C74", columns={"email"})})
  * @ORM\Entity(repositoryClass="App\Repository\UsersRepository")
- * @UniqueEntity(fields={"email"}, message="This e-mail adress exist")
- * @UniqueEntity(fields={"login"}, message="This login exist")
+ * @UniqueEntity(fields={"email"}, message="Ten adres e-mail istnieje")
+ * @UniqueEntity(fields={"login"}, message="Ten login istnieje")
  */
 class Users implements UserInterface
 {

@@ -19,8 +19,8 @@ class PostFormType extends AbstractType
                     new Length([
                         'min' => 3,
                         'max' => 50,
-                        'minMessage' => "Title of post must be at least {{ limit }} characters long",
-                        'maxMessage' => "Title of post cannot be longer than {{ limit }} characters"
+                        'minMessage' => "Tytuł postu musi mieć przynajmniej {{ limit }} znaki.",
+                        'maxMessage' => "Tytuł postu nie może mieć więcej niż {{ limit }} znaków."
                     ])
                 ],
             ])
@@ -29,8 +29,8 @@ class PostFormType extends AbstractType
                     new Length([
                         'min' => 3,
                         'max' => 300,
-                        'minMessage' => "Content of post must be at least {{ limit }} characters long",
-                        'maxMessage' => "Content of post cannot be longer than {{ limit }} characters"
+                        'minMessage' => "Treść postu musi mieć przynajmniej {{ limit }} znaki.",
+                        'maxMessage' => "Treść postu nie może być dłuższa niż {{ limit }} znaków."
                     ])
                 ],
                 ])
@@ -39,14 +39,11 @@ class PostFormType extends AbstractType
                 'required' => false,
                 'constraints' => [
                 new File([
-                    'maxSize' => '2048k',
                     'mimeTypes' => [
                         'image/jpg',
                         'image/jpeg',
                         'image/png',
                     ],
-                    'mimeTypesMessage' => 'Please upload a valid image file',
-                    'maxSizeMessage' => 'File size is too large. The maximum file size is 2048 kB.'
                 ])
                 ],
             ])

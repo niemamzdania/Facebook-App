@@ -1,5 +1,6 @@
 {% extends 'mainpage/main.html.twig' %}
-{% block title %}Log in!
+{% block title %}
+    {% trans %}Zaloguj się{% endtrans %}!
 {% endblock %}
 {% block body %}
     <link rel="stylesheet" href="{{ asset('css/login.css') }}">
@@ -7,22 +8,33 @@
         <div class="container">
             <div class="login-form">
                 <div class="main-div">
+                    {% if app.request.locale == 'pl_PL' %}
+                        <a id="en" href="#" onclick="changeLanguage(this.id)"><i>🇺🇸</i></a>
+                    {% elseif app.request.locale == 'en' %}
+                        <a id="pl_PL" href="#" onclick="changeLanguage(this.id)"><i>🇵🇱</i></a>
+                    {% endif %}
                     <form method="post">
-                        <h1 class="h3 mb-5 font-weight-normal">Login page</h1>
-                        {% if error %}
-                            <div class="alert alert-danger">{{ error.messageKey|trans(error.messageData, 'security') }}</div>
-                        {% endif %}
+                        <h1 class="h3 mb-5 font-weight-normal">{% trans %}Strona logowania{% endtrans %}</h1>
                         <label class="sr-only" for="inputLogin">Login</label>
                         <input type="text" value="{{ last_username }}" name="login" id="inputLogin" class="form-control"
                                placeholder="Login" required autofocus>
                         <label class="sr-only" for="inputPassword">Password</label>
-                        <input class="form-control mt-3" id="inputPassword" name="password" placeholder="Password"
+                        <input class="form-control mt-3" id="inputPassword" name="password"
+                               placeholder="{% trans %}Hasło{% endtrans %}"
                                required type="password">
                         <input type="hidden" name="_csrf_token" value="{{ csrf_token('authenticate') }}">
+                        {% if error %}
+                            <div class="mt-3 alert alert-danger alert-dismissible fade show" role="alert">
+                                {{ error.messageKey|trans(error.messageData, 'security') }}
+                                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                            </div>
+                        {% endif %}
                         <div class="forgot mt-2">
-                            <a href="{{ path('reset') }}">Forgot password?</a>
+                            <a href="{{ path('reset') }}">{% trans %}Zapomniałeś hasła{% endtrans %}?</a>
                         </div>
-                        <button class="btn btn-lg btn-primary" type="submit">Login</button>
+                        <button class="btn btn-lg btn-primary" type="submit">{% trans %}Zaloguj{% endtrans %}</button>
                     </form>
                 </div>
             </div>

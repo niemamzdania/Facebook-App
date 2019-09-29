@@ -114,7 +114,7 @@ class PostsService
 
         $post->setTitle($data['Title']);
         $post->setContent($data['Content']);
-        $post->setDate($date);
+        $post->setDate($currentDate);
 
         $entityManager->flush();
     }

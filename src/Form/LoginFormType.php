@@ -10,7 +10,7 @@ class LoginFormType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('login', TextType::class, ['attr' => ['class' => 'form-control mb-3']])
+            ->add('login', TextType::class, ['attr' => ['class' => 'form-control']])
             ->getForm();
     }
 }

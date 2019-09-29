@@ -1,20 +1,20 @@
 {% extends 'mainpage/main.html.twig' %}
 {% block content %}
     <form class="form form_new_quest mt-3 font-weight-bold" action="{{ path('add_quest') }}" method="POST">
-        <h1 class="mb-3">Create new quest</h1>
-        <div class="mt-3 mb-2">Content:</div>
+        <h1 class="mb-3">{% trans %}Stwórz nowe zadanie{% endtrans %}</h1>
+        <div class="mt-3 mb-2">{% trans %}Treść{% endtrans %}:</div>
         <input class="form-control" type="textarea"
                oninvalid="setCustomValidity('Content must be between 3 and 200 characters.')"
                minlength="3" maxlength="200" name="Content" value="{{ quest.Content }}" required>
-        <div class="mt-3 mb-2">Date:</div>
+        <div class="mt-3 mb-2">{% trans %}Data{% endtrans %}:</div>
         <input class="form-control" type="date" min="{{ minDate }}" max="{{ maxDate }}"
                name="EndDate" required>
-        <div class="mt-3 mb-2">Select user:</div>
+        <div class="mt-3 mb-2">{% trans %}Wybierz użytkownika{% endtrans %}:</div>
         <select class="browser-default custom-select" name="user" required>
             {% for user in users %}
                 <option value="{{ user.id }}">{{ user.login }}</option>
             {% endfor %}
         </select>
-        <div class="row"><input class="btn btn-lg btn-secondary mt-4" type="submit" value="Submit"></div>
+        <div class="row"><input class="btn btn-lg btn-secondary mt-4" type="submit" value="{% trans %}Dodaj{% endtrans %}"></div>
     </form>
 {% endblock %}

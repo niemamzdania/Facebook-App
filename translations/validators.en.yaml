@@ -1,0 +1,8 @@
+Ten adres e-mail istnieje: This e-mail adress exist
+Ten login istnieje: This login exist
+Tytuł postu musi mieć przynajmniej {{ limit }} znaki.: Title of post must be at least {{ limit }} characters long.
+Tytuł postu nie może mieć więcej niż {{ limit }} znaków.: Title of post cannot be longer than {{ limit }} characters.
+Treść postu musi mieć przynajmniej {{ limit }} znaki.: Content of post must be at least {{ limit }} characters long.
+Treść postu nie może mieć więcej niż {{ limit }} znaków.: Content of post cannot be longer than {{ limit }} characters.
+Proszę wybrać prawidłowy plik ze zdjęciem.: Please upload a valid image file.
+Rozmiar pliku jest zbyt duży. Maksymalny rozmiar pliku to 2048 kB.: File size is too large. The maximum file size is 2048 kB.

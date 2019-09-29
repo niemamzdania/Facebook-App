@@ -1,27 +1,43 @@
 {% extends 'mainpage/main.html.twig' %}
 {% block content %}
+    <style>
+        label[for=app_id_form_appId]{
+            display: none;
+        }
+        label[for=app_secret_form_appSecret]{
+            display: none;
+        }
+        label[for=page_id_form_pageId]{
+            display: none;
+        }
+        label[for=access_token_form_userAccessToken]{
+            display: none;
+        }
+    </style>
             <div class="container-fluid">
-                <h1 style="margin:25px;">Edit your facebook data</h1>
+                <h1 style="margin:25px;">{% trans %}Edytuj swoje dane Facebooka{% endtrans %}</h1>
                 <div class="row mt-5">
                     <div class="col-sm-12 col-md-6 mb-3">
                         <div class="form form_edit_facebook w-95">
-                            <h2 class="mb-3">
-                                <bold>Edit App ID:</bold>
+                            <h2 class="mb-5">
+                                <bold>{% trans %}Edytuj{% endtrans %} App ID:</bold>
                             </h2>
                             {{ form_start(appIdForm) }}
                             {{ form_widget(appIdForm) }}
-                            <button class="btn btn-dark mt-4">Edit App ID</button>
+                            {{ form_errors(appIdForm) }}
+                            <button class="btn btn-dark mt-4">{% trans %}Edytuj{% endtrans %}</button>
                             {{ form_end(appIdForm) }}
                         </div>
                     </div>
                     <div class="col-sm-12 col-md-6 mb-3">
                         <div class="form form_edit_facebook w-95">
-                            <h2 class="mb-3">
-                                <bold>Edit App Secret Token:</bold>
+                            <h2 class="mb-5">
+                                <bold>{% trans %}Edytuj{% endtrans %} {% trans %}sekretny{% endtrans %} token:</bold>
                             </h2>
                             {{ form_start(appSecretForm) }}
                             {{ form_widget(appSecretForm) }}
-                            <button class="btn btn-dark mt-4">Edit App Secret Token</button>
+                            {{ form_errors(appSecretForm) }}
+                            <button class="btn btn-dark mt-4">{% trans %}Edytuj{% endtrans %}</button>
                             {{ form_end(appSecretForm) }}
                         </div>
                     </div>
@@ -29,23 +45,25 @@
                 <div class="row mt-5">
                     <div class="col-sm-12 col-md-6 mb-3">
                         <div class="form form_edit_facebook w-95">
-                            <h2 class="mb-3">
-                                <bold>Edit Page ID:</bold>
+                            <h2 class="mb-5">
+                                <bold>{% trans %}Edytuj ID strony{% endtrans %}:</bold>
                             </h2>
                             {{ form_start(pageIdForm) }}
                             {{ form_widget(pageIdForm) }}
-                            <button class="btn btn-dark mt-4">Edit Page ID</button>
+                            {{ form_errors(pageIdForm) }}
+                            <button class="btn btn-dark mt-4">{% trans %}Edytuj{% endtrans %}</button>
                             {{ form_end(pageIdForm) }}
                         </div>
                     </div>
                     <div class="col-sm-12 col-md-6 mb-3">
                         <div class="form form_edit_facebook w-95">
-                            <h2 class="mb-3">
-                                <bold>Edit Facebook Access Token:</bold>
+                            <h2 class="mb-5">
+                                <bold>{% trans %}Edytuj token dostępu Facebooka{% endtrans %}:</bold>
                             </h2>
                             {{ form_start(accessTokenForm) }}
                             {{ form_widget(accessTokenForm) }}
-                            <button class="btn btn-dark mt-4">Edit Token</button>
+                            {{ form_errors(accessTokenForm) }}
+                            <button class="btn btn-dark mt-4">{% trans %}Edytuj{% endtrans %}</button>
                             {{ form_end(accessTokenForm) }}
                         </div>
                     </div>

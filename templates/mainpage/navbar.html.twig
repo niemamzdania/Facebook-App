@@ -10,10 +10,10 @@
             <li class="nav-item d-none d-sm-inline-block"></li>
         </ul>
         {% if app.request.locale == 'pl_PL' %}
-            <a id="en" href="#" class="" onclick="changeLanguage(this.id)"><i
+            <a id="en" href="#" onclick="changeLanguage(this.id)"><i
                         style="position: absolute; right: 100px; top: 10px; font-size: 20px; color: black; margin: auto;">🇺🇸</i></a>
         {% elseif app.request.locale == 'en' %}
-            <a id="pl_PL" href="#" class="" onclick="changeLanguage(this.id)"><i
+            <a id="pl_PL" href="#" onclick="changeLanguage(this.id)"><i
                         style="position: absolute; right: 100px; top: 10px; font-size: 20px; color: black; margin: auto;">🇵🇱</i></a>
         {% endif %}
         <a href="/logout" class="logout-button"> <i class="fas fa-sign-out-alt"></i></a>

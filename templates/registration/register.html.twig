@@ -9,19 +9,29 @@
             border-top-left-radius: 5px;
             border-top-right-radius: 5px;
         }
+
     </style>
     <div class="container-fluid mt-5">
-        <h1>Create new user</h1>
+        <h1>{% trans %}Stwórz nowego użytkownika{% endtrans %}:</h1>
         {{ form_start(registrationForm, {'start_attr': {'class': 'mt-3'}}) }}
-        {{ form_row(registrationForm.login, {'row_attr': {'class': 'mt-2'}}) }}
-        {{ form_row(registrationForm.email, {'row_attr': {'class': 'mt-2'}}) }}
-        <div class="mt-2">{{ form_row(registrationForm.plainPassword) }}</div>
-        <div class="mt-2 mb-2" style="font-weight: bold;">Role:</div>
-        <select class="browser-default custom-select" name="roles" required>
-            <option value="ROLE_ADMIN" selected>Admin</option>
-            <option value="ROLE_USER">User</option>
-        </select>
-        <button class="btn btn-dark mt-3">Register</button>
-        {{ form_end(registrationForm) }}
+        <div class="mt-3"><span style="cursor: default; font-weight: bold;">Login:</span></div>
+        {{ form_widget(registrationForm.login, {'widget_attr': {'class': 'mt-2'}}) }}
+        {{ form_errors(registrationForm.login, {'errors_attr': {'class': 'mt-2'}}) }}
+        <div class="mt-3"><span style="cursor: default; font-weight: bold;">Email:</span></div>
+        {{ form_widget(registrationForm.email, {'widget_attr': {'class': 'mt-2'}}) }}
+        {{ form_errors(registrationForm.email, {'errors_attr': {'class': 'mt-2'}}) }}
+        <div class="mt-3"><span style="cursor: default; font-weight: bold;">{% trans %}Hasło{% endtrans %}:</span></div>
+        {{ form_widget(registrationForm.plainPassword.first) }}
+        {{ form_errors(registrationForm.plainPassword.first) }}
+        <div class="mt-3"><span style="cursor: default; font-weight: bold;">{% trans %}Powtórz hasło{% endtrans %}:</span></div>
+        {{ form_widget(registrationForm.plainPassword.second) }}
+        {{ form_errors(registrationForm.plainPassword.second) }}
+    <div class="mt-3 mb-1" style="font-weight: bold;">{% trans %}Rola{% endtrans %}:</div>
+    <select class="browser-default custom-select" name="roles" required>
+        <option value="ROLE_ADMIN" selected>{% trans %}Administrator{% endtrans %}</option>
+        <option value="ROLE_USER">{% trans %}Użytkownik{% endtrans %}</option>
+    </select>
+    <button class="btn btn-dark mt-3">{% trans %}Zarejestruj{% endtrans %}</button>
+    {{ form_end(registrationForm) }}
     </div>
 {% endblock %}

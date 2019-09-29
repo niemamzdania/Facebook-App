@@ -1,17 +1,17 @@
 {% extends 'mainpage/main.html.twig' %}
 {% block content %}
-    <h1 style="margin:25px;">Show quests</h1>
+    <h1 style="margin:25px;">{% trans %}Zadania{% endtrans %}</h1>
     <table class="table table-light">
         <thead>
         <tr style="text-align:center">
             {% if user is defined %}
-                <th scope="col">Worker</th>
+                <th scope="col">{% trans %}Pracownik{% endtrans %}</th>
             {% endif %}
-            <th scope="col">Deadline</th>
-            <th scope="col">Progress</th>
-            <th scope="col">Show</th>
+            <th scope="col">{% trans %}Ostateczny termin{% endtrans %}</th>
+            <th scope="col">{% trans %}Postęp{% endtrans %}</th>
+            <th scope="col">{% trans %}Treść{% endtrans %}</th>
             {% if is_granted('ROLE_ADMIN') %}
-                <th scope="col">Delete</th>
+                <th scope="col">{% trans %}Usuń{% endtrans %}</th>
             {% endif %}
         </tr>
         </thead>
@@ -42,13 +42,15 @@
                     </td>
                     <td>
                         <a href="{{ path('show_quest', {id: quest.id}) }}">
-                            <button class="btn btn-warning">Show</button>
+                            <button class="btn btn-warning">{% trans %}Pokaż{% endtrans %}</button>
                         </a>
                     </td>
                     {% if is_granted('ROLE_ADMIN') %}
                         <td>
-                            <button id="{{ quest.id }}" onclick="get_number(this.id)" class="btn btn-danger"
-                                    data-target="#exampleModalCenterDelete" data-toggle="modal">Delete
+                            <button id="{{ quest.id }}" onclick="get_number(this.id)"
+                                    class="btn btn-outline-danger action_post"
+                                    data-target="#exampleModalCenterDelete" data-toggle="modal">
+                                <i class="fas fa-trash-alt"></i>
                             </button>
                         </td>
                     {% endif %}
@@ -70,13 +72,13 @@
                         <i class="far fa-question-circle mt-2"></i>
                     </h1>
                     <h2 class="mt-4 mb-3">
-                        <bold>Are you sure?</bold>
+                        <bold>{% trans %}Jesteś pewien{% endtrans %}?</bold>
                     </h2>
-                    <h5>Do you want to delete quest?</h5>
+                    <h5>{% trans %}Czy chcesz usunąć zadanie{% endtrans %}?</h5>
                     <a class="action" id="/post/delete/">
-                        <button class="delete btn-lg btn-outline-danger mt-5 mr-2">Delete</button>
+                        <button class="delete btn-lg btn-outline-danger mt-5 mr-2">{% trans %}Usuń{% endtrans %}</button>
                     </a>
-                    <button class="btn-lg btn-outline-secondary mt-5 ml-2" data-dismiss="modal" type="button">Cancel
+                    <button class="btn-lg btn-outline-secondary mt-5 ml-2" data-dismiss="modal" type="button">{% trans %}Anuluj{% endtrans %}
                     </button>
                 </div>
             </div>

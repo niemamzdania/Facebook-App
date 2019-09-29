@@ -15,7 +15,6 @@ class AccessTokenFormType extends AbstractType
                 'constraints' => [
                     new Length([
                         'max' => 255,
-                        'maxMessage' => "Facebook access token cannot be longer than {{ limit }} characters"
                     ])
                 ],
             ])

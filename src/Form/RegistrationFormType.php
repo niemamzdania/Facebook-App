@@ -23,8 +23,6 @@ class RegistrationFormType extends AbstractType
                     new Length([
                         'min' => 3,
                         'max' => 50,
-                        'minMessage' => "Login must be at least {{ limit }} characters long",
-                        'maxMessage' => "Login cannot be longer than {{ limit }} characters"
                     ])
                 ],
             ])
@@ -33,26 +31,23 @@ class RegistrationFormType extends AbstractType
                     new Length([
                         'min' => 3,
                         'max' => 50,
-                        'minMessage' => "Email must be at least {{ limit }} characters long",
-                        'maxMessage' => "Email cannot be longer than {{ limit }} characters"
                     ])
                 ],
             ])
             ->add('plainPassword', RepeatedType::class, [
                 'type' => PasswordType::class,
                 'mapped' => false,
-                'invalid_message' => 'The password fields must match.',
                 'options' => ['attr' => ['class' => 'password-field']],
                 'required' => true,
+                'first_name' => 'first',
+                'second_name' => 'second',
                 'first_options' => ['label' => 'Password', 'attr' => ['class' => 'form-control']],
                 'second_options' => ['label' => 'Repeat Password', 'attr' => ['class' => 'form-control']],
                 'constraints' => [
                     new NotBlank([
-                        'message' => 'Please enter a password',
                     ]),
                     new Length([
                         'min' => 6,
-                        'minMessage' => 'Your password should be at least {{ limit }} characters',
                         'max' => 4096,
                     ]),
                 ],

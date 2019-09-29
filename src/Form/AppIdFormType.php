@@ -15,7 +15,6 @@ class AppIdFormType extends AbstractType
                 'constraints' => [
                     new Length([
                         'max' => 20,
-                        'maxMessage' => "App ID cannot be longer than {{ limit }} characters"
                     ])
                 ],
             ])

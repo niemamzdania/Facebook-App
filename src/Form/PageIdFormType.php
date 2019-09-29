@@ -15,7 +15,6 @@ class PageIdFormType extends AbstractType
                 'constraints' => [
                     new Length([
                         'max' => 255,
-                        'maxMessage' => "Page ID cannot be longer than {{ limit }} characters"
                     ])
                 ],
             ])

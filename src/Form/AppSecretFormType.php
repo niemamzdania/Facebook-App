@@ -15,7 +15,6 @@ class AppSecretFormType extends AbstractType
                 'constraints' => [
                     new Length([
                         'max' => 40,
-                        'maxMessage' => "App secret token cannot be longer than {{ limit }} characters"
                     ])
                 ],
             ])

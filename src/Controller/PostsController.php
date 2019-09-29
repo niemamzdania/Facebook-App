@@ -88,8 +88,8 @@ class PostsController extends AbstractController
                 'message' => $message,
             ]);
         }
-        
-        $session->set('message','Post został opublikowany');
+
+        $session->set('message', 'Post został opublikowany');
 
         return $this->redirectToRoute('show_posts');
     }
@@ -106,7 +106,7 @@ class PostsController extends AbstractController
         $post_number = $post->getId();
 
         if (!$post)
-            return new Response('Post to edit not found');
+            return new Response('Nie znaleziono postu do edycji.');
 
         $photo = $this->getDoctrine()->getRepository(Photos::class)->findPhotoByPostId($post->getId());
 
@@ -117,9 +117,9 @@ class PostsController extends AbstractController
         $tempDirectory = $this->getParameter('upload_temp_directory');
 
         $postsService->saveEditedPost($entityManager, $post, $photo, $directory, $tempDirectory, $request);
-        $session->set('message','Post został zmodyfikowany');
+        $session->set('message', 'Post został zmodyfikowany');
 
-        return $this->redirectToRoute('edit_post',['id' => $post_number, 'message' => $session->get('message')]);
+        return $this->redirectToRoute('edit_post', ['id' => $post_number, 'message' => $session->get('message')]);
     }
 
     /**
@@ -169,7 +169,7 @@ class PostsController extends AbstractController
 
         $postsService->saveNewPost($entityManager, $post, $directory, $tempDirectory, $request);
 
-        $session->set('message','Post został poprawnie utworzony');
+        $session->set('message', 'Post został poprawnie utworzony');
 
         return $this->redirectToRoute('show_posts');
     }
@@ -196,7 +196,7 @@ class PostsController extends AbstractController
                 $photoPath = $dateInString . '/' . $file->getRelativePathname();
             }
 
-            if(isset($photoPath))
+            if (isset($photoPath))
                 return $this->render('posts/show_post.html.twig', ['post' => $post, 'photoPath' => $photoPath]);
         }
 
@@ -210,8 +210,7 @@ class PostsController extends AbstractController
     {
         $posts = $this->getDoctrine()->getRepository(Posts::class)->findAllPosts();
 
-        if($session->get('message'))
-        {
+        if ($session->get('message')) {
             $message = $session->get('message');
             $session->remove('message');
             return $this->render('posts/show_posts.html.twig', ['message' => $message, 'posts' => $paginator->paginate(
@@ -219,9 +218,7 @@ class PostsController extends AbstractController
                 $request->query->getInt('page', 1),
                 7
             )]);
-        }
-        else
-        {
+        } else {
             return $this->render('posts/show_posts.html.twig', ['posts' => $paginator->paginate(
                 $posts,
                 $request->query->getInt('page', 1),
@@ -238,8 +235,7 @@ class PostsController extends AbstractController
     {
         $posts = $this->getDoctrine()->getRepository(Posts::class)->findPostsByUserId($this->getUser()->getId());
 
-        if($session->get('message'))
-        {
+        if ($session->get('message')) {
             $message = $session->get('message');
             $session->remove('message');
             return $this->render('posts/show_posts.html.twig', ['message' => $message, 'posts' => $paginator->paginate(
@@ -247,9 +243,7 @@ class PostsController extends AbstractController
                 $request->query->getInt('page', 1),
                 7
             )]);
-        }
-        else
-        {
+        } else {
             return $this->render('posts/show_posts.html.twig', ['posts' => $paginator->paginate(
                 $posts,
                 $request->query->getInt('page', 1),
@@ -287,7 +281,7 @@ class PostsController extends AbstractController
 
         $photo = $this->getDoctrine()->getRepository(Photos::class)->findPhotoByPostId($post->getId());
 
-        if($session->get('message')){ 
+        if ($session->get('message')) {
             $message = $session->get('message');
             $session->remove('message');
         }
@@ -300,21 +294,21 @@ class PostsController extends AbstractController
 
             $directory = $directory . "/" . $dateInString;
 
-            $finder = new Finder();
+            if ($directory !== false AND is_dir($directory)) {
+                $finder = new Finder();
+                $finder->files()->in($directory)->name($photo->getName());
 
-            $finder->files()->in($directory)->name($photo->getName());
-
-            foreach ($finder as $file) {
-                $photoPath = $dateInString . '/' . $file->getRelativePathname();
+                foreach ($finder as $file) {
+                    $photoPath = $dateInString . '/' . $file->getRelativePathname();
+                }
             }
-            
+
             if (isset($photoPath)) {
-                if(isset($message)) {
+                if (isset($message)) {
                     return $this->render('posts/edit_post.html.twig', [
                         'form' => $form->createView(), 'photoPath' => $photoPath, 'message' => $message, 'id' => $post->getId(),
                     ]);
-                }
-                else{
+                } else {
                     return $this->render('posts/edit_post.html.twig', [
                         'form' => $form->createView(), 'photoPath' => $photoPath, 'id' => $post->getId(),
                     ]);
@@ -326,12 +320,11 @@ class PostsController extends AbstractController
             }
         }
 
-        if(isset($message)){
+        if (isset($message)) {
             return $this->render('posts/edit_post.html.twig', [
                 'form' => $form->createView(), 'id' => $post->getId(), 'message' => $message,
             ]);
-        }
-        else{
+        } else {
             return $this->render('posts/edit_post.html.twig', [
                 'form' => $form->createView(), 'id' => $post->getId(),
             ]);
@@ -358,23 +351,24 @@ class PostsController extends AbstractController
             $dateInString = $date->format('Y-m');
             $directory = $directory . "/" . $dateInString;
 
-            $finder = new Finder();
-            $finder->files()->in($directory)->name($photo->getName());
+            if ($directory !== false AND is_dir($directory)) {
+                $finder = new Finder();
+                $finder->files()->in($directory)->name($photo->getName());
 
-            foreach ($finder as $currentPhoto) {
-                $fileSystem = new Filesystem();
+                foreach ($finder as $currentPhoto) {
+                    $fileSystem = new Filesystem();
 
-                $fileSystem->remove([$currentPhoto->getPathname()]);
+                    $fileSystem->remove([$currentPhoto->getPathname()]);
+                }
             }
-
             $entityManager->remove($photo);
             $entityManager->flush();
         }
 
-        if(!$request->request->get('onlyPhoto')) {
+        if (!$request->request->get('onlyPhoto')) {
             $entityManager->remove($post);
             $entityManager->flush();
-            
+
             $session->set('message', 'Post został usunięty');
 
             return $this->redirectToRoute('show_posts');
