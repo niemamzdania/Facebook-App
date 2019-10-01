@@ -23,6 +23,15 @@ class ConversationsRepository extends ServiceEntityRepository
     //  * @return Conversations[] Returns an array of Conversations objects
     //  */
 
+    public function findAllConversations()
+    {
+        return $this->createQueryBuilder('c')
+            ->orderBy('c.id', 'ASC')
+            ->getQuery()
+            ->getResult()
+            ;
+    }
+
     public function findConvByUserId($id)
     {
         return $this->createQueryBuilder('c')
@@ -43,7 +52,6 @@ class ConversationsRepository extends ServiceEntityRepository
             ->getOneOrNullResult()
             ;
     }
-
 
     /*
     public function findOneBySomeField($value): ?Conversations

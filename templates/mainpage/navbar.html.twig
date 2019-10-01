@@ -18,14 +18,4 @@
         {% endif %}
         <a href="/logout" class="logout-button"> <i class="fas fa-sign-out-alt"></i></a>
     </nav>
-    <script>
-        function changeLanguage(clicked_id) {
-            let url = '{{ path('change_lang', {lang: 'clicked_id'}) }}';
-            url = url.replace("clicked_id", clicked_id);
-            $.ajax({
-                url: url,
-            });
-            location.reload();
-        }
-    </script>
 {% endblock %}

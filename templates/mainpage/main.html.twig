@@ -24,6 +24,7 @@
     <div class="content-wrapper">
         <div class="content">
             {% block alerts %}
+                <div class="messagesAlert"></div>
                 {% if message is defined %}
                     <div class="mt-3 alert alert-success alert-dismissible fade show" role="alert">
                         {{ message |trans }}
@@ -90,6 +91,22 @@
                 url: url,
             });
             location.reload();
+        }
+
+        const url = new URL('http://localhost:8080/hub');
+
+        {% set conversations = app.session.get('conversations') %}
+        {% for conversation in conversations %}
+            url.searchParams.append('topic', '{{ conversation.id|trans }}');
+        {% endfor %}
+
+        const eventSource = new EventSource(url)
+        eventSource.onmessage = e => {
+            $interceptedMessage = e.data;
+            document.querySelector(".messagesAlert").insertAdjacentHTML('beforeend', "<div id=\"messageAlert\" class=\"mt-3 alert alert-success\" role=\"alert\">\n" +
+                "{% trans %}Otrzymano nową wiadomość{% endtrans %}\n" +
+                "</div>");
+            setTimeout(function(){ document.getElementById("messageAlert").remove(); }, 3000);
         }
     </script>
 {% endblock %}
