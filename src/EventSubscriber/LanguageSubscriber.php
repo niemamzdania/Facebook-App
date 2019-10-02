@@ -12,11 +12,7 @@ class LanguageSubscriber implements EventSubscriberInterface
     {
         $request = $event->getRequest();
 
-        if (!$request->hasPreviousSession()) {
-            return;
-        }
-
-        if($request->getSession()->get('locale'))
+        if ($request->getSession()->get('locale'))
             $request->setLocale($request->getSession()->get('locale'));
     }
 

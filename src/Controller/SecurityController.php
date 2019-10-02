@@ -17,10 +17,6 @@ class SecurityController extends AbstractController
      */
     public function login(AuthenticationUtils $authenticationUtils): Response
     {
-        $conversations = $this->getDoctrine()->getRepository(Conversations::class)->findAllConversations();
-        $session = new Session();
-        $session->set('conversations', $conversations);
-
         // get the login error if there is one
         $error = $authenticationUtils->getLastAuthenticationError();
         // last username entered by the user

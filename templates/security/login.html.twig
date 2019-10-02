@@ -9,12 +9,12 @@
             <div class="login-form">
                 <div class="main-div">
                     {% if app.request.locale == 'pl_PL' %}
-                        <a id="en" href="#" onclick="changeLanguage(this.id)"><i>🇺🇸</i></a>
+                        <a id="en" style="float: right;" href="#" onclick="changeLanguage(this.id)"><i>🇺🇸</i></a>
                     {% elseif app.request.locale == 'en' %}
-                        <a id="pl_PL" href="#" onclick="changeLanguage(this.id)"><i>🇵🇱</i></a>
+                        <a id="pl_PL" style="float: right;" href="#" onclick="changeLanguage(this.id)"><i>🇵🇱</i></a>
                     {% endif %}
-                    <form method="post">
-                        <h1 class="h3 mb-5 font-weight-normal">{% trans %}Strona logowania{% endtrans %}</h1>
+                    <form style="clear: both;" method="post">
+                        <h1 class="h3 mt-5 mb-5 font-weight-normal">{% trans %}Strona logowania{% endtrans %}</h1>
                         <label class="sr-only" for="inputLogin">Login</label>
                         <input type="text" value="{{ last_username }}" name="login" id="inputLogin" class="form-control"
                                placeholder="Login" required autofocus>
