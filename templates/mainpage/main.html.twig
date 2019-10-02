@@ -90,7 +90,9 @@
             $.ajax({
                 url: url,
             });
-            location.reload();
+            setTimeout(function(){
+                window.location.reload();
+            });
         }
 
         const url = new URL('http://localhost:8080/hub');
