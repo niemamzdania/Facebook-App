@@ -38,7 +38,8 @@
         "symfony/validator": "4.3.*",
         "symfony/web-link": "4.3.*",
         "symfony/yaml": "4.3.*",
-        "symfony/maker-bundle": "^1.11"
+        "symfony/maker-bundle": "^1.11",
+        "doctrine/doctrine-fixtures-bundle": "^3.2"
     },
     "require-dev": {
         "doctrine/doctrine-fixtures-bundle": "^3.2",
