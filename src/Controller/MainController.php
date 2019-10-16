@@ -30,4 +30,12 @@ class MainController extends AbstractController
 
         return new Response("Ok");
     }
+
+    /**
+     * @Route("/test", name="test")
+     */
+    public function test(Request $request)
+    {
+        return $this->render('mainpage/main.html.twig');
+    }
 }
