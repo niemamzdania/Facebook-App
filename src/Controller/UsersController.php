@@ -135,17 +135,24 @@ class UsersController extends AbstractController
                 $entityManager->persist($user);
                 $entityManager->flush();
 
-                if($request->getLocale() == 'en')
+                if($request->getLocale() == 'en') {
                     $body = "Your new password is: $password. You can login now with the new credentials.";
-                else $body = "Twoje nowe hasło to: $password. Możesz teraz zalogować się z nowymi danymi.";
-                $message = (new \Swift_Message('Hello Email'))
-                    ->setFrom('apkafacebook20@gmail.com')
-                    ->setTo($recipient)
-                    ->setBody(
-                        $body,
-                        'text/html'
-                    );
-
+                    $message = (new \Swift_Message('Reset your password'))
+                        ->setFrom('apkafacebook20@gmail.com')
+                        ->setTo($recipient)
+                        ->setBody(
+                            $body, 'text/html'
+                        );
+                }
+                else {
+                    $body = "Twoje nowe hasło to: $password. Możesz teraz zalogować się z nowymi danymi.";
+                    $message = (new \Swift_Message('Resetowanie hasła'))
+                        ->setFrom('apkafacebook20@gmail.com')
+                        ->setTo($recipient)
+                        ->setBody(
+                            $body, 'text/html'
+                        );
+                }
                 $mailer->send($message);
 
                 return $this->redirectToRoute('app_login');
