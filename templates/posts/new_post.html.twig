@@ -12,12 +12,28 @@
         <div class="mt-3"><span style="cursor: default; font-weight: bold;">{% trans %}Wybierz zdjęcie{% endtrans %}:</span></div>
         {{ form_widget(form.name) }}
         {{ form_errors(form.name) }}
+        <div class="chosenImage">
+            <img id="chosenImage" style="height: 30vh; max-width: 100%; margin-top: 20px; margin-bottom: 10px;">
+        </div>
         <div>
-            <button class="btn btn-dark mt-5">{% trans %}Dodaj post{% endtrans %}</button>
+            <button class="btn btn-dark mt-2">{% trans %}Dodaj post{% endtrans %}</button>
         </div>
         {{ form_end(form) }}
     </div>
     <script>
         document.querySelector("#post_form_name").className += "btn btn-secondary";
+        document.querySelector("#post_form_name").setAttribute("onchange", "whenChosen(event)");
+
+        function whenChosen(event){
+            var chosenImage = new FileReader();
+            chosenImage.onload = function()
+            {
+                var image = document.querySelector("#chosenImage");
+                image.src = chosenImage.result;
+                image.style.borderRadius = "5px";
+                image.style.border = "2px solid gray";
+            }
+            chosenImage.readAsDataURL(event.target.files[0]);
+        }
     </script>
 {% endblock %}

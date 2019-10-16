@@ -19,7 +19,7 @@ class RegistrationController extends AbstractController
 {
     /**
      * @Route("/register", name="app_register")
-     * @IsGranted("IS_AUTHENTICATED_ANONYMOUSLY")
+     * @IsGranted("IS_AUTHENTICATED_FULLY")
      */
     public function register(Session $session, Request $request, UserPasswordEncoderInterface $passwordEncoder, GuardAuthenticatorHandler $guardHandler, LoginFormAuthenticator $authenticator): Response
     {
