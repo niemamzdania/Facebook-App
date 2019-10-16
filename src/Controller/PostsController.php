@@ -171,7 +171,7 @@ class PostsController extends AbstractController
 
         $session->set('message', 'Post został poprawnie utworzony');
 
-        return $this->redirectToRoute('show_posts');
+        return $this->redirectToRoute('show_user_posts');
     }
 
     /**
