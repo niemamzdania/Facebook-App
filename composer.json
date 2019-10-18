@@ -11,6 +11,7 @@
         "doctrine/annotations": "^1.7",
         "doctrine/doctrine-fixtures-bundle": "^3.2",
         "facebook/graph-sdk": "^5.7",
+        "google/apiclient": "^2.0",
         "google/cloud-speech": "^0.27.0",
         "google/photos-library": "^1.4",
         "knplabs/knp-paginator-bundle": "^4.0",

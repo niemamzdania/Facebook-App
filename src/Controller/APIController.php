@@ -20,7 +20,8 @@ use Google\Auth\Credentials\UserRefreshCredentials;
 use Google\Photos\Library\V1\PhotosLibraryClient;
 use Google\Photos\Library\V1\PhotosLibraryResourceFactory;
 use Google\Auth\OAuth2;
-use \Google\Protobuf\Internal\GPBType;
+use GuzzleHttp\Client;
+use Google_Client;
 
 
 class APIController extends AbstractController
@@ -62,6 +63,8 @@ class APIController extends AbstractController
      */
     public function add_photo(Request $request)
     {
+        //$client = new Google_Client();
+
         $redirectURI = "http://localhost:8000/google";
         $scopes = ["https://www.googleapis.com/auth/photoslibrary.sharing", "https://www.googleapis.com/auth/photoslibrary"];
 
@@ -69,8 +72,22 @@ class APIController extends AbstractController
             file_get_contents($this->getParameter("secret_client_json")),
             true
         )['web'];
+
+        /*
+        $client->setAuthConfig($this->getParameter("secret_client_json"));
+        $client->addScope($scopes);
+        $client->setRedirectUri($redirectURI);
+        $client->setAccessType('offline');
+        $client->setApprovalPrompt("force");
+        $client->setIncludeGrantedScopes(true);
+        $auth_url = $client->createAuthUrl();
+        header("Location: " . filter_var($auth_url, FILTER_SANITIZE_URL));
+        exit();
+        */
+
         $clientId = $clientSecretJson['client_id'];
         $clientSecret = $clientSecretJson['client_secret'];
+
         $oauth2 = new OAuth2([
             'clientId' => $clientId,
             'clientSecret' => $clientSecret,
@@ -81,6 +98,7 @@ class APIController extends AbstractController
             'tokenCredentialUri' => 'https://www.googleapis.com/oauth2/v4/token',
             'scope' => $scopes,
         ]);
+
         // The authorization URI will, upon redirecting, return a parameter called code.
         if (!isset($_GET['code'])) {
             $authenticationUrl = $oauth2->buildFullAuthorizationUri(['access_type' => 'offline']);
@@ -104,6 +122,7 @@ class APIController extends AbstractController
             // Return to the add photo route.
             return $this->redirectToRoute("google_photo");
         }
+
 
         return $this->redirectToRoute("main_page");
     }
