@@ -22,10 +22,30 @@ use Google\Photos\Library\V1\PhotosLibraryResourceFactory;
 use Google\Auth\OAuth2;
 use GuzzleHttp\Client;
 use Google_Client;
+use Cloudinary\Uploader;
 
 
 class APIController extends AbstractController
 {
+    /**
+     * @Route("/test", name="test")
+     * @IsGranted("IS_AUTHENTICATED_FULLY")
+     */
+    public function test(Request $request)
+    {
+        \Cloudinary::config(array(
+            "cloud_name" => "przemke",
+            "api_key" => "884987643496832",
+            "api_secret" => "9KWlEeWnpdqZyo2GlohdLAqibeU",
+            "secure" => true
+        ));
+
+        \Cloudinary\Uploader::upload('/home/przemke/Obrazy/A4 B7 Sedan Blue.jpg', []);
+
+        return new Response("Ok");
+    }
+
+
     /**
      * @Route("/auth/google/callback", name="google_photo")
      * @IsGranted("IS_AUTHENTICATED_FULLY")

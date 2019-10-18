@@ -2,6 +2,9 @@
     "almasaeed2010/adminlte": {
         "version": "v2.4.3"
     },
+    "cloudinary/cloudinary_php": {
+        "version": "1.15.0"
+    },
     "composer/installers": {
         "version": "v1.6.0"
     },
