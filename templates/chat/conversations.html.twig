@@ -74,7 +74,7 @@
 
         var messageFromInput = "";
 
-        const url = new URL('http://0.0.0.0:8080/hub');
+        const url = new URL('http://0.0.0.0:3000/hub');
         url.searchParams.append('topic', {{ topic }});
         const eventSource = new EventSource(url)
         eventSource.onmessage = e => {
@@ -101,8 +101,8 @@
             messageFromInput = message;
 
             $.ajax({
-                url: "{{ path('send_message', {topic: topic}) }}",
                 method: "POST",
+                url: "{{ path('send_message', {topic: topic}) }}",
                 data: {Content: message},
             });
             document.querySelector(".messageInput").value = "";
