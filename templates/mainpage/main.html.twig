@@ -95,7 +95,7 @@
             });
         }
 
-        const url = new URL('http://przemkeapp.herokuapp.com/hub');
+        const url = new URL('http://localhost:8080/hub');
 
         {% set conversations = app.session.get('conversations') %}
         {% for conversation in conversations %}
