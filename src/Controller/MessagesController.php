@@ -18,7 +18,7 @@ use Symfony\Component\Mercure\Update;
 class MessagesController extends AbstractController
 {
     /**
-     * @Route("/message/send/{topic}", name="send_message", methods={"POST"})
+     * @Route("/message/send/{topic}", name="send_message", methods={"POST", "GET"})
      * @IsGranted("IS_AUTHENTICATED_FULLY")
      */
     public function send_message(Conversations $topic, Publisher $publisher, Request $request, Session $session)
