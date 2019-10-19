@@ -15,10 +15,11 @@
                     <div class="mt-3"><span style="cursor: default; font-weight: bold;">{% trans %}Wybierz zdjęcie{% endtrans %}:</span></div>
                     {{ form_widget(form.name) }}
                     {{ form_errors(form.name) }}
+                    <div class="photoSelection"></div>
                     <div class="col-6">
-                        <button class="btn btn-dark mt-5">{% trans %}Edytuj{% endtrans %}</button>
-                        <a href="/posts">
-                            <div class="btn btn-primary mt-5 ml-2" href="/posts">{% trans %}Wróć{% endtrans %}</div>
+                        <button class="confirmButton btn btn-dark mt-5">{% trans %}Edytuj{% endtrans %}</button>
+                        <a href="{{ path('show_user_posts') }}">
+                            <div class="previousButton btn btn-primary mt-5 ml-2">{% trans %}Wróć{% endtrans %}</div>
                         </a>
                     </div>
                     {{ form_end(form) }}
@@ -28,7 +29,7 @@
                     {% if photoPath is defined %}
                         <img class="mt-3"
                              style="height: auto; width: 60%; border-radius: 5px; border: 2px solid gray; margin-bottom: 30px;"
-                             src="{{ asset('uploads/photos/') }}{{ photoPath }}">
+                             src="{{ photoPath }}">
                         <div>
                             <form id="deletePhoto" action="{{ path('delete_post', {id: id}) }}" method="POST">
                                 <input type="hidden" name="onlyPhoto" value="onlyPhoto">
@@ -47,4 +48,25 @@
         </div>
         <script>
             document.querySelector("#post_form_name").className += "btn btn-secondary";
-        </script>{% endblock %}
+            document.querySelector("#post_form_name").setAttribute("onchange", "whenChosen(event)");
+
+            function whenChosen(event){
+                var chosenImage = new FileReader();
+                chosenImage.onload = function()
+                {
+                    document.querySelector(".photoSelection").insertAdjacentHTML('beforeend', "<div class=\"chosenImage\">\n" +
+                        "<img id=\"chosenImage\" style=\"height: 30vh; max-width: 100%; margin-top: 20px; margin-bottom: 10px;\">\n" +
+                        "</div>");
+                    var image = document.querySelector("#chosenImage");
+                    image.src = chosenImage.result;
+                    image.style.borderRadius = "5px";
+                    image.style.border = "2px solid gray";
+                    var confirmButton = document.querySelector(".confirmButton");
+                    confirmButton.className = "confirmButton btn btn-dark mt-2";
+                    var previousButton = document.querySelector(".previousButton");
+                    previousButton.className = "previousButton btn btn-primary mt-2 ml-2";
+                }
+                chosenImage.readAsDataURL(event.target.files[0]);
+            }
+        </script>
+    {% endblock %}

@@ -7,6 +7,7 @@ use App\Form\PostFormType;
 use App\Service\imageUploaderService;
 
 use App\Service\PostsService;
+use Cloudinary\Search;
 use Google\ApiCore\ApiException;
 use Google\ApiCore\ValidationException;
 use Symfony\Component\HttpFoundation\Response;
@@ -40,9 +41,14 @@ class APIController extends AbstractController
             "secure" => true
         ));
 
-        $upload = \Cloudinary\Uploader::upload('/home/przemke/Obrazy/A4 B7 Sedan Blue.jpg', ['folder' => '2019-10']);
+        $search = new Search();
+        $searchData = "folder=2019-10 AND filename=A4_B7_Sedan_Blue_hbecmj";
+        $result = $search
+            ->expression($searchData)
+            ->max_results(1)
+            ->execute();
 
-        dd($upload['public_id']);
+        \Cloudinary\Uploader::destroy($result['resources'][0]['public_id']);
 
         return new Response("Ok");
     }

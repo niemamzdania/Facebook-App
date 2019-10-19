@@ -11,8 +11,6 @@ use Facebook\Facebook;
 use Facebook\FileUpload\FacebookFile;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Symfony\Component\Filesystem\Filesystem;
-use Symfony\Component\Finder\Finder;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -111,16 +109,36 @@ class PostsController extends AbstractController
 
         $photo = $this->getDoctrine()->getRepository(Photos::class)->findPhotoByPostId($post->getId());
 
-        $directory = $this->getParameter('upload_directory');
-
         $entityManager = $this->getDoctrine()->getmanager();
 
         $tempDirectory = $this->getParameter('upload_temp_directory');
 
-        $postsService->saveEditedPost($entityManager, $post, $photo, $directory, $tempDirectory, $request);
+        $postsService->saveEditedPost($entityManager, $post, $photo, $tempDirectory, $request);
         $session->set('message', 'Post został zmodyfikowany');
 
-        return $this->redirectToRoute('edit_post', ['id' => $post_number, 'message' => $session->get('message')]);
+        $photo = $this->getDoctrine()->getRepository(Photos::class)->findPhotoByPostId($post->getId());
+        if($photo) {
+            //Config of server
+            \Cloudinary::config(array(
+                "cloud_name" => "przemke",
+                "api_key" => "884987643496832",
+                "api_secret" => "9KWlEeWnpdqZyo2GlohdLAqibeU",
+                "secure" => true
+            ));
+            $post = $this->getDoctrine()->getRepository(Posts::class)->findPostById($post->getId());
+            $search = new Search();
+            $searchData = "folder=".$post->getDate()->format('Y-m')." AND filename=".$photo->getName();
+            $result = $search
+                ->expression($searchData)
+                ->max_results(1)
+                ->execute();
+            if(isset($result['resources'][0])) {
+                $photoPath = $result['resources'][0]['url'];
+                return $this->redirectToRoute('show_post', ['id' => $post_number, 'photoPath' => $photoPath, 'message' => $session->get('message')]);
+            }
+        }
+
+        return $this->redirectToRoute('show_post', ['id' => $post_number, 'message' => $session->get('message')]);
     }
 
     /**
@@ -181,6 +199,10 @@ class PostsController extends AbstractController
      */
     public function show_post(Request $request, Posts $post)
     {
+        if ($this->getUser() != $post->getUser() && !$this->isGranted("ROLE_ADMIN")) {
+            return new Response('Forbidden access');
+        }
+
         $photo = $this->getDoctrine()->getRepository(Photos::Class)->findPhotoByPostId($post->getId());
 
         if ($photo != NULL) {
@@ -195,29 +217,13 @@ class PostsController extends AbstractController
             $search = new Search();
             $searchData = "folder=".$photo->getPost()->getDate()->format('Y-m')." AND filename=".$photo->getName();
             $result = $search
-                ->expression($searchData . " AND public_id=sdsdsd")
+                ->expression($searchData)
                 ->max_results(1)
                 ->execute();
 
-            /*
-            $directory = $this->getParameter('upload_directory');
-            $date = $post->getDate();
-            $dateInString = $date->format('Y-m');
-            $directory = $directory . "/" . $dateInString;
-
-            $finder = new Finder();
-
-            $finder->files()->in($directory)->name($photo->getName());
-
-            foreach ($finder as $file) {
-                $photoPath = $dateInString . '/' . $file->getRelativePathname();
+            if (isset($result['resources'][0])) {
+                return $this->render('posts/show_post.html.twig', ['post' => $post, 'photoPath' => $result['resources'][0]['url']]);
             }
-            */
-
-            //Here we go
-            if (isset($result['resources'][0]))
-                return $this->render('posts/show_post.html.twig', ['post' => $post, 'photoPath' => $result['resources'][0]['ssd']]);
-
         }
 
         return $this->render('posts/show_post.html.twig', ['post' => $post]);
@@ -308,23 +314,25 @@ class PostsController extends AbstractController
         }
 
         if ($photo) {
-            $directory = $this->getParameter('upload_directory');
+            $dateInString = $post->getDate()->format('Y-m');
 
-            $date = $post->getDate();
-            $dateInString = $date->format('Y-m');
+            //Config of server
+            \Cloudinary::config(array(
+                "cloud_name" => "przemke",
+                "api_key" => "884987643496832",
+                "api_secret" => "9KWlEeWnpdqZyo2GlohdLAqibeU",
+                "secure" => true
+            ));
 
-            $directory = $directory . "/" . $dateInString;
+            $search = new Search();
+            $searchData = "folder=".$dateInString." AND filename=".$photo->getName();
+            $result = $search
+                ->expression($searchData)
+                ->max_results(1)
+                ->execute();
 
-            if ($directory !== false AND is_dir($directory)) {
-                $finder = new Finder();
-                $finder->files()->in($directory)->name($photo->getName());
-
-                foreach ($finder as $file) {
-                    $photoPath = $dateInString . '/' . $file->getRelativePathname();
-                }
-            }
-
-            if (isset($photoPath)) {
+            if (isset($result['resources'][0])) {
+                $photoPath = $result['resources'][0]['url'];
                 if (isset($message)) {
                     return $this->render('posts/edit_post.html.twig', [
                         'form' => $form->createView(), 'photoPath' => $photoPath, 'message' => $message, 'id' => $post->getId(),
@@ -367,21 +375,24 @@ class PostsController extends AbstractController
         $entityManager = $this->getDoctrine()->getManager();
 
         if ($photo) {
-            $directory = $this->getParameter('upload_directory');
-            $date = $post->getDate();
-            $dateInString = $date->format('Y-m');
-            $directory = $directory . "/" . $dateInString;
+            //Config of server
+            \Cloudinary::config(array(
+                "cloud_name" => "przemke",
+                "api_key" => "884987643496832",
+                "api_secret" => "9KWlEeWnpdqZyo2GlohdLAqibeU",
+                "secure" => true
+            ));
 
-            if ($directory !== false AND is_dir($directory)) {
-                $finder = new Finder();
-                $finder->files()->in($directory)->name($photo->getName());
+            //Delete photo from server and database
+            $search = new Search();
+            $searchData = "folder=" . $photo->getPost()->getDate()->format('Y-m') . " AND filename=" . $photo->getName();
+            $result = $search
+                ->expression($searchData)
+                ->max_results(1)
+                ->execute();
 
-                foreach ($finder as $currentPhoto) {
-                    $fileSystem = new Filesystem();
+            \Cloudinary\Uploader::destroy($result['resources'][0]['public_id']);
 
-                    $fileSystem->remove([$currentPhoto->getPathname()]);
-                }
-            }
             $entityManager->remove($photo);
             $entityManager->flush();
         }
@@ -393,6 +404,9 @@ class PostsController extends AbstractController
             $session->set('message', 'Post został usunięty');
 
             return $this->redirectToRoute('show_user_posts');
+        }
+        else{
+            $session->set('message', 'Zdjęcie zostało usunięte');
         }
 
         return $this->redirectToRoute('edit_post', ['id' => $post->getId()]);
