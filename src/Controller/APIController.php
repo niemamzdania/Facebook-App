@@ -40,7 +40,9 @@ class APIController extends AbstractController
             "secure" => true
         ));
 
-        \Cloudinary\Uploader::upload('/home/przemke/Obrazy/A4 B7 Sedan Blue.jpg', []);
+        $upload = \Cloudinary\Uploader::upload('/home/przemke/Obrazy/A4 B7 Sedan Blue.jpg', ['folder' => '2019-10']);
+
+        dd($upload['public_id']);
 
         return new Response("Ok");
     }

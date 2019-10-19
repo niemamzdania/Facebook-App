@@ -18,6 +18,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Knp\Component\Pager\PaginatorInterface;
 use Symfony\Component\HttpFoundation\Session\Session;
+use Cloudinary\Search;
 
 class PostsController extends AbstractController
 {
@@ -167,7 +168,7 @@ class PostsController extends AbstractController
 
         $tempDirectory = $this->getParameter('upload_temp_directory');
 
-        $postsService->saveNewPost($entityManager, $post, $directory, $tempDirectory, $request);
+        $postsService->saveNewPost($entityManager, $post, $tempDirectory, $request);
 
         $session->set('message', 'Post został poprawnie utworzony');
 
@@ -183,6 +184,22 @@ class PostsController extends AbstractController
         $photo = $this->getDoctrine()->getRepository(Photos::Class)->findPhotoByPostId($post->getId());
 
         if ($photo != NULL) {
+            //Config of server
+            \Cloudinary::config(array(
+                "cloud_name" => "przemke",
+                "api_key" => "884987643496832",
+                "api_secret" => "9KWlEeWnpdqZyo2GlohdLAqibeU",
+                "secure" => true
+            ));
+
+            $search = new Search();
+            $searchData = "folder=".$photo->getPost()->getDate()->format('Y-m')." AND filename=".$photo->getName();
+            $result = $search
+                ->expression($searchData . " AND public_id=sdsdsd")
+                ->max_results(1)
+                ->execute();
+
+            /*
             $directory = $this->getParameter('upload_directory');
             $date = $post->getDate();
             $dateInString = $date->format('Y-m');
@@ -195,9 +212,12 @@ class PostsController extends AbstractController
             foreach ($finder as $file) {
                 $photoPath = $dateInString . '/' . $file->getRelativePathname();
             }
+            */
 
-            if (isset($photoPath))
-                return $this->render('posts/show_post.html.twig', ['post' => $post, 'photoPath' => $photoPath]);
+            //Here we go
+            if (isset($result['resources'][0]))
+                return $this->render('posts/show_post.html.twig', ['post' => $post, 'photoPath' => $result['resources'][0]['ssd']]);
+
         }
 
         return $this->render('posts/show_post.html.twig', ['post' => $post]);
@@ -205,6 +225,7 @@ class PostsController extends AbstractController
 
     /**
      * @Route("/posts", name="show_posts")
+     * @IsGranted("ROLE_ADMIN")
      */
     public function show_all_posts(Request $request, PaginatorInterface $paginator, Session $session)
     {
@@ -371,7 +392,7 @@ class PostsController extends AbstractController
 
             $session->set('message', 'Post został usunięty');
 
-            return $this->redirectToRoute('show_posts');
+            return $this->redirectToRoute('show_user_posts');
         }
 
         return $this->redirectToRoute('edit_post', ['id' => $post->getId()]);

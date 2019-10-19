@@ -9,7 +9,7 @@ use Symfony\Component\HttpFoundation\File\File;
 
 class PostsService
 {
-    public function saveNewPost($entityManager, $post, $directory, $tempDirectory, $request)
+    public function saveNewPost($entityManager, $post, $tempDirectory, $request)
     {
         $session = $request->getSession();
 
@@ -33,16 +33,20 @@ class PostsService
             $photo = new Photos();
 
             $dateInString = $date->format('Y-m');
-            $directory = $directory . "/" . $dateInString;
 
-            $fileName = md5(time());
-            $fileName = substr($fileName, 0, 32);
+            //Config of server
+            \Cloudinary::config(array(
+                "cloud_name" => "przemke",
+                "api_key" => "884987643496832",
+                "api_secret" => "9KWlEeWnpdqZyo2GlohdLAqibeU",
+                "secure" => true
+            ));
 
-            $extension = $file->guessExtension();
-            $fileName = $fileName . "." . $extension;
+            $upload = \Cloudinary\Uploader::upload($realPath, ['folder' => $dateInString]);
 
-            $file->move($directory, $fileName);
+            $fileName = substr($upload['public_id'], 8);
 
+            //$photo->setName($fileName . "." . $upload['format']);
             $photo->setName($fileName);
             $photo->setPost($post);
 
