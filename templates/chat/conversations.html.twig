@@ -74,7 +74,7 @@
 
         var messageFromInput = "";
 
-        const url = new URL('http://localhost:8080/hub');
+        const url = new URL('https://demo.mercure.rocks/hub');
         url.searchParams.append('topic', {{ topic }});
         const eventSource = new EventSource(url)
         eventSource.onmessage = e => {
