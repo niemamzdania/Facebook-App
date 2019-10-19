@@ -95,7 +95,7 @@
             });
         }
 
-        const url = new URL('http://127.0.0.1:8080/hub');
+        const url = new URL('http://0.0.0.0:8080/hub');
 
         {% set conversations = app.session.get('conversations') %}
         {% for conversation in conversations %}
