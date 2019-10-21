@@ -185,7 +185,7 @@ class QuestsController extends AbstractController
      */
     public function delete_post(Quests $quest, Session $session)
     {
-        if ($this->getUser() != $quest->getUser()) {
+        if ($this->getUser() != $quest->getUser() && !$this->isGranted("ROLE_ADMIN")) {
             return new Response('Forbidden access');
         }
 

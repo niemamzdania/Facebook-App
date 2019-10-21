@@ -101,7 +101,7 @@
             messageFromInput = message;
 
             $.ajax({
-                method: "POST",
+                method: "GET",
                 url: "{{ path('send_message', {topic: topic}) }}",
                 data: {Content: message},
             });
