@@ -21,8 +21,7 @@
     {% include 'mainpage/sidebar.html.twig' %}
     <!-- Sidebar -->
     <!-- Content -->
-    <div class="content-wrapper">
-        <div class="content">
+    <div class="content-wrapper" style="overflow: auto;">
             {% block alerts %}
                 <div class="messagesAlert"></div>
                 {% if message is defined %}
@@ -52,7 +51,6 @@
             {% block content %}
                 {% include 'mainpage/hello_page.html.twig' %}
             {% endblock %}
-        </div>
     </div>
     <!-- Content -->
     <!-- Footer -->

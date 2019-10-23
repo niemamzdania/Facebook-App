@@ -14,7 +14,7 @@
         {{ form_errors(form.name) }}
         <div class="photoSelection"></div>
         <div>
-            <button class="confirmButton btn btn-dark mt-5">{% trans %}Dodaj post{% endtrans %}</button>
+            <button class="confirmButton btn btn-dark mt-2">{% trans %}Dodaj post{% endtrans %}</button>
         </div>
         {{ form_end(form) }}
     </div>
@@ -26,15 +26,27 @@
             var chosenImage = new FileReader();
             chosenImage.onload = function()
             {
-                document.querySelector(".photoSelection").insertAdjacentHTML('beforeend', "<div class=\"chosenImage\">\n" +
-                    "<img id=\"chosenImage\" style=\"height: 30vh; max-width: 100%; margin-top: 20px; margin-bottom: 10px;\">\n" +
-                    "</div>");
-                var image = document.querySelector("#chosenImage");
-                image.src = chosenImage.result;
-                image.style.borderRadius = "5px";
-                image.style.border = "2px solid gray";
-                var button = document.querySelector(".confirmButton");
-                button.className = "confirmButton btn btn-dark mt-2";
+                var photoSel = document.querySelector(".chosenImage");
+
+                if(photoSel === null) {
+                    document.querySelector(".photoSelection").insertAdjacentHTML('beforeend', "<div class=\"chosenImage\">\n" +
+                        "<img id=\"chosenImage\" style=\"height: 30vh; max-width: 100%; margin-top: 20px; margin-bottom: 10px;\">\n" +
+                        "</div>");
+                    var image = document.querySelector("#chosenImage");
+                    image.src = chosenImage.result;
+                    image.style.borderRadius = "5px";
+                    image.style.border = "2px solid gray";
+                }
+                else {
+                    document.querySelector(".chosenImage").innerHTML = "<img id=\"chosenImage\" style=\"height: 30vh; max-width: 100%; margin-top: 20px; margin-bottom: 10px;\">";
+                    var image = document.querySelector("#chosenImage");
+                    image.src = chosenImage.result;
+                    image.style.borderRadius = "5px";
+                    image.style.border = "2px solid gray";
+                }
+
+                /*var button = document.querySelector(".confirmButton");
+                button.className = "confirmButton btn btn-dark mt-2";*/
             }
             chosenImage.readAsDataURL(event.target.files[0]);
         }
