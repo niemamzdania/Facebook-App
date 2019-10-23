@@ -134,11 +134,11 @@ class PostsController extends AbstractController
                 ->execute();
             if(isset($result['resources'][0])) {
                 $photoPath = $result['resources'][0]['url'];
-                return $this->redirectToRoute('show_post', ['id' => $post_number, 'photoPath' => $photoPath, 'message' => $session->get('message')]);
+                return $this->redirectToRoute('show_user_posts', ['photoPath' => $photoPath, 'message' => $session->get('message')]);
             }
         }
 
-        return $this->redirectToRoute('show_post', ['id' => $post_number, 'message' => $session->get('message')]);
+        return $this->redirectToRoute('show_user_posts', ['message' => $session->get('message')]);
     }
 
     /**
@@ -224,6 +224,10 @@ class PostsController extends AbstractController
             if (isset($result['resources'][0])) {
                 return $this->render('posts/show_post.html.twig', ['post' => $post, 'photoPath' => $result['resources'][0]['url']]);
             }
+
+            $entityManager = $this->getDoctrine()->getmanager();
+            $entityManager->remove($photo);
+            $entityManager->flush();
         }
 
         return $this->render('posts/show_post.html.twig', ['post' => $post]);

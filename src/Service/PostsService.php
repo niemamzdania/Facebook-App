@@ -107,7 +107,8 @@ class PostsService
                 ->max_results(1)
                 ->execute();
 
-            \Cloudinary\Uploader::destroy($result['resources'][0]['public_id']);
+            if(isset($result['resources'][0]))
+                \Cloudinary\Uploader::destroy($result['resources'][0]['public_id']);
 
             $upload = \Cloudinary\Uploader::upload($realPath, ['folder' => $currentDateInString]);
 
