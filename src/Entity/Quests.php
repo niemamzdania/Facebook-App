@@ -9,6 +9,7 @@ use Doctrine\ORM\Mapping as ORM;
  * Quests
  *
  * @ORM\Table(name="quests", indexes={@ORM\Index(name="FK_quests_users", columns={"user_id"})})
+ * @ORM\Table(name="quests", indexes={@ORM\Index(name="FK__quests_projects", columns={"project_id"})})
  * @ORM\Entity(repositoryClass="App\Repository\QuestsRepository")
  */
 class Quests
@@ -59,6 +60,15 @@ class Quests
      * })
      */
     private $user;
+
+    /**
+     * @var \Projects
+     * @ORM\ManyToOne(targetEntity="Projects")
+     * @ORM\JoinColumns({
+     * @ORM\JoinColumn(name="project_id", referencedColumnName="id", onDelete="CASCADE")
+     * })
+     */
+    private $projectId;
 
     public function getId(): ?int
     {
@@ -121,6 +131,18 @@ class Quests
     public function setUser(?Users $user): self
     {
         $this->user = $user;
+
+        return $this;
+    }
+
+    public function getProjectId(): ?Projects
+    {
+        return $this->projectId;
+    }
+
+    public function setProjectId(Projects $projectId): self
+    {
+        $this->projectId = $projectId;
 
         return $this;
     }
