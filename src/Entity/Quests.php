@@ -68,7 +68,7 @@ class Quests
      * @ORM\JoinColumn(name="project_id", referencedColumnName="id", onDelete="CASCADE")
      * })
      */
-    private $projectId;
+    private $project;
 
     public function getId(): ?int
     {
@@ -135,14 +135,14 @@ class Quests
         return $this;
     }
 
-    public function getProjectId(): ?Projects
+    public function getProject(): ?Projects
     {
         return $this->projectId;
     }
 
-    public function setProjectId(Projects $projectId): self
+    public function setProject(Projects $project): self
     {
-        $this->projectId = $projectId;
+        $this->project = $project;
 
         return $this;
     }

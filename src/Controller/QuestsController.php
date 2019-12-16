@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\Entity\Quests;
+use App\Entity\Projects;
 use App\Entity\Users;
 
 use App\Service\QuestsService;
@@ -30,9 +31,20 @@ class QuestsController extends AbstractController
 
         $quest->setUser($user);
 
+        $projectName = $request->request->get('Project');
+
+        $project = $this->getDoctrine()->getRepository(Projects::class)->findProjectByName($projectName);
+
         $entityManager = $this->getDoctrine()->getManager();
 
-        $questsService->saveNewQuest($entityManager, $quest, $request);
+        if(!isset($project)) {
+            $project = new Projects();
+            $project->setName($projectName);
+            $entityManager->persist($project);
+            $entityManager->flush();
+        }
+
+        $questsService->saveNewQuest($entityManager, $quest, $project, $request);
         $session->set('message', 'Zadanie zostało dodane');
 
         return $this->redirectToRoute('show_user_quests',['id'=>$this->getUser()->getId()]);

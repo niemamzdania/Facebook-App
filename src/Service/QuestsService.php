@@ -2,9 +2,11 @@
 
 namespace App\Service;
 
+use App\Entity\Projects;
+
 class QuestsService
 {
-    public function saveNewQuest($entityManager, $quest, $request)
+    public function saveNewQuest($entityManager, $quest, $project, $request)
     {
         $dateInString = $request->request->get('EndDate');
 
@@ -14,6 +16,8 @@ class QuestsService
         $quest->setEndDate($date);
         $quest->setContent($request->request->get('Content'));
         $quest->setStatus(0);
+
+        $quest->setProject($project);
 
         $entityManager->persist($quest);
         $entityManager->flush();
