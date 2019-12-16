@@ -6,8 +6,8 @@
             <input type="hidden" name="id" value="{{ quest.Id }}">
             {% if is_granted('ROLE_ADMIN') %}
                 <div class="mt-3 mb-2">{% trans %}Treść{% endtrans %}:</div>
-                <input class="form-control" type="textarea" oninput="setCustomValidity('')"
-                       oninvalid="setCustomValidity('Content must be between 3 and 200 characters.')"
+                <input class="form-control" type="textarea" required="required" pattern=".{3,200}"
+                       title="{% trans %}Treść zadania musi zawierać od 3 do 200 znaków.{% endtrans %}"
                        minlength="3" maxlength="200" name="Content" value="{{ quest.Content }}" required>
                 <div class="mt-3 mb-2">{% trans %}Data{% endtrans %}:</div>
                 <input class="form-control" type="date" min="{{ minDate }}" max="{{ maxDate }}" name="EndDate"
@@ -18,7 +18,7 @@
                         {% endif %}
                        required>
                 <div class="mt-3 mb-2">{% trans %}Wybierz lub wprowadź nowy projekt{% endtrans %}:</div>
-                <input class="form-control" list="project" name="Project" pattern=".{3,100}"
+                <input class="form-control" list="project" name="Project" required="required" value="{{ quest.project.name }}" pattern=".{3,100}"
                        title="{% trans %}Nazwa projektu musi zawierać od 3 do 100 znaków.{% endtrans %}">
                 <datalist id="project">
                     {% if projects is defined %}
@@ -37,6 +37,7 @@
                 </div>
             {% elseif is_granted('ROLE_USER') %}
                 {{ quest.Content }}
+                <input type="hidden" name="Project" value="{{ quest.project.name }}">
             {% endif %}
             <div class="mt-3 mb-2">Status:</div>
             <select class="browser-default custom-select" name="Status">

@@ -12,22 +12,23 @@
                 <h6>{{ quest.addDate|date("m/d/Y") }}</h6>
                 <h2 class="mt-3">{% trans %}Ostateczny termin{% endtrans %}:</h2>
                 <h6>{{ quest.endDate|date("m/d/Y") }}</br></h6>
+            </div>
+            <div>
+                <h2>Pracownik</h2>
+                <h6>{{ quest.user.login }}</h6>
+                <h2>Projekt</h2>
+                <h6>{{ quest.project.name }}</h6>
+            </div>
         </div>
-    </div>
-    <h2 class="mt-3">{% trans %}Postęp{% endtrans %}:</h2>
-    <div class="progress mt-4 mb-3">
-        <div class="progress-bar bg-success" role="progressbar" style="width: {{ quest.status }}%;" aria-valuenow="20" aria-valuemin="0" aria-valuemax="100">{{ quest.status }}%
+        <h2 class="mt-3">{% trans %}Postęp{% endtrans %}:</h2>
+        <div class="progress mt-4 mb-3">
+            <div class="progress-bar bg-success" role="progressbar" style="width: {{ quest.status }}%;"
+                 aria-valuenow="20" aria-valuemin="0" aria-valuemax="100">{{ quest.status }}%
+            </div>
         </div>
-    </div>
-
-    <a href="/quest/edit/{{ quest.id }}">
-        <button class="btn btn-warning mt-4">{% trans %}Edytuj{% endtrans %}</button>
-    </a>
-    {% if is_granted('ROLE_ADMIN') %}
-        <a href="{{ path('show_all_quests') }}">
-            <button class="btn btn-secondary mt-4 ml-2">{% trans %}Wróć{% endtrans %}</button>
+        <a href="/quest/edit/{{ quest.id }}">
+            <button class="btn btn-warning mt-4">{% trans %}Edytuj{% endtrans %}</button>
         </a>
-    {% elseif is_granted('ROLE_USER') %}
-            <button onclick="goBack()" class="btn btn-secondary mt-4 ml-2">{% trans %}Wróć{% endtrans %}</button>
-    {% endif %}
-</div>{% endblock %}
+        <button onclick="goBack()" class="btn btn-secondary mt-4 ml-2">{% trans %}Wróć{% endtrans %}</button>
+    </div>
+{% endblock %}

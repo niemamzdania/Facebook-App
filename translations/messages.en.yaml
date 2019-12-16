@@ -3,9 +3,9 @@ Konwersacje: Conversations
 Wiadomości: Messages
 Posty: Posts
 Przeglądaj: Browse
-Stwórz post: New Post
+Stwórz post: New post
 Zadania: Quests
-Pokaż zadania: Show Quests
+Pokaż zadania: Show quests
 Pokaż chat: Show chat
 Konto: Account
 Dane konta: Account data
@@ -15,7 +15,8 @@ Stwórz użytkownika: Create user
 Dodaj zadanie: New Quest
 Lista zadań: Quests list
 Lista postów: Posts list
-Edytuj swój post: Edit your Post
+Edytuj swój post: Edit your post
+Edytuj post: Edit post
 Edytuj: Edit
 Wróć: Back
 Tytuł: Title
@@ -24,21 +25,23 @@ Wybierz zdjęcie: Choose an image
 Zdjęcie: Photo
 Brak zdjęcia: No image
 Dodaj post: Add Post
-Stwórz nowy post: Add new Post
+Stwórz nowy post: Add new post
 Data: Date
+Projekty: Projects
+Dodaj projekt: Add new project
 Autor: Author
 Pokaż: Show
 Usuń: Delete
 Udostępnij: Send
 Zarządzanie: Management
-Edytuj zadanie: Edit Quest
+Edytuj zadanie: Edit quest
 Zawartość: Content
 Projekt: Project
 Wybierz lub wprowadź nowy projekt: Select or enter a new project
 Treść zadania musi zawierać od 3 do 200 znaków.: Content must be between 3 and 200 characters.
 Nazwa projektu musi zawierać od 3 do 100 znaków.: Project name must contain between 3 and 100 characters.
 Wybierz użytkownika: Select user
-Stwórz nowe zadanie: Create new Quest
+Stwórz nowe zadanie: Create new quest
 Zapisz: Submit
 Dodaj: Create
 Zadanie: Quest
@@ -78,6 +81,8 @@ Zmiana e-maila: Change e-mail
 Zapisz zmianę: Save
 Brak zadań do wyświetlenia: No quests to show
 Brak postów do wyświetlenia: No posts to show
+Lista projektów: Projects list
+Nazwa: Name
 
 Post został poprawnie utworzony: The post has been successfully created
 Post został usunięty: The post has been deleted
@@ -85,6 +90,7 @@ Zdjęcie zostało usunięte: The photo has been removed
 Post został opublikowany: The post has been published
 Post został zmodyfikowany: The post has been edited
 Ten adres e-mail istnieje w bazie danych, proszę podać inny.: This e-mail exist, please enter another one.
+E-mail został zmieniony: Email has been changed
 Rola została zmieniona: Role has been changed
 Użytkownik został usunięty: User has been deleted
 Zadanie zostało dodane: Quest has been added

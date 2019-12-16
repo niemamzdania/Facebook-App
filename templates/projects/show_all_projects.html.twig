@@ -1,0 +1,117 @@
+{% extends 'mainpage/main.html.twig' %}
+{% block content %}
+    <h1 style="margin: 25px;">{% trans %}Lista projektów{% endtrans %}</h1>
+    <button class="btn btn-outline-secondary m-2" data-target="#modalNewProject"
+            data-toggle="modal">{% trans %}Dodaj projekt{% endtrans %}</button>
+    <table class="table table-striped">
+        <thead>
+        <tr>
+            <th scope="col">id</th>
+            <th scope="col">{% trans %}Nazwa{% endtrans %}</th>
+            <th scope="col">{% trans %}Zadania{% endtrans %}</th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for project in projects %}
+            <tr>
+                <th>{{ project.id }}</th>
+                <th>{{ project.name }}</th>
+                <td>
+                    <a onclick="get_number(this.id, this.getAttribute('data-name'))"
+                       class="btn btn-warning" id="{{ project.id }}" data-name="{{ project.name }}"
+                       data-target="#modalShowQuests"
+                       data-toggle="modal">{% trans %}Pokaż{% endtrans %}</a>
+                </td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+    <!--Workers modal-->
+    <div aria-hidden="true" aria-labelledby="exampleModalCenterTitle" class="modal fade"
+         id="modalShowQuests" role="dialog" tabindex="-1">
+        <div id="questsModal" class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="mb-2 modal-body text-center">
+                    <h2>{% trans %}Zadania{% endtrans %}</h2>
+                    <select id="selectQuest" onclick="changeButton(this.id)"
+                            class="project_quests role_input browser-default custom-select"
+                            name="quests">
+                    </select>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Workers modal-->
+    <!--New project modal-->
+    <div aria-hidden="true" aria-labelledby="exampleModalCenterTitle" class="modal fade"
+         id="modalNewProject" role="dialog" tabindex="-1">
+        <div id="questsModal" class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="mb-2 modal-body text-center">
+                    <h2>{% trans %}Nazwa{% endtrans %}</h2>
+                    {{ form_start(form, {'action': path('new_project'), 'method': 'GET'} ) }}
+                    {{ form_widget(form.Name) }}
+                    {{ form_errors(form.Name) }}
+                    <button class="btn btn-secondary m-2">{% trans %}Dodaj{% endtrans %}</button>
+                    {{ form_end(form) }}
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- New project modal-->
+    <script>
+        let number;
+        let project_name;
+
+        function get_number(clicked_id, name) {
+            number = clicked_id;
+            project_name = name;
+            //document.querySelector('#exampleInputEmail').placeholder = user_email;
+
+            changeId("project_quests");
+
+            //document.querySelector('.role_input').value = user_role;
+            //document.querySelector('.emailForm').action = "/edit/email/".concat(number);
+            //document.querySelector('.editRole').action = "/edit/role/".concat(number);
+        }
+
+        function changeId(className) {
+            var select = document.getElementsByClassName(className);
+            select.id = number;
+
+            show_quests(select.id);
+        }
+
+        function show_quests(project_id) {
+            $(".optionQuest").remove();
+
+            {% for quest in quests %}
+            if ({{ quest.project.id }} == project_id
+        )
+            {
+                document.querySelector(".project_quests").insertAdjacentHTML('beforeend', "<option id=" + "{{ quest.id }}" + " class=" + "optionQuest" + ">{{ quest.content }}</option>");
+            }
+            {% endfor %}
+        }
+
+        function changeButton(buttonId) {
+            let selectQuest = document.getElementById(buttonId);
+            let questId = selectQuest.options[selectQuest.selectedIndex].id;
+
+            let url = '{{ path("show_quest", {'id': 'quest_id'}) }}';
+            url = url.replace("quest_id", questId);
+
+            let a = document.createElement('a');
+            a.href = url;
+            a.click();
+        }
+
+        function delete_trigger() {
+            window.location.href = '/projects/delete/'.concat(number);
+        }
+
+        document.querySelector(".delete_user").onclick = function () {
+            delete_trigger()
+        };
+    </script>
+{% endblock %}

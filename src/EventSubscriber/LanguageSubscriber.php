@@ -19,7 +19,7 @@ class LanguageSubscriber implements EventSubscriberInterface
     public static function getSubscribedEvents()
     {
         return [
-            KernelEvents::REQUEST => [['onKernelRequest', 20]],
+            KernelEvents::REQUEST => [['onKernelRequest', 30]],
         ];
     }
 }

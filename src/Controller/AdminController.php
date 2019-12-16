@@ -32,7 +32,7 @@ class AdminController extends AbstractController
         $user->setEmail($email);
         $entityManager = $this->getDoctrine()->getManager();
         $entityManager->flush();
-        $session->set('message', 'Email has been changed');
+        $session->set('message', 'E-mail został zmieniony');
 
         return $this->redirectToRoute('show_users');
     }

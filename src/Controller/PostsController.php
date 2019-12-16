@@ -289,7 +289,7 @@ class PostsController extends AbstractController
      */
     public function edit_post(Posts $post, Request $request, Session $session)
     {
-        if ($this->getUser() != $post->getUser()) {
+        if ($this->getUser() != $post->getUser() && !$this->isGranted("ROLE_ADMIN")) {
             return new Response('Forbidden access');
         }
 

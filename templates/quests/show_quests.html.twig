@@ -9,7 +9,6 @@
             {% endif %}
             <th scope="col">{% trans %}Ostateczny termin{% endtrans %}</th>
             <th scope="col">{% trans %}Projekt{% endtrans %}</th>
-            <th scope="col">{% trans %}Postęp{% endtrans %}</th>
             <th scope="col">{% trans %}Treść{% endtrans %}</th>
             {% if is_granted('ROLE_ADMIN') %}
                 <th scope="col">{% trans %}Usuń{% endtrans %}</th>
@@ -35,13 +34,6 @@
                     {% endif %}
                     <td>{{ quest.endDate|date("m/d/Y") }}</td>
                     <td>{{ quest.project.name }}</td>
-                    <td>
-                        <div class="progress mt-2">
-                            <div class="progress-bar bg-success" role="progressbar" style="width: {{ quest.status }}%;"
-                                 aria-valuenow="20" aria-valuemin="0" aria-valuemax="100">{{ quest.status }}%
-                            </div>
-                        </div>
-                    </td>
                     <td>
                         <a href="{{ path('show_quest', {id: quest.id}) }}">
                             <button class="btn btn-warning">{% trans %}Pokaż{% endtrans %}</button>

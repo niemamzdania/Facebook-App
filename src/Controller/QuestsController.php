@@ -23,6 +23,8 @@ class QuestsController extends AbstractController
      */
     public function add_quest(Request $request, QuestsService $questsService, Session $session)
     {
+
+
         $quest = new Quests();
 
         $userId = $request->request->get('user');
@@ -47,7 +49,7 @@ class QuestsController extends AbstractController
         $questsService->saveNewQuest($entityManager, $quest, $project, $request);
         $session->set('message', 'Zadanie zostało dodane');
 
-        return $this->redirectToRoute('show_user_quests',['id'=>$this->getUser()->getId()]);
+        return $this->redirectToRoute('show_all_quests',['id'=>$this->getUser()->getId()]);
     }
 
     /**
@@ -118,6 +120,10 @@ class QuestsController extends AbstractController
      */
     public function show_all_quests(PaginatorInterface $paginator, Request $request)
     {
+        if(!$this->isGranted("ROLE_ADMIN")) {
+            return new Response("Forbidden access");
+        }
+
         $quests = $this->getDoctrine()->getRepository(Quests::class)->findAllQuests();
 
            return $this->render('quests/show_quests.html.twig', ['user' => 'user', 'quests' => $paginator->paginate(

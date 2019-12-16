@@ -1,0 +1,15 @@
+{% extends 'mainpage/main.html.twig' %}
+{% block content %}
+    <div class="container-fluid container_new_post mt-5">
+        <h1 class="mb-5">{% trans %}Stwórz nowy projekt{% endtrans %}</h1>
+        {{ form_start(form) }}
+        <div class="mt-3"><span style="cursor: default; font-weight: bold;">{% trans %}Nazwa{% endtrans %}</span></div>
+        {{ form_widget(form.Name) }}
+        {{ form_errors(form.Name) }}
+        <div>
+            <button class="confirmButton btn btn-dark mt-3">{% trans %}Dodaj projekt{% endtrans %}</button>
+            {{ form_end(form) }}
+            <button class="btn btn-info ml-2 mt-3" onclick="goBack()">{% trans %}Anuluj{% endtrans %}</button>
+        </div>
+    </div>
+{% endblock %}

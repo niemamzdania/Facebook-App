@@ -29,32 +29,6 @@ use Cloudinary\Uploader;
 class APIController extends AbstractController
 {
     /**
-     * @Route("/test", name="test")
-     * @IsGranted("IS_AUTHENTICATED_FULLY")
-     */
-    public function test(Request $request)
-    {
-        \Cloudinary::config(array(
-            "cloud_name" => "przemke",
-            "api_key" => "884987643496832",
-            "api_secret" => "9KWlEeWnpdqZyo2GlohdLAqibeU",
-            "secure" => true
-        ));
-
-        $search = new Search();
-        $searchData = "folder=2019-10 AND filename=A4_B7_Sedan_Blue_hbecmj";
-        $result = $search
-            ->expression($searchData)
-            ->max_results(1)
-            ->execute();
-
-        \Cloudinary\Uploader::destroy($result['resources'][0]['public_id']);
-
-        return new Response("Ok");
-    }
-
-
-    /**
      * @Route("/auth/google/callback", name="google_photo")
      * @IsGranted("IS_AUTHENTICATED_FULLY")
      */
