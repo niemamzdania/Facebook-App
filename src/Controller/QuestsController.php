@@ -66,8 +66,14 @@ class QuestsController extends AbstractController
 
         $users = $this->getDoctrine()->getRepository(Users::class)->findAllUsers();
 
-        if ($users)
-            return $this->render('quests/new_quest.html.twig', ['users' => $users, 'quest' => $quest, 'minDate' => $dateInString, 'maxDate' => $futureDate]);
+        $projects = $this->getDoctrine()->getRepository(Projects::class)->findAllProjects();
+
+        if ($users && $projects)
+            return $this->render('quests/new_quest.html.twig', ['users' => $users, 'quest' => $quest, 'projects' => $projects,
+                'minDate' => $dateInString, 'maxDate' => $futureDate]);
+        elseif($users && !$projects)
+            return $this->render('quests/new_quest.html.twig', ['users' => $users, 'quest' => $quest,
+                'minDate' => $dateInString, 'maxDate' => $futureDate]);
 
         if($request->getLocale() == 'en')
             return new Response('No employees to add them the task.');
@@ -90,7 +96,17 @@ class QuestsController extends AbstractController
 
         $entityManager = $this->getDoctrine()->getmanager();
 
-        $questsService->saveEditedQuest($entityManager, $quest, $request);
+        $projectName = $request->request->get('Project');
+        $project = $this->getDoctrine()->getRepository(Projects::class)->findProjectByName($projectName);
+
+        if(!$project){
+            $project = new Projects();
+            $project->setName($projectName);
+            $entityManager->persist($project);
+            $entityManager->flush();
+        }
+
+        $questsService->saveEditedQuest($entityManager, $quest, $project, $request);
         $session->set('message','Zadanie zostało zmodyfikowane');
         
         return $this->redirectToRoute('show_quest',['id'=>$quest->getId()]);
@@ -187,7 +203,9 @@ class QuestsController extends AbstractController
 
         $users = $this->getDoctrine()->getRepository(Users::class)->findAllUsers();
 
-        return $this->render('quests/edit_quest.html.twig', ['users' => $users, 'quest' => $quest, 'minDate' => $dateInString,
+        $projects = $this->getDoctrine()->getRepository(Projects::class)->findAllProjects();
+
+        return $this->render('quests/edit_quest.html.twig', ['users' => $users, 'quest' => $quest, 'projects' =>$projects,  'minDate' => $dateInString,
             'maxDate' => $futureDate, 'questDate' => $questDateInString]);
     }
 

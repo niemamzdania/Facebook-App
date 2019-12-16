@@ -56,4 +56,13 @@ class ProjectsRepository extends ServiceEntityRepository
             ;
     }
 
+    public function findAllProjects()
+    {
+        return $this->createQueryBuilder('p')
+            ->orderBy('p.id', 'ASC')
+            ->getQuery()
+            ->getResult()
+            ;
+    }
+
 }
