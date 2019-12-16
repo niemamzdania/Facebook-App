@@ -1,7 +1,7 @@
 {% extends('mainpage/main.html.twig') %}
 {% block content %}
     <div class="post_show">
-        <h1 style="margin: 15px;">{% trans %}Edytuj zadanie{% endtrans %}</h1>
+        <h1>{% trans %}Edytuj zadanie{% endtrans %}</h1>
         <form class="font-weight-bold" action="{{ path('save_quest') }}" method="POST">
             <input type="hidden" name="id" value="{{ quest.Id }}">
             {% if is_granted('ROLE_ADMIN') %}
@@ -48,9 +48,7 @@
                 <option value="100" {% if quest.Status == 100 %} selected {% endif %}>100%</option>
             </select>
             <input class="btn btn-warning mt-4 mr-2" type="submit" value="{% trans %}Zapisz{% endtrans %}">
-            <a href="{{ path('show_quest', {id: quest.id}) }}">
-                <div class="btn btn-secondary mt-4">{% trans %}Wróć{% endtrans %}</div>
-            </a>
+            <div onclick="goBack()" class="btn btn-secondary mt-4">{% trans %}Wróć{% endtrans %}</div>
         </form>
     </div>
 {% endblock %}

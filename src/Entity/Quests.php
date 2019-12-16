@@ -137,7 +137,7 @@ class Quests
 
     public function getProject(): ?Projects
     {
-        return $this->projectId;
+        return $this->project;
     }
 
     public function setProject(Projects $project): self

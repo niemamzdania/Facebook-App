@@ -8,6 +8,7 @@
                 <th scope="col">{% trans %}Pracownik{% endtrans %}</th>
             {% endif %}
             <th scope="col">{% trans %}Ostateczny termin{% endtrans %}</th>
+            <th scope="col">{% trans %}Projekt{% endtrans %}</th>
             <th scope="col">{% trans %}Postęp{% endtrans %}</th>
             <th scope="col">{% trans %}Treść{% endtrans %}</th>
             {% if is_granted('ROLE_ADMIN') %}
@@ -33,6 +34,7 @@
                         <td>{{ quest.user.login }}</td>
                     {% endif %}
                     <td>{{ quest.endDate|date("m/d/Y") }}</td>
+                    <td>{{ quest.project.name }}</td>
                     <td>
                         <div class="progress mt-2">
                             <div class="progress-bar bg-success" role="progressbar" style="width: {{ quest.status }}%;"

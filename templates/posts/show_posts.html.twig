@@ -1,6 +1,7 @@
 {% extends 'mainpage/main.html.twig' %}
 {% block content %}
     <h1 style="margin:25px;">{% trans %}Posty{% endtrans %}</h1>
+    <a class="btn btn-outline-secondary m-2" href="{{ path('new_post') }}">{% trans %}Stwórz nowy post{% endtrans %}</a>
     <div class="table">
         <table class="table table-striped">
             <thead>
@@ -17,7 +18,7 @@
             <tbody>
             {% if posts is empty %}
                 <tr>
-                    <td><h4>No posts to show</h4></td>
+                    <td><h4>{% trans %}Brak postów do wyświetlenia{% endtrans %}</h4></td>
                     <td></td>
                     <td></td>
                     <td></td>

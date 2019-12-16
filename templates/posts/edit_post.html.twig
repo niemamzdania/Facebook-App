@@ -6,23 +6,26 @@
                 <div class="col-6">
                     <h1>Post:</h1>
                     {{ form_start(form) }}
-                    <div class="mt-3"><span style="cursor: default; font-weight: bold;">{% trans %}Tytuł{% endtrans %}</span></div>
+                    <div class="mt-3"><span
+                                style="cursor: default; font-weight: bold;">{% trans %}Tytuł{% endtrans %}</span></div>
                     {{ form_widget(form.Title) }}
                     {{ form_errors(form.Title) }}
-                    <div class="mt-3"><span style="cursor: default; font-weight: bold;">{% trans %}Treść{% endtrans %}</span></div>
+                    <div class="mt-3"><span
+                                style="cursor: default; font-weight: bold;">{% trans %}Treść{% endtrans %}</span></div>
                     {{ form_widget(form.Content) }}
                     {{ form_errors(form.Content) }}
-                    <div class="mt-3"><span style="cursor: default; font-weight: bold;">{% trans %}Wybierz zdjęcie{% endtrans %}:</span></div>
+                    <div class="mt-3"><span
+                                style="cursor: default; font-weight: bold;">{% trans %}Wybierz zdjęcie{% endtrans %}:</span>
+                    </div>
                     {{ form_widget(form.name) }}
                     {{ form_errors(form.name) }}
                     <div class="photoSelection"></div>
                     <div class="col-6">
                         <button class="confirmButton btn btn-dark mt-5">{% trans %}Edytuj{% endtrans %}</button>
-                        <a href="{{ path('show_user_posts') }}">
-                            <div class="previousButton btn btn-primary mt-5 ml-2">{% trans %}Wróć{% endtrans %}</div>
-                        </a>
+                        {{ form_end(form) }}
+                        <div onclick="goBack()"
+                             class="previousButton btn btn-info mt-5 ml-2">{% trans %}Wróć{% endtrans %}</div>
                     </div>
-                    {{ form_end(form) }}
                 </div>
                 <div class="col-6 pl-5">
                     <h1>{% trans %}Zdjęcie{% endtrans %}:</h1>
@@ -50,10 +53,9 @@
             document.querySelector("#post_form_name").className += "btn btn-secondary";
             document.querySelector("#post_form_name").setAttribute("onchange", "whenChosen(event)");
 
-            function whenChosen(event){
+            function whenChosen(event) {
                 var chosenImage = new FileReader();
-                chosenImage.onload = function()
-                {
+                chosenImage.onload = function () {
                     document.querySelector(".photoSelection").insertAdjacentHTML('beforeend', "<div class=\"chosenImage\">\n" +
                         "<img id=\"chosenImage\" style=\"height: 30vh; max-width: 100%; margin-top: 20px; margin-bottom: 10px;\">\n" +
                         "</div>");

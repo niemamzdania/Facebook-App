@@ -125,7 +125,6 @@ class QuestsController extends AbstractController
                 $request->query->getInt('page', 1),
                 8
             )]);
-         
     }
 
     /**

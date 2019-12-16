@@ -31,9 +31,7 @@
                 {% endif %}
             </div>
         </div>
-        <a href="{{ path('show_user_posts') }}">
-            <div class="btn btn-lg btn-primary mt-3 mb-4">{% trans %}Wróć{% endtrans %}</div>
-        </a>
+            <div onclick="goBack()" class="btn btn-lg btn-primary mt-3 mb-4">{% trans %}Wróć{% endtrans %}</div>
     </div>
     <!-- Modal Photo -->
     <div class="modal fade" id="photoModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">

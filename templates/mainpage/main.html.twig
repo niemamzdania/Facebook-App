@@ -82,6 +82,10 @@
             });
         });
 
+        function goBack() {
+            window.history.back();
+        }
+
         function changeLanguage(clicked_id) {
             let url = '{{ path('change_lang', {lang: 'clicked_id'}) }}';
             url = url.replace("clicked_id", clicked_id);

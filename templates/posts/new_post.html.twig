@@ -14,9 +14,10 @@
         {{ form_errors(form.name) }}
         <div class="photoSelection"></div>
         <div>
-            <button class="confirmButton btn btn-dark mt-2">{% trans %}Dodaj post{% endtrans %}</button>
+            <button class="confirmButton btn btn-dark mt-3">{% trans %}Dodaj post{% endtrans %}</button>
+            {{ form_end(form) }}
+            <button class="btn btn-info ml-2 mt-3" onclick="goBack()">{% trans %}Anuluj{% endtrans %}</button>
         </div>
-        {{ form_end(form) }}
     </div>
     <script>
         document.querySelector("#post_form_name").className += "btn btn-secondary";
