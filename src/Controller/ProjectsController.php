@@ -32,13 +32,27 @@ class ProjectsController extends AbstractController
 
         $form = $this->createForm(ProjectFormType::class, $project);
 
-        return $this->render('projects/show_all_projects.html.twig', [
-            'users' => $users, 'quests' => $quests, 'form' => $form->createView(),
-            'projects' => $paginator->paginate(
-                $projects,
-                $request->query->getInt('page', 1),
-                8
-            )]);
+        if($session->get('message')) {
+            $message = $session->get('message');
+            $session->remove('message');
+
+            return $this->render('projects/show_all_projects.html.twig', [
+                'message' => $message, 'users' => $users, 'quests' => $quests, 'form' => $form->createView(),
+                'projects' => $paginator->paginate(
+                    $projects,
+                    $request->query->getInt('page', 1),
+                    8
+                )]);
+        }
+        else{
+            return $this->render('projects/show_all_projects.html.twig', [
+                'users' => $users, 'quests' => $quests, 'form' => $form->createView(),
+                'projects' => $paginator->paginate(
+                    $projects,
+                    $request->query->getInt('page', 1),
+                    8
+                )]);
+        }
     }
 
     /**
@@ -53,8 +67,42 @@ class ProjectsController extends AbstractController
         $entityManager->persist($project);
         $entityManager->flush();
 
+        $session->set('message', 'Projekt został dodany');
+
         return $this->redirectToRoute('show_all_projects');
     }
 
+    /**
+     * @Route("/projects/edit/{id}", name="edit_project")
+     * @IsGranted("ROLE_ADMIN")
+     */
+    public function edit_project(Projects $project, Request $request, Session $session)
+    {
+        $entityManager = $this->getDoctrine()->getManager();
 
+        $project->setName($request->query->get('project_form')['Name']);
+        $entityManager->flush();
+
+        $session->set('message', 'Projekt został zmodyfikowany');
+
+        return $this->redirectToRoute('show_all_projects');
+    }
+
+    /**
+     * @Route("/projects/delete/{id}", name="delete_project")
+     * @IsGranted("ROLE_ADMIN")
+     */
+    public function delete_project(Projects $project, Request $request, Session $session)
+    {
+        if(!$this->isGranted('ROLE_ADMIN'))
+            return new Response('Forbidden access');
+
+        $entityManager = $this->getDoctrine()->getManager();
+        $entityManager->remove($project);
+        $entityManager->flush();
+
+        $session->set('message', 'Projekt został usunięty');
+
+        return $this->redirectToRoute('show_all_projects');
+    }
 }

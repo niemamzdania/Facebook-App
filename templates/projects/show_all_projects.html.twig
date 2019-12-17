@@ -9,6 +9,7 @@
             <th scope="col">id</th>
             <th scope="col">{% trans %}Nazwa{% endtrans %}</th>
             <th scope="col">{% trans %}Zadania{% endtrans %}</th>
+            <th scope="col">{% trans %}Usuń{% endtrans %}</th>
         </tr>
         </thead>
         <tbody>
@@ -21,6 +22,13 @@
                        class="btn btn-warning" id="{{ project.id }}" data-name="{{ project.name }}"
                        data-target="#modalShowQuests"
                        data-toggle="modal">{% trans %}Pokaż{% endtrans %}</a>
+                </td>
+                <td>
+                    <button id="{{ project.id }}" onclick="get_number_delete(this.id)"
+                            class="btn btn-outline-danger action_post"
+                            data-target="#modalDeleteProject" data-toggle="modal">
+                        <i class="fas fa-trash-alt"></i>
+                    </button>
                 </td>
             </tr>
         {% endfor %}
@@ -36,10 +44,11 @@
             <div class="modal-content">
                 <div class="mb-2 modal-body text-center">
                     <h2>{% trans %}Zadania{% endtrans %}</h2>
-                    <select id="selectQuest" onclick="changeButton(this.id)"
+                    <select id="selectQuest" onclick="changeIdButton(this.options[this.selectedIndex].id)"
                             class="project_quests role_input browser-default custom-select"
                             name="quests">
                     </select>
+                    <button name="showOneQuest" onclick="showQuest(this.id)" class="btn btn-secondary m-2">{% trans %}Pokaż{% endtrans %}</button>
                 </div>
             </div>
         </div>
@@ -62,24 +71,60 @@
         </div>
     </div>
     <!-- New project modal-->
+    <!--Edit project modal-->
+    <div aria-hidden="true" aria-labelledby="exampleModalCenterTitle" class="modal fade"
+         id="modalEditProject" role="dialog" tabindex="-1">
+        <div id="questsModal" class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="mb-2 modal-body text-center">
+                    <h2>{% trans %}Nazwa{% endtrans %}</h2>
+                    {{ form_start(form, {'action': path('edit_project', {id: 15}), 'method': 'GET'} ) }}
+                    {{ form_widget(form.Name) }}
+                    {{ form_errors(form.Name) }}
+                    <button class="btn btn-secondary m-2">{% trans %}Zapisz{% endtrans %}</button>
+                    {{ form_end(form) }}
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Edit project modal-->
+    <!-- Delete project modal -->
+    <div aria-hidden="true" aria-labelledby="exampleModalCenterTitle" class="modal fade" id="modalDeleteProject"
+         role="dialog" tabindex="-1">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-body text-center">
+                    <h1>
+                        <i class="far fa-question-circle mt-2"></i>
+                    </h1>
+                    <h2 class="mt-4 mb-3">
+                        <bold>{% trans %}Jesteś pewien{% endtrans %}?</bold>
+                    </h2>
+                    <h5>{% trans %}Czy chcesz usunąć projekt{% endtrans %}?</h5>
+                    <a class="action" id="/project/delete/">
+                        <button class="delete btn-lg btn-outline-danger mt-5 mr-2">{% trans %}Usuń{% endtrans %}</button>
+                    </a>
+                    <button class="btn-lg btn-outline-secondary mt-5 ml-2" data-dismiss="modal" type="button">{% trans %}Anuluj{% endtrans %}
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Delete project modal -->
     <script>
         let number;
         let project_name;
+        let number_delete;
 
         function get_number(clicked_id, name) {
             number = clicked_id;
             project_name = name;
-            //document.querySelector('#exampleInputEmail').placeholder = user_email;
 
             changeId("project_quests");
-
-            //document.querySelector('.role_input').value = user_role;
-            //document.querySelector('.emailForm').action = "/edit/email/".concat(number);
-            //document.querySelector('.editRole').action = "/edit/role/".concat(number);
         }
 
         function changeId(className) {
-            var select = document.getElementsByClassName(className);
+            let select = document.getElementsByClassName(className);
             select.id = number;
 
             show_quests(select.id);
@@ -92,28 +137,44 @@
             if ({{ quest.project.id }} == project_id
         )
             {
-                document.querySelector(".project_quests").insertAdjacentHTML('beforeend', "<option id=" + "{{ quest.id }}" + " class=" + "optionQuest" + ">{{ quest.content }}</option>");
+                document.querySelector(".project_quests").insertAdjacentHTML('beforeend',
+                    "<option id=" + "{{ quest.id }}" + " class=" + "optionQuest" + ">{{ quest.content }}</option>");
             }
             {% endfor %}
+
+            let selectWork = document.querySelector(".project_quests");
+            selectWork.selectedIndex = "0";
+
+            changeIdButton(selectWork.options[selectWork.selectedIndex].id);
         }
 
-        function changeButton(buttonId) {
-            let selectQuest = document.getElementById(buttonId);
-            let questId = selectQuest.options[selectQuest.selectedIndex].id;
+        function changeIdButton(questId){
+            let button = document.getElementsByName("showOneQuest");
+            button[0].id = questId;
+        }
 
-            let url = '{{ path("show_quest", {'id': 'quest_id'}) }}';
-            url = url.replace("quest_id", questId);
+        function showQuest(buttonId) {
+            let questId = buttonId;
 
-            let a = document.createElement('a');
-            a.href = url;
-            a.click();
+            if(questId) {
+                let url = '{{ path("show_quest", {'id': 'quest_id'}) }}';
+                url = url.replace("quest_id", questId);
+
+                let a = document.createElement('a');
+                a.href = url;
+                a.click();
+            }
+        }
+
+        function get_number_delete(clicked_id){
+            number_delete = clicked_id;
         }
 
         function delete_trigger() {
-            window.location.href = '/projects/delete/'.concat(number);
+            window.location.href = '/projects/delete/'.concat(number_delete);
         }
 
-        document.querySelector(".delete_user").onclick = function () {
+        document.querySelector(".delete").onclick = function () {
             delete_trigger()
         };
     </script>

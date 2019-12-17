@@ -137,13 +137,14 @@ class QuestsController extends AbstractController
                 8
             )]);
         }
-
-           return $this->render('quests/show_quests.html.twig', ['user' => 'user',
-               'quests' => $paginator->paginate(
-                $quests,
-                $request->query->getInt('page', 1),
-                8
-            )]);
+        else{
+            return $this->render('quests/show_quests.html.twig', ['user' => 'user',
+                'quests' => $paginator->paginate(
+                    $quests,
+                    $request->query->getInt('page', 1),
+                    8
+                )]);
+        }
     }
 
     /**
@@ -243,6 +244,6 @@ class QuestsController extends AbstractController
 
         $session->set('message','Zadanie zostało usunięte');
 
-        return $this->redirectToRoute('show_user_quests',['id'=>$this->getUser()->getId()]);
+        return $this->redirectToRoute('show_all_quests');
     }
 }
