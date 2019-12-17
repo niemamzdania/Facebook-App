@@ -7,10 +7,10 @@ use App\Entity\Users;
 use App\Entity\Quests;
 use App\Form\ProjectFormType;
 
+use Knp\Component\Pager\PaginatorInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\HttpFoundation\Session\Session;
 
@@ -20,7 +20,7 @@ class ProjectsController extends AbstractController
      * @Route("/projects/show", name="show_all_projects")
      * @IsGranted("ROLE_ADMIN")
      */
-    public function show_all_projects(Request $request, Session $session)
+    public function show_all_projects(PaginatorInterface $paginator, Request $request, Session $session)
     {
         $projects = $this->getDoctrine()->getRepository(Projects::class)->findAllProjects();
 
@@ -33,8 +33,12 @@ class ProjectsController extends AbstractController
         $form = $this->createForm(ProjectFormType::class, $project);
 
         return $this->render('projects/show_all_projects.html.twig', [
-            'projects' => $projects, 'users' => $users, 'quests' => $quests, 'form' => $form->createView()
-        ]);
+            'users' => $users, 'quests' => $quests, 'form' => $form->createView(),
+            'projects' => $paginator->paginate(
+                $projects,
+                $request->query->getInt('page', 1),
+                8
+            )]);
     }
 
     /**

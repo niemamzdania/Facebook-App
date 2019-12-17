@@ -26,6 +26,9 @@
         {% endfor %}
         </tbody>
     </table>
+    <div class="row d-flex justify-content-center w-100 paginator mt-3">
+        {{ knp_pagination_render(projects) }}
+    </div>
     <!--Workers modal-->
     <div aria-hidden="true" aria-labelledby="exampleModalCenterTitle" class="modal fade"
          id="modalShowQuests" role="dialog" tabindex="-1">

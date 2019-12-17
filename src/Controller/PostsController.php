@@ -272,7 +272,7 @@ class PostsController extends AbstractController
             return $this->render('posts/show_posts.html.twig', ['message' => $message, 'posts' => $paginator->paginate(
                 $posts,
                 $request->query->getInt('page', 1),
-                7
+                8
             )]);
         } else {
             return $this->render('posts/show_posts.html.twig', ['posts' => $paginator->paginate(

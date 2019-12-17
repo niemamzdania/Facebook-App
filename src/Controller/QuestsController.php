@@ -118,7 +118,7 @@ class QuestsController extends AbstractController
      * @Route("/quests/all", name="show_all_quests")
      * @IsGranted("IS_AUTHENTICATED_FULLY")
      */
-    public function show_all_quests(PaginatorInterface $paginator, Request $request)
+    public function show_all_quests(PaginatorInterface $paginator, Request $request, Session $session)
     {
         if(!$this->isGranted("ROLE_ADMIN")) {
             return new Response("Forbidden access");
@@ -126,7 +126,20 @@ class QuestsController extends AbstractController
 
         $quests = $this->getDoctrine()->getRepository(Quests::class)->findAllQuests();
 
-           return $this->render('quests/show_quests.html.twig', ['user' => 'user', 'quests' => $paginator->paginate(
+        if($session->get('message'))
+        {
+            $message = $session->get('message');
+            $session->remove('message');
+            return $this->render('quests/show_quests.html.twig', ['message' => $message, 'user' => 'user',
+                'quests' => $paginator->paginate(
+                $quests,
+                $request->query->getInt('page', 1),
+                8
+            )]);
+        }
+
+           return $this->render('quests/show_quests.html.twig', ['user' => 'user',
+               'quests' => $paginator->paginate(
                 $quests,
                 $request->query->getInt('page', 1),
                 8
