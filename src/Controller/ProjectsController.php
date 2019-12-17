@@ -41,7 +41,7 @@ class ProjectsController extends AbstractController
                 'projects' => $paginator->paginate(
                     $projects,
                     $request->query->getInt('page', 1),
-                    8
+                    6
                 )]);
         }
         else{
@@ -50,7 +50,7 @@ class ProjectsController extends AbstractController
                 'projects' => $paginator->paginate(
                     $projects,
                     $request->query->getInt('page', 1),
-                    8
+                    6
                 )]);
         }
     }
@@ -80,10 +80,16 @@ class ProjectsController extends AbstractController
     {
         $entityManager = $this->getDoctrine()->getManager();
 
-        $project->setName($request->query->get('project_form')['Name']);
-        $entityManager->flush();
+        if($project->getName() == $request->query->get('Name')) {
+            $session->set('message', 'Podano taką samą nazwę projektu');
+            return $this->redirectToRoute('show_all_projects');
+        }
+        else{
+            $project->setName($request->query->get('Name'));
+            $entityManager->flush();
 
-        $session->set('message', 'Projekt został zmodyfikowany');
+            $session->set('message', 'Nazwa projektu została zmieniona');
+        }
 
         return $this->redirectToRoute('show_all_projects');
     }

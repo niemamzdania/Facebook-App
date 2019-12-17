@@ -102,3 +102,6 @@ Otrzymano nową wiadomość: You have received a new message
 Projekt został dodany: Project has been added
 Projekt został zmodyfikowany: Project has been changed
 Projekt został usunięty: Project has been deleted
+Nazwa projektu musi zawierać od 3 do 100 znaków: Project name must contain between 3 and 100 characters
+Nazwa projektu została zmieniona: Project name has been changed
+Podano taką samą nazwę projektu: The same project name was given

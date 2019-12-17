@@ -1,6 +1,6 @@
 {% extends 'mainpage/main.html.twig' %}
 {% block content %}
-    <h1 style="margin: 25px;">{% trans %}Lista projektów{% endtrans %}</h1>
+    <h1 id="title" style="margin: 25px;">{% trans %}Lista projektów{% endtrans %}</h1>
     <button class="btn btn-outline-secondary m-2" data-target="#modalNewProject"
             data-toggle="modal">{% trans %}Dodaj projekt{% endtrans %}</button>
     <table class="table table-striped">
@@ -8,6 +8,7 @@
         <tr>
             <th scope="col">id</th>
             <th scope="col">{% trans %}Nazwa{% endtrans %}</th>
+            <th scope="col"></th>
             <th scope="col">{% trans %}Zadania{% endtrans %}</th>
             <th scope="col">{% trans %}Usuń{% endtrans %}</th>
         </tr>
@@ -16,15 +17,16 @@
         {% for project in projects %}
             <tr>
                 <th>{{ project.id }}</th>
-                <th>{{ project.name }}</th>
+                <th><textarea id="{{ project.id }}" style="width: 100%;">{{ project.name }}</textarea></th>
+                <th><button data-id="{{ project.id }}" onclick="editProject(this.getAttribute('data-id'))" class="btn btn-secondary m-2">{% trans %}Zmień{% endtrans %}</button></th>
                 <td>
-                    <a onclick="get_number(this.id, this.getAttribute('data-name'))"
-                       class="btn btn-warning" id="{{ project.id }}" data-name="{{ project.name }}"
+                    <a onclick="get_number(this.getAttribute('data-id'), this.getAttribute('data-name'))"
+                       class="btn btn-warning" data-id="{{ project.id }}" data-name="{{ project.name }}"
                        data-target="#modalShowQuests"
                        data-toggle="modal">{% trans %}Pokaż{% endtrans %}</a>
                 </td>
                 <td>
-                    <button id="{{ project.id }}" onclick="get_number_delete(this.id)"
+                    <button data-id="{{ project.id }}" onclick="get_number_delete(this.getAttribute('data-id'))"
                             class="btn btn-outline-danger action_post"
                             data-target="#modalDeleteProject" data-toggle="modal">
                         <i class="fas fa-trash-alt"></i>
@@ -71,23 +73,6 @@
         </div>
     </div>
     <!-- New project modal-->
-    <!--Edit project modal-->
-    <div aria-hidden="true" aria-labelledby="exampleModalCenterTitle" class="modal fade"
-         id="modalEditProject" role="dialog" tabindex="-1">
-        <div id="questsModal" class="modal-dialog modal-dialog-centered" role="document">
-            <div class="modal-content">
-                <div class="mb-2 modal-body text-center">
-                    <h2>{% trans %}Nazwa{% endtrans %}</h2>
-                    {{ form_start(form, {'action': path('edit_project', {id: 15}), 'method': 'GET'} ) }}
-                    {{ form_widget(form.Name) }}
-                    {{ form_errors(form.Name) }}
-                    <button class="btn btn-secondary m-2">{% trans %}Zapisz{% endtrans %}</button>
-                    {{ form_end(form) }}
-                </div>
-            </div>
-        </div>
-    </div>
-    <!-- Edit project modal-->
     <!-- Delete project modal -->
     <div aria-hidden="true" aria-labelledby="exampleModalCenterTitle" class="modal fade" id="modalDeleteProject"
          role="dialog" tabindex="-1">
@@ -111,6 +96,9 @@
         </div>
     </div>
     <!-- Delete project modal -->
+    <form id="formEditProject" hidden>
+        <input pattern=".{3,100}" type="text" name="Name">
+    </form>
     <script>
         let number;
         let project_name;
@@ -163,6 +151,30 @@
                 let a = document.createElement('a');
                 a.href = url;
                 a.click();
+            }
+        }
+
+        function editProject(projectId){
+            let projectName = document.getElementById(projectId).value;
+            if(projectName.length >= 3 && projectName.length <= 100) {
+                let url = '{{ path("edit_project", {'id': 'project_id'}) }}';
+                url = url.replace("project_id", projectId);
+
+                form = document.getElementById("formEditProject");
+                form.method="GET";
+                form.action = url;
+                form.Name.value = projectName;
+
+                form.submit();
+            }
+            else{
+                let title = document.getElementById("title");
+                title.insertAdjacentHTML("beforebegin", '<div class="mt-3 alert alert-warning alert-dismissible fade show" role="alert">' +
+                    '                        {% trans %}Nazwa projektu musi zawierać od 3 do 100 znaków{% endtrans %}\n' +
+                    '                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">\n' +
+                    '                            <span aria-hidden="true">&times;</span>\n' +
+                    '                        </button>\n' +
+                    '                    </div>');
             }
         }
 
