@@ -39,7 +39,7 @@
                 {{ quest.Content }}
                 <input type="hidden" name="Project" value="{{ quest.project.name }}">
             {% endif %}
-            <div class="mt-3 mb-2">Status:</div>
+            <div class="mt-3 mb-2">{% trans %}Postęp{% endtrans %}:</div>
             <select class="browser-default custom-select" name="Status">
                 <option value="0" {% if quest.Status == 0 %} selected {% endif %}>0%</option>
                 <option value="20" {% if quest.Status == 20 %} selected {% endif %}>20%</option>

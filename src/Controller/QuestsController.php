@@ -23,8 +23,6 @@ class QuestsController extends AbstractController
      */
     public function add_quest(Request $request, QuestsService $questsService, Session $session)
     {
-
-
         $quest = new Quests();
 
         $userId = $request->request->get('user');
