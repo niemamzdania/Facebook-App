@@ -36,7 +36,7 @@ class UsersController extends AbstractController
      * @Route("/user/edit/{id}", name="edit_user")
      * @IsGranted("IS_AUTHENTICATED_FULLY")
      */
-    public function edit_user(Request $request, Users $user)
+    public function edit_user(Request $request, Users $user, Session $session)
     {
         if ($this->getUser() != $user) {
             return new Response('Forbidden access');
@@ -67,6 +67,8 @@ class UsersController extends AbstractController
         if (($loginForm->isSubmitted() && $loginForm->isValid()) ||
             ($emailForm->isSubmitted() && $emailForm->isValid())) {
             $entityManager->flush();
+
+            $session->set('message', 'Dane zostały zmienione');
         } else if ($passwordForm->isSubmitted() && $passwordForm->isValid()) {
             $data = $passwordForm->getData();
 
@@ -75,6 +77,8 @@ class UsersController extends AbstractController
             );
 
             $entityManager->flush();
+
+            $session->set('message', 'Hasło zostało zmienione');
         } else if ($avatarForm->isSubmitted() && $avatarForm->isValid()) {
             $realPath = $request->files->get('avatar_form')['name']->getRealPath();
 
@@ -96,6 +100,7 @@ class UsersController extends AbstractController
                 $avatar->setName($fileName);
 
                 $entityManager->flush();
+                $session->set('message', 'Awatar został zmieniony');
             } else {
                 $upload = \Cloudinary\Uploader::upload($realPath, ['folder' => 'avatars']);
 
@@ -107,6 +112,8 @@ class UsersController extends AbstractController
 
                 $entityManager->persist($avatar);
                 $entityManager->flush();
+
+                $session->set('message', 'Awatar został dodany');
             }
         }
 
@@ -121,30 +128,61 @@ class UsersController extends AbstractController
             if (isset($result['resources'][0]))
                 $userAvatar = $result['resources'][0]['url'];
 
-            if ($userAvatar) {
-                return $this->render('users/edit_user.html.twig', [
-                    'avatar' => $userAvatar,
-                    'loginForm' => $loginForm->createView(),
-                    'passwordForm' => $passwordForm->createView(),
-                    'emailForm' => $emailForm->createView(),
-                    'avatarForm' => $avatarForm->createView(),
-                ]);
+            if ($session->get('message')) {
+                $message = $session->get('message');
+                $session->remove('message');
+
+                if (isset($userAvatar)) {
+                    return $this->render('users/edit_user.html.twig', [
+                        'message' => $message,
+                        'avatar' => $userAvatar,
+                        'loginForm' => $loginForm->createView(),
+                        'passwordForm' => $passwordForm->createView(),
+                        'emailForm' => $emailForm->createView(),
+                        'avatarForm' => $avatarForm->createView(),
+                    ]);
+                }
+            }
+            else{
+                if (isset($userAvatar)) {
+                    return $this->render('users/edit_user.html.twig', [
+                        'avatar' => $userAvatar,
+                        'loginForm' => $loginForm->createView(),
+                        'passwordForm' => $passwordForm->createView(),
+                        'emailForm' => $emailForm->createView(),
+                        'avatarForm' => $avatarForm->createView(),
+                    ]);
+                }
             }
         }
 
-        return $this->render('users/edit_user.html.twig', [
-            'loginForm' => $loginForm->createView(),
-            'passwordForm' => $passwordForm->createView(),
-            'emailForm' => $emailForm->createView(),
-            'avatarForm' => $avatarForm->createView(),
-        ]);
+        if ($session->get('message')) {
+            $message = $session->get('message');
+            $session->remove('message');
+
+            return $this->render('users/edit_user.html.twig', [
+                'message' => $message,
+                'loginForm' => $loginForm->createView(),
+                'passwordForm' => $passwordForm->createView(),
+                'emailForm' => $emailForm->createView(),
+                'avatarForm' => $avatarForm->createView(),
+            ]);
+        }
+        else{
+            return $this->render('users/edit_user.html.twig', [
+                'loginForm' => $loginForm->createView(),
+                'passwordForm' => $passwordForm->createView(),
+                'emailForm' => $emailForm->createView(),
+                'avatarForm' => $avatarForm->createView(),
+            ]);
+        }
     }
 
     /**
      * @Route("/facebook/edit/{id}", name="edit_facebook")
      * @IsGranted("IS_AUTHENTICATED_FULLY")
      */
-    public function edit_facebook(Request $request, Users $user)
+    public function edit_facebook(Request $request, Users $user, Session $session)
     {
         if ($this->getUser() != $user && $request->getLocale() == 'en') {
             return new Response('Forbidden access');
@@ -171,14 +209,27 @@ class UsersController extends AbstractController
             ($accessTokenForm->isSubmitted() && $accessTokenForm->isValid())) {
             $entityManager = $this->getDoctrine()->getManager();
             $entityManager->flush();
+
+            $session->set('message', 'Dane zostały zmienione');
         }
 
-        return $this->render('users/edit_facebook.html.twig', [
-            'appIdForm' => $appIdForm->createView(),
-            'appSecretForm' => $appSecretForm->createView(),
-            'pageIdForm' => $pageIdForm->createView(),
-            'accessTokenForm' => $accessTokenForm->createView()
-        ]);
+        if(isset($message)) {
+            return $this->render('users/edit_facebook.html.twig', [
+                'message' => $message,
+                'appIdForm' => $appIdForm->createView(),
+                'appSecretForm' => $appSecretForm->createView(),
+                'pageIdForm' => $pageIdForm->createView(),
+                'accessTokenForm' => $accessTokenForm->createView()
+            ]);
+        }
+        else{
+            return $this->render('users/edit_facebook.html.twig', [
+                'appIdForm' => $appIdForm->createView(),
+                'appSecretForm' => $appSecretForm->createView(),
+                'pageIdForm' => $pageIdForm->createView(),
+                'accessTokenForm' => $accessTokenForm->createView()
+            ]);
+        }
     }
 
     /**
@@ -234,7 +285,7 @@ class UsersController extends AbstractController
     }
 
     /**
-     * @Route("/avatar/delete/{id}", name="delete_user")
+     * @Route("/avatars/delete/{id}", name="delete_user")
      * @IsGranted("IS_AUTHENTICATED_FULLY")
      */
     public function delete_user(Users $user, Session $session)
@@ -244,13 +295,34 @@ class UsersController extends AbstractController
             return new Response('Forbidden access');
         }
 
+        $avatar = $this->getDoctrine()->getRepository(Avatars::class)->findAvatarByUserId($user->getId());
 
-        $entityManager = $this->getDoctrine()->getManager();
-        $entityManager->remove($avatar);
-        $entityManager->flush();
+        if ($avatar) {
+            //Config of server
+            \Cloudinary::config(array(
+                "cloud_name" => "przemke",
+                "api_key" => "884987643496832",
+                "api_secret" => "9KWlEeWnpdqZyo2GlohdLAqibeU",
+                "secure" => true
+            ));
+
+            $search = new Search();
+            $searchData = "folder=avatars AND filename=" . $avatar->getName();
+            $result = $search
+                ->expression($searchData)
+                ->max_results(1)
+                ->execute();
+
+            if (isset($result['resources'][0]))
+                \Cloudinary\Uploader::destroy($result['resources'][0]['public_id']);
+
+            $entityManager = $this->getDoctrine()->getManager();
+            $entityManager->remove($avatar);
+            $entityManager->flush();
+        }
 
         $session->set('message', 'Awatar został usunięty');
 
-        return $this->redirectToRoute('show_users');
+        return $this->redirectToRoute('edit_user', ['id' => $user->getId()]);
     }
 }
