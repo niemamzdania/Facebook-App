@@ -2,7 +2,9 @@
 
 namespace App\Controller;
 
+use App\Entity\Avatars;
 use App\Entity\Users;
+use App\Form\AvatarFormType;
 use App\Form\LoginFormType;
 use App\Form\PasswordFormType;
 use App\Form\EmailFormType;
@@ -11,12 +13,14 @@ use App\Form\AppSecretFormType;
 use App\Form\PageIdFormType;
 use App\Form\AccessTokenFormType;
 
+use Cloudinary\Search;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
+use Symfony\Component\HttpFoundation\File\File;
 use Symfony\Component\HttpFoundation\Session\Session;
 
 class UsersController extends AbstractController
@@ -38,17 +42,30 @@ class UsersController extends AbstractController
             return new Response('Forbidden access');
         }
 
+        //Config of server
+        \Cloudinary::config(array(
+            "cloud_name" => "przemke",
+            "api_key" => "884987643496832",
+            "api_secret" => "9KWlEeWnpdqZyo2GlohdLAqibeU",
+            "secure" => true
+        ));
+
+        $entityManager = $this->getDoctrine()->getManager();
+
+        $avatar = $this->getDoctrine()->getRepository(Avatars::class)->findAvatarByUserId($user->getId());
+
         $loginForm = $this->createForm(LoginFormType::class, $user);
         $passwordForm = $this->createForm(PasswordFormType::class, $user);
         $emailForm = $this->createForm(EmailFormType::class, $user);
+        $avatarForm = $this->createForm(AvatarFormType::class, $avatar);
 
         $loginForm->handleRequest($request);
         $passwordForm->handleRequest($request);
         $emailForm->handleRequest($request);
+        $avatarForm->handleRequest($request);
 
         if (($loginForm->isSubmitted() && $loginForm->isValid()) ||
             ($emailForm->isSubmitted() && $emailForm->isValid())) {
-            $entityManager = $this->getDoctrine()->getManager();
             $entityManager->flush();
         } else if ($passwordForm->isSubmitted() && $passwordForm->isValid()) {
             $data = $passwordForm->getData();
@@ -57,14 +74,69 @@ class UsersController extends AbstractController
                 $this->passwordEncoder->encodePassword($user, $data->getPassword())
             );
 
-            $entityManager = $this->getDoctrine()->getManager();
             $entityManager->flush();
+        } else if ($avatarForm->isSubmitted() && $avatarForm->isValid()) {
+            $realPath = $request->files->get('avatar_form')['name']->getRealPath();
+
+            if ($avatar) {
+                $search = new Search();
+                $searchData = "folder=avatars AND filename=" . $avatar->getName();
+                $result = $search
+                    ->expression($searchData)
+                    ->max_results(1)
+                    ->execute();
+
+                if (isset($result['resources'][0]))
+                    \Cloudinary\Uploader::destroy($result['resources'][0]['public_id']);
+
+                $upload = \Cloudinary\Uploader::upload($realPath, ['folder' => 'avatars']);
+
+                $fileName = substr($upload['public_id'], 8);
+
+                $avatar->setName($fileName);
+
+                $entityManager->flush();
+            } else {
+                $upload = \Cloudinary\Uploader::upload($realPath, ['folder' => 'avatars']);
+
+                $fileName = substr($upload['public_id'], 8);
+
+                $avatar = new Avatars();
+                $avatar->setName($fileName);
+                $avatar->setUser($user);
+
+                $entityManager->persist($avatar);
+                $entityManager->flush();
+            }
+        }
+
+        if ($avatar) {
+            $search = new Search();
+            $searchData = "folder=avatars AND filename=" . $avatar->getName();
+            $result = $search
+                ->expression($searchData)
+                ->max_results(1)
+                ->execute();
+
+            if (isset($result['resources'][0]))
+                $userAvatar = $result['resources'][0]['url'];
+
+            if ($userAvatar) {
+                return $this->render('users/edit_user.html.twig', [
+                    'avatar' => $userAvatar,
+                    'loginForm' => $loginForm->createView(),
+                    'passwordForm' => $passwordForm->createView(),
+                    'emailForm' => $emailForm->createView(),
+                    'avatarForm' => $avatarForm->createView(),
+                ]);
+            }
         }
 
         return $this->render('users/edit_user.html.twig', [
             'loginForm' => $loginForm->createView(),
             'passwordForm' => $passwordForm->createView(),
-            'emailForm' => $emailForm->createView()
+            'emailForm' => $emailForm->createView(),
+            'avatarForm' => $avatarForm->createView(),
         ]);
     }
 
@@ -80,7 +152,7 @@ class UsersController extends AbstractController
         if ($this->getUser() != $user && $request->getLocale() == 'pl_PL') {
             return new Response('Dostęp zabroniony');
         }
-        if($this->getUser() != $user)
+        if ($this->getUser() != $user)
             return new Response('Dostęp wzbroniony');
 
         $appIdForm = $this->createForm(AppIdFormType::class, $user);
@@ -135,7 +207,7 @@ class UsersController extends AbstractController
                 $entityManager->persist($user);
                 $entityManager->flush();
 
-                if($request->getLocale() == 'en') {
+                if ($request->getLocale() == 'en') {
                     $body = "Your new password is: $password. You can login now with the new credentials.";
                     $message = (new \Swift_Message('Reset your password'))
                         ->setFrom('apkafacebook20@gmail.com')
@@ -143,8 +215,7 @@ class UsersController extends AbstractController
                         ->setBody(
                             $body, 'text/html'
                         );
-                }
-                else {
+                } else {
                     $body = "Twoje nowe hasło to: $password. Możesz teraz zalogować się z nowymi danymi.";
                     $message = (new \Swift_Message('Resetowanie hasła'))
                         ->setFrom('apkafacebook20@gmail.com')
@@ -160,5 +231,26 @@ class UsersController extends AbstractController
         }
 
         return $this->render('users/reset.html.twig');
+    }
+
+    /**
+     * @Route("/avatar/delete/{id}", name="delete_user")
+     * @IsGranted("IS_AUTHENTICATED_FULLY")
+     */
+    public function delete_user(Users $user, Session $session)
+    {
+        if ($this->getUser()->getId() != $this->getUser()->getId() &&
+            !$this->isGranted("ROLE_ADMIN")) {
+            return new Response('Forbidden access');
+        }
+
+
+        $entityManager = $this->getDoctrine()->getManager();
+        $entityManager->remove($avatar);
+        $entityManager->flush();
+
+        $session->set('message', 'Awatar został usunięty');
+
+        return $this->redirectToRoute('show_users');
     }
 }

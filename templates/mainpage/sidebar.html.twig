@@ -80,12 +80,14 @@
                                     <p>{% trans %}Dane konta{% endtrans %}</p>
                                 </a>
                             </li>
+                            {% if is_granted('ROLE_ADMIN') %}
                             <li class="nav-item archive">
                                 <a class="nav-link button" href="{{ path('edit_facebook', {id: app.user.Id}) }}">
                                     <i class="fa fa-circle-o nav-icon"></i>
                                     <p>Facebook</p>
                                 </a>
                             </li>
+                            {% endif %}
                         </ul>
                     </li>
                     <!--*********************************************************-->

@@ -9,20 +9,21 @@
                 </div>
                 <div class="users" style="overflow-y: auto; overflow-x: hidden; min-height:450px; max-height: 450px;">
                     {% for conversation in conversations %}
-                    {% if app.user.id == conversation.user1.Id %}
-                    <a id="{{ conversation.Id }}" class="selectChat" style="color: black;"
-                       href="{{ path('one_chat', {conversation: conversation.Id}) }}">
-                        {% elseif app.user.Id != conversation.user1.Id %}
                         <a id="{{ conversation.Id }}" class="selectChat" style="color: black;"
                            href="{{ path('one_chat', {conversation: conversation.Id}) }}">
-                            {% endif %}
                             <div class="row"
                                  style="{% if id_conv is defined and conversation.id == id_conv %} background-color: lightgreen;{% endif %} border-top: 1px solid lightgray; height: 100%; padding: 5px;">
-                                <div div="col-4" style="padding-top: 10px; padding-bottom: 10px;">
-                                    <img class="ml-3" style="height: 30px; width: auto; border-radius:50%;"
-                                         src="{{ asset('images/user2.png') }}">
+                                <div div="col-4 ml-2" style="padding-top: 10px; padding-bottom: 10px;">
+
+                                        {% for key, value in avatars %}
+                                            {% if key != app.user.id and (key == conversation.user1.id or key == conversation.user2.id) %}
+                                                <img class="ml-3" style="height: 40px; max-width: 55px; border-radius:50%;"
+                                                     src="{{ value }}">
+                                            {% endif %}
+                                        {% endfor %}
+
                                 </div>
-                                <div class="col-8 ml-2" style="padding-top: 10px; padding-bottom: 10px;">
+                                <div class="col-8 ml-2" style="padding-top: 15px; padding-bottom: 10px;">
                                     {% if app.user.id == conversation.user1.Id %}
                                         <h5 style="cursor: pointer;">{{ conversation.user2.login }}</h5>
                                     {% elseif app.user.Id != conversation.user1.Id %}
@@ -31,7 +32,7 @@
                                 </div>
                             </div>
                         </a>
-                        {% endfor %}
+                    {% endfor %}
                 </div>
             </div>
             {% if topic is defined %}

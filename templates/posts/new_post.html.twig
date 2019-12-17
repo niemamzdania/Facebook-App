@@ -24,16 +24,16 @@
         document.querySelector("#post_form_name").setAttribute("onchange", "whenChosen(event)");
 
         function whenChosen(event){
-            var chosenImage = new FileReader();
+            let chosenImage = new FileReader();
             chosenImage.onload = function()
             {
-                var photoSel = document.querySelector(".chosenImage");
+                let photoSel = document.querySelector(".chosenImage");
 
                 if(photoSel === null) {
                     document.querySelector(".photoSelection").insertAdjacentHTML('beforeend', "<div class=\"chosenImage\">\n" +
                         "<img id=\"chosenImage\" style=\"height: 30vh; max-width: 100%; margin-top: 20px; margin-bottom: 10px;\">\n" +
                         "</div>");
-                    var image = document.querySelector("#chosenImage");
+                    let image = document.querySelector("#chosenImage");
                     image.src = chosenImage.result;
                     image.style.borderRadius = "5px";
                     image.style.border = "2px solid gray";

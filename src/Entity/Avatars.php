@@ -8,7 +8,7 @@ use Doctrine\ORM\Mapping as ORM;
  * Avatars
  *
  * @ORM\Table(name="avatars", indexes={@ORM\Index(name="FK_users_avatars", columns={"user_id"})})
- * @ORM\Entity
+ * @ORM\Entity(repositoryClass="App\Repository\AvatarsRepository")
  */
 class Avatars
 {
@@ -31,7 +31,7 @@ class Avatars
     /**
      * @var \Users
      *
-     * @ORM\ManyToOne(targetEntity="Users")
+     * @ORM\OneToOne(targetEntity="Users")
      * @ORM\JoinColumns({
      *   @ORM\JoinColumn(name="user_id", referencedColumnName="id", onDelete="CASCADE")
      * })

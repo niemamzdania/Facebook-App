@@ -84,6 +84,8 @@ Brak postów do wyświetlenia: No posts to show
 Lista projektów: Projects list
 Nazwa: Name
 Czy chcesz usunąć projekt: Do you want to delete project
+Edytuj awatar: Edit your avatar
+Czy chcesz usunąć awatar: Do you want to delete avatar
 
 Post został poprawnie utworzony: The post has been successfully created
 Post został usunięty: The post has been deleted
@@ -105,3 +107,5 @@ Projekt został usunięty: Project has been deleted
 Nazwa projektu musi zawierać od 3 do 100 znaków: Project name must contain between 3 and 100 characters
 Nazwa projektu została zmieniona: Project name has been changed
 Podano taką samą nazwę projektu: The same project name was given
+Awatar został usunięty: Avatar has been deleted
+Awatar został zmieniony: Avatar has been changed
