@@ -52,4 +52,14 @@ class QuestsRepository extends ServiceEntityRepository
             ->getResult()
             ;
     }
+
+    public function findQuestsByProjectId($project_id): array
+    {
+        return $this->createQueryBuilder('q')
+            ->andWhere('q.project = :val')
+            ->setParameter('val', $project_id)
+            ->getQuery()
+            ->getResult()
+            ;
+    }
 }

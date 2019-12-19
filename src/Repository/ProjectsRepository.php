@@ -56,6 +56,16 @@ class ProjectsRepository extends ServiceEntityRepository
             ;
     }
 
+    public function findProjectsByUserId($user_id)
+    {
+        return $this->createQueryBuilder('p')
+            ->andWhere('p.user = :val')
+            ->setParameter('val', $user_id)
+            ->getQuery()
+            ->getResult()
+            ;
+    }
+
     public function findAllProjects()
     {
         return $this->createQueryBuilder('p')

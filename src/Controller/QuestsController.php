@@ -40,6 +40,7 @@ class QuestsController extends AbstractController
         if(!isset($project)) {
             $project = new Projects();
             $project->setName($projectName);
+            $project->setUser($this->getUser());
             $entityManager->persist($project);
             $entityManager->flush();
         }

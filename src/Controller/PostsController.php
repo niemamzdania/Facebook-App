@@ -253,7 +253,7 @@ class PostsController extends AbstractController
             return $this->render('posts/show_posts.html.twig', ['posts' => $paginator->paginate(
                 $posts,
                 $request->query->getInt('page', 1),
-                8
+                7
             )]);
         }
     }
@@ -272,13 +272,13 @@ class PostsController extends AbstractController
             return $this->render('posts/show_posts.html.twig', ['message' => $message, 'posts' => $paginator->paginate(
                 $posts,
                 $request->query->getInt('page', 1),
-                8
+                7
             )]);
         } else {
             return $this->render('posts/show_posts.html.twig', ['posts' => $paginator->paginate(
                 $posts,
                 $request->query->getInt('page', 1),
-                8
+                7
             )]);
         }
     }

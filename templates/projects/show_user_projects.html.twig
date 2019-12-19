@@ -9,44 +9,45 @@
             <th scope="col">id</th>
             <th style="text-align: center;" scope="col">{% trans %}Nazwa{% endtrans %}</th>
             <th scope="col"></th>
-            <th style="text-align: center;" scope="col"><span class="mr-5">{% trans %}Klient{% endtrans %}</span></th>
             <th scope="col">{% trans %}Zadania{% endtrans %}</th>
             <th scope="col">{% trans %}Usuń{% endtrans %}</th>
         </tr>
         </thead>
         <tbody>
-        {% for project in projects %}
+        {% if projects is not empty %}
+            {% for project in projects %}
+                <tr>
+                    <th>{{ project.id }}</th>
+                    <th><textarea id="{{ project.id }}" style="width: 100%;">{{ project.name }}</textarea></th>
+                    <th>
+                        <button style="text-align: left;" data-id="{{ project.id }}"
+                                onclick="editProject(this.getAttribute('data-id'))"
+                                class="btn btn-secondary m-2">{% trans %}Zmień{% endtrans %}</button>
+                    </th>
+                    <td>
+                        <a onclick="get_number(this.getAttribute('data-id'), this.getAttribute('data-name'))"
+                           class="btn btn-warning" data-id="{{ project.id }}" data-name="{{ project.name }}"
+                           data-target="#modalShowQuests"
+                           data-toggle="modal">{% trans %}Pokaż{% endtrans %}</a>
+                    </td>
+                    <td>
+                        <button data-id="{{ project.id }}" onclick="get_number_delete(this.getAttribute('data-id'))"
+                                class="btn btn-outline-danger action_post"
+                                data-target="#modalDeleteProject" data-toggle="modal">
+                            <i class="fas fa-trash-alt"></i>
+                        </button>
+                    </td>
+                </tr>
+            {% endfor %}
+        {% else %}
             <tr>
-                <th>{{ project.id }}</th>
-                <th><textarea id="{{ project.id }}" style="width: 100%;">{{ project.name }}</textarea></th>
-                <th>
-                    <button style="text-align: left;" data-id="{{ project.id }}" onclick="editProject(this.getAttribute('data-id'))"
-                            class="btn btn-secondary m-2">{% trans %}Zmień{% endtrans %}</button>
-                </th>
-                <th>
-                    <form class="mr-5" id="formChangeClient" action="{{ path('edit_project', {id: project.id}) }}">
-                        <select onchange="editProjectClient()" class="browser-default custom-select" name="client" required>
-                            {% for client in clients %}1
-                                <option value="{{ client.id }}" {% if client.id == project.user.id %} selected {% endif %}>{{ client.login }}</option>
-                            {% endfor %}
-                        </select>
-                    </form>
-                </th>
-                <td>
-                    <a onclick="get_number(this.getAttribute('data-id'), this.getAttribute('data-name'))"
-                       class="btn btn-warning" data-id="{{ project.id }}" data-name="{{ project.name }}"
-                       data-target="#modalShowQuests"
-                       data-toggle="modal">{% trans %}Pokaż{% endtrans %}</a>
-                </td>
-                <td>
-                    <button data-id="{{ project.id }}" onclick="get_number_delete(this.getAttribute('data-id'))"
-                            class="btn btn-outline-danger action_post"
-                            data-target="#modalDeleteProject" data-toggle="modal">
-                        <i class="fas fa-trash-alt"></i>
-                    </button>
-                </td>
+                <td><h4>{% trans %}Brak projektów do wyświetlenia{% endtrans %}</h4></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
             </tr>
-        {% endfor %}
+        {% endif %}
         </tbody>
     </table>
     <div class="row d-flex justify-content-center w-100 paginator mt-3">
@@ -80,11 +81,8 @@
                     {{ form_start(form, {'action': path('new_project'), 'method': 'GET'} ) }}
                     {{ form_widget(form.Name) }}
                     {{ form_errors(form.Name) }}
-                    <div class="mt-3 mb-2">{% trans %}Wybierz klienta{% endtrans %}:</div>
-                    <select class="browser-default custom-select" name="client" required>
-                        {% for client in clients %}
-                            <option value="{{ client.id }}">{{ client.login }}</option>
-                        {% endfor %}
+                    <select hidden="hidden" class="browser-default custom-select" name="client" required>
+                        <option value="{{ app.user.id }}">{{ app.user.login }}</option>
                     </select>
                     <button class="btn btn-secondary m-2">{% trans %}Dodaj{% endtrans %}</button>
                     {{ form_end(form) }}
@@ -93,30 +91,6 @@
         </div>
     </div>
     <!-- New project modal-->
-    <!-- Delete project modal -->
-    <div aria-hidden="true" aria-labelledby="exampleModalCenterTitle" class="modal fade" id="modalDeleteProject"
-         role="dialog" tabindex="-1">
-        <div class="modal-dialog modal-dialog-centered" role="document">
-            <div class="modal-content">
-                <div class="modal-body text-center">
-                    <h1>
-                        <i class="far fa-question-circle mt-2"></i>
-                    </h1>
-                    <h2 class="mt-4 mb-3">
-                        <bold>{% trans %}Jesteś pewien{% endtrans %}?</bold>
-                    </h2>
-                    <h5>{% trans %}Czy chcesz usunąć projekt{% endtrans %}?</h5>
-                    <a class="action" id="/project/delete/">
-                        <button class="delete btn-lg btn-outline-danger mt-5 mr-2">{% trans %}Usuń{% endtrans %}</button>
-                    </a>
-                    <button class="btn-lg btn-outline-secondary mt-5 ml-2" data-dismiss="modal"
-                            type="button">{% trans %}Anuluj{% endtrans %}
-                    </button>
-                </div>
-            </div>
-        </div>
-    </div>
-    <!-- Delete project modal -->
     <form id="formEditProject" hidden>
         <input pattern=".{3,100}" type="text" name="Name">
     </form>
@@ -142,12 +116,14 @@
         function show_quests(project_id) {
             $(".optionQuest").remove();
 
-            {% for quest in quests %}
-            if ({{ quest.project.id }} == project_id
+            {% for key, value in quests %}
+            if ( {{ key }} == project_id
         )
             {
+                {% for val in value %}
                 document.querySelector(".project_quests").insertAdjacentHTML('beforeend',
-                    "<option id=" + "{{ quest.id }}" + " class=" + "optionQuest" + ">{{ quest.content }}</option>");
+                    "<option id=" + "{{ val.id }}" + " class=" + "optionQuest" + ">{{ val.content }}</option>");
+                {% endfor %}
             }
             {% endfor %}
 
@@ -210,7 +186,7 @@
             delete_trigger()
         };
 
-        function editProjectClient(project_id){
+        function editProjectClient(project_id) {
             document.getElementById("formChangeClient").submit();
         }
     </script>
