@@ -179,60 +179,6 @@ class UsersController extends AbstractController
     }
 
     /**
-     * @Route("/facebook/edit/{id}", name="edit_facebook")
-     * @IsGranted("IS_AUTHENTICATED_FULLY")
-     */
-    public function edit_facebook(Request $request, Users $user, Session $session)
-    {
-        if ($this->getUser() != $user && $request->getLocale() == 'en') {
-            return new Response('Forbidden access');
-        }
-        if ($this->getUser() != $user && $request->getLocale() == 'pl_PL') {
-            return new Response('Dostęp zabroniony');
-        }
-        if ($this->getUser() != $user)
-            return new Response('Dostęp wzbroniony');
-
-        $appIdForm = $this->createForm(AppIdFormType::class, $user);
-        $appSecretForm = $this->createForm(AppSecretFormType::class, $user);
-        $pageIdForm = $this->createForm(PageIdFormType::class, $user);
-        $accessTokenForm = $this->createForm(AccessTokenFormType::class, $user);
-
-        $appIdForm->handleRequest($request);
-        $appSecretForm->handleRequest($request);
-        $pageIdForm->handleRequest($request);
-        $accessTokenForm->handleRequest($request);
-
-        if (($appIdForm->isSubmitted() && $appIdForm->isValid()) ||
-            ($appSecretForm->isSubmitted() && $appSecretForm->isValid()) ||
-            ($pageIdForm->isSubmitted() && $pageIdForm->isValid()) ||
-            ($accessTokenForm->isSubmitted() && $accessTokenForm->isValid())) {
-            $entityManager = $this->getDoctrine()->getManager();
-            $entityManager->flush();
-
-            $session->set('message', 'Dane zostały zmienione');
-        }
-
-        if(isset($message)) {
-            return $this->render('users/edit_facebook.html.twig', [
-                'message' => $message,
-                'appIdForm' => $appIdForm->createView(),
-                'appSecretForm' => $appSecretForm->createView(),
-                'pageIdForm' => $pageIdForm->createView(),
-                'accessTokenForm' => $accessTokenForm->createView()
-            ]);
-        }
-        else{
-            return $this->render('users/edit_facebook.html.twig', [
-                'appIdForm' => $appIdForm->createView(),
-                'appSecretForm' => $appSecretForm->createView(),
-                'pageIdForm' => $pageIdForm->createView(),
-                'accessTokenForm' => $accessTokenForm->createView()
-            ]);
-        }
-    }
-
-    /**
      * @Route("/reset", name="reset")
      */
     public function reset_password(\Swift_Mailer $mailer, Request $request)
