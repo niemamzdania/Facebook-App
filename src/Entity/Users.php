@@ -67,12 +67,12 @@ class Users implements UserInterface
     private $appSecret;
 
     /**
-     * @ORM\Column(type="string", length=20, nullable=true)
+     * @ORM\Column(type="string", length=255, nullable=true)
      */
     private $pageId;
 
     /**
-     * @ORM\Column(type="string", length=255, nullable=true)
+     * @ORM\Column(type="string", length=300, nullable=true)
      */
     private $userAccessToken;
 

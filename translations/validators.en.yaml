@@ -6,3 +6,4 @@ Treść postu musi mieć przynajmniej {{ limit }} znaki.: Content of post must b
 Treść postu nie może mieć więcej niż {{ limit }} znaków.: Content of post cannot be longer than {{ limit }} characters.
 Proszę wybrać prawidłowy plik ze zdjęciem.: Please upload a valid image file.
 Rozmiar pliku jest zbyt duży. Maksymalny rozmiar pliku to 2048 kB.: File size is too large. The maximum file size is 2048 kB.
+App ID nie może mieć więcej niż {{ limit }} znaków.: App ID must be at least {{ limit }} characters long.

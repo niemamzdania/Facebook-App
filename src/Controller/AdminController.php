@@ -91,7 +91,10 @@ class AdminController extends AbstractController
             $session->set('message', 'Dane zostały zmienione');
         }
 
-        if(isset($message)) {
+        if($session->get('message')) {
+            $message = $session->get('message');
+            $session->remove('message');
+
             return $this->render('users/edit_facebook.html.twig', [
                 'message' => $message,
                 'appIdForm' => $appIdForm->createView(),

@@ -15,9 +15,10 @@ class AppIdFormType extends AbstractType
                 'constraints' => [
                     new Length([
                         'max' => 20,
+                        'maxMessage' => "App ID nie może mieć więcej niż {{ limit }} znaków."
                     ])
                 ],
             ])
-            ->getForm();
+            ;
     }
 }

@@ -7,6 +7,7 @@ use App\Entity\Posts;
 use App\Form\PostFormType;
 use App\Service\PostsService;
 
+use Facebook\Exceptions\FacebookResponseException;
 use Facebook\Facebook;
 use Facebook\FileUpload\FacebookFile;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
@@ -32,23 +33,32 @@ class PostsController extends AbstractController
         $pageId = $user->getPageId();
         $userAccessToken = $user->getUserAccessToken();
 
-        $entityManager = $this->getDoctrine()->getManager();
-        $post->setStatus(true);
-        $entityManager->flush();
+        if (!isset($appId) || !isset($appSecret) || !isset($pageId) || !isset($userAccessToken)) {
+            $session->set('warning', 'Dane Facebooka nie są kompletne.');
+            return $this->redirectToRoute('show_posts');
+        }
+
         $message = $post->getContent();
         $photo = $this->getDoctrine()->getRepository(Photos::Class)->findPhotoByPostId($post->getId());
 
         if ($photo != NULL) {
-            $directory = $this->getParameter('upload_directory');
-            $date = $post->getDate();
-            $dateInString = $date->format('Y-m');
-            $directory = $directory . '/' . $dateInString;
+            //Config of server
+            \Cloudinary::config(array(
+                "cloud_name" => "przemke",
+                "api_key" => "884987643496832",
+                "api_secret" => "9KWlEeWnpdqZyo2GlohdLAqibeU",
+                "secure" => true
+            ));
 
-            $finder = new Finder();
-            $finder->files()->in($directory)->name($photo->getName());
+            $search = new Search();
+            $searchData = "folder=" . $photo->getPost()->getDate()->format('Y-m') . " AND filename=" . $photo->getName();
+            $result = $search
+                ->expression($searchData)
+                ->max_results(1)
+                ->execute();
 
-            foreach ($finder as $currentPhoto) {
-                $photoPath = $currentPhoto->getPathName();
+            if (isset($result['resources'][0])) {
+                $photoPath = $result['resources'][0]['url'];
             }
         }
 
@@ -58,37 +68,47 @@ class PostsController extends AbstractController
             'default_graph_version' => 'v4.0'
         ]);
 
-        $longLivedToken = $fb->getOAuth2Client()->getLongLivedAccessToken($userAccessToken);
+        try {
+            $longLivedToken = $fb->getOAuth2Client()->getLongLivedAccessToken($userAccessToken);
 
-        $fb->setDefaultAccessToken($longLivedToken);
+            $fb->setDefaultAccessToken($longLivedToken);
 
-        $response = $fb->sendRequest('GET', $pageId, ['fields' => 'access_token'])
-            ->getDecodedBody();
+            $response = $fb->sendRequest('GET', $pageId, ['fields' => 'access_token'])
+                ->getDecodedBody();
 
-        $foreverPageAccessToken = $response['access_token'];
 
-        $fb = new Facebook([
-            'app_id' => $appId,
-            'app_secret' => $appSecret,
-            'default_graph_version' => 'v4.0'
-        ]);
+            $foreverPageAccessToken = $response['access_token'];
 
-        if (isset($photoPath)) {
-            $photoToUpload = new FacebookFile($photoPath);
-
-            $fb->setDefaultAccessToken($foreverPageAccessToken);
-            $fb->sendRequest('POST', "$pageId/photos", [
-                'message' => $message,
-                'picture' => $photoToUpload,
+            $fb = new Facebook([
+                'app_id' => $appId,
+                'app_secret' => $appSecret,
+                'default_graph_version' => 'v4.0'
             ]);
-        } else {
-            $fb->setDefaultAccessToken($foreverPageAccessToken);
-            $fb->sendRequest('POST', "$pageId/feed", [
-                'message' => $message,
-            ]);
+
+            if (isset($photoPath)) {
+                $photoToUpload = new FacebookFile($photoPath);
+
+                $fb->setDefaultAccessToken($foreverPageAccessToken);
+                $fb->sendRequest('POST', "$pageId/photos", [
+                    'message' => $message,
+                    'picture' => $photoToUpload,
+                ]);
+            } else {
+                $fb->setDefaultAccessToken($foreverPageAccessToken);
+                $fb->sendRequest('POST', "$pageId/feed", [
+                    'message' => $message,
+                ]);
+            }
+        } catch (FacebookResponseException $exception) {
+            $session->set('error', $exception->getMessage());
+            return $this->redirectToRoute('show_posts');
         }
 
         $session->set('message', 'Post został opublikowany');
+
+        $entityManager = $this->getDoctrine()->getManager();
+        $post->setStatus(true);
+        $entityManager->flush();
 
         return $this->redirectToRoute('show_posts');
     }
@@ -117,7 +137,7 @@ class PostsController extends AbstractController
         $session->set('message', 'Post został zmodyfikowany');
 
         $photo = $this->getDoctrine()->getRepository(Photos::class)->findPhotoByPostId($post->getId());
-        if($photo) {
+        if ($photo) {
             //Config of server
             \Cloudinary::config(array(
                 "cloud_name" => "przemke",
@@ -127,12 +147,12 @@ class PostsController extends AbstractController
             ));
             $post = $this->getDoctrine()->getRepository(Posts::class)->findPostById($post->getId());
             $search = new Search();
-            $searchData = "folder=".$post->getDate()->format('Y-m')." AND filename=".$photo->getName();
+            $searchData = "folder=" . $post->getDate()->format('Y-m') . " AND filename=" . $photo->getName();
             $result = $search
                 ->expression($searchData)
                 ->max_results(1)
                 ->execute();
-            if(isset($result['resources'][0])) {
+            if (isset($result['resources'][0])) {
                 $photoPath = $result['resources'][0]['url'];
                 return $this->redirectToRoute('show_user_posts', ['photoPath' => $photoPath, 'message' => $session->get('message')]);
             }
@@ -215,7 +235,7 @@ class PostsController extends AbstractController
             ));
 
             $search = new Search();
-            $searchData = "folder=".$photo->getPost()->getDate()->format('Y-m')." AND filename=".$photo->getName();
+            $searchData = "folder=" . $photo->getPost()->getDate()->format('Y-m') . " AND filename=" . $photo->getName();
             $result = $search
                 ->expression($searchData)
                 ->max_results(1)
@@ -245,6 +265,22 @@ class PostsController extends AbstractController
             $message = $session->get('message');
             $session->remove('message');
             return $this->render('posts/show_posts.html.twig', ['message' => $message, 'posts' => $paginator->paginate(
+                $posts,
+                $request->query->getInt('page', 1),
+                7
+            )]);
+        } elseif ($session->get('warning')) {
+            $warning = $session->get('warning');
+            $session->remove('warning');
+            return $this->render('posts/show_posts.html.twig', ['warning' => $warning, 'posts' => $paginator->paginate(
+                $posts,
+                $request->query->getInt('page', 1),
+                7
+            )]);
+        } elseif ($session->get('error')) {
+            $error = $session->get('error');
+            $session->remove('error');
+            return $this->render('posts/show_posts.html.twig', ['error' => $error, 'posts' => $paginator->paginate(
                 $posts,
                 $request->query->getInt('page', 1),
                 7
@@ -329,7 +365,7 @@ class PostsController extends AbstractController
             ));
 
             $search = new Search();
-            $searchData = "folder=".$dateInString." AND filename=".$photo->getName();
+            $searchData = "folder=" . $dateInString . " AND filename=" . $photo->getName();
             $result = $search
                 ->expression($searchData)
                 ->max_results(1)
@@ -408,8 +444,7 @@ class PostsController extends AbstractController
             $session->set('message', 'Post został usunięty');
 
             return $this->redirectToRoute('show_user_posts');
-        }
-        else{
+        } else {
             $session->set('message', 'Zdjęcie zostało usunięte');
         }
 

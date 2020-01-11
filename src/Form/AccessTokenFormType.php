@@ -14,7 +14,7 @@ class AccessTokenFormType extends AbstractType
             ->add('userAccessToken', TextType::class, ['attr' => ['class' => 'form-control mb-3'], 'required' => false,
                 'constraints' => [
                     new Length([
-                        'max' => 255,
+                        'max' => 300,
                     ])
                 ],
             ])

@@ -22,35 +22,42 @@
     <!-- Sidebar -->
     <!-- Content -->
     <div class="content-wrapper" style="overflow: auto;">
-            {% block alerts %}
-                <div class="messagesAlert"></div>
-                {% if message is defined %}
-                    <div class="mt-3 alert alert-success alert-dismissible fade show" role="alert">
-                        {{ message |trans }}
-                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                            <span aria-hidden="true">&times;</span>
-                        </button>
-                    </div>
-                {% elseif error is defined %}
-                    <div class="mt-3 alert alert-danger alert-dismissible fade show" role="alert">
-                        {{ error |trans }}
-                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                            <span aria-hidden="true">&times;</span>
-                        </button>
-                    </div>
-                {% endif %}
-            {% endblock %}
-            <script>
-                window.onload = function changeCursor() {
-                    var selectors = document.querySelectorAll("h1, h2, h3, h4, h5, h6, th, tr, td");
-                    for (i = 0; i < selectors.length; i++) {
-                        selectors[i].style.cursor = "default";
-                    }
+        {% block alerts %}
+            <div class="messagesAlert"></div>
+            {% if message is defined %}
+                <div class="mt-3 alert alert-success alert-dismissible fade show" role="alert">
+                    {{ message |trans }}
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+            {% elseif error is defined %}
+                <div class="mt-3 alert alert-danger alert-dismissible fade show" role="alert">
+                    {{ error |trans }}
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+            {% elseif warning is defined %}
+                <div class="mt-3 alert alert-warning alert-dismissible fade show" role="alert">
+                    {{ warning |trans }}
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+            {% endif %}
+        {% endblock %}
+        <script>
+            window.onload = function changeCursor() {
+                var selectors = document.querySelectorAll("h1, h2, h3, h4, h5, h6, th, tr, td");
+                for (i = 0; i < selectors.length; i++) {
+                    selectors[i].style.cursor = "default";
                 }
-            </script>
-            {% block content %}
-                {% include 'mainpage/hello_page.html.twig' %}
-            {% endblock %}
+            }
+        </script>
+        {% block content %}
+            {% include 'mainpage/hello_page.html.twig' %}
+        {% endblock %}
     </div>
     <!-- Content -->
     <!-- Footer -->
@@ -92,7 +99,7 @@
             $.ajax({
                 url: url,
             });
-            setTimeout(function(){
+            setTimeout(function () {
                 window.location.reload();
             });
         }
@@ -101,7 +108,7 @@
 
         {% set conversations = app.session.get('conversations') %}
         {% for conversation in conversations %}
-            url.searchParams.append('topic', '{{ conversation.id|trans }}');
+        url.searchParams.append('topic', '{{ conversation.id|trans }}');
         {% endfor %}
 
         const eventSource = new EventSource(url)
@@ -110,7 +117,9 @@
             document.querySelector(".messagesAlert").insertAdjacentHTML('beforeend', "<div id=\"messageAlert\" class=\"mt-3 alert alert-success\" role=\"alert\">\n" +
                 "{% trans %}Otrzymano nową wiadomość{% endtrans %}\n" +
                 "</div>");
-            setTimeout(function(){ document.getElementById("messageAlert").remove(); }, 3000);
+            setTimeout(function () {
+                document.getElementById("messageAlert").remove();
+            }, 3000);
         }
     </script>
 {% endblock %}
