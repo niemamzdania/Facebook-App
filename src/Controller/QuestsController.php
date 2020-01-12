@@ -65,7 +65,11 @@ class QuestsController extends AbstractController
         $futureDate = date('Y-m-d', strtotime('+1 year'));
         $futureDate = date('Y-m-d', strtotime('+1 year', strtotime($dateInString)));
 
-        $users = $this->getDoctrine()->getRepository(Users::class)->findAllUsers();
+        $users = $this->getDoctrine()->getRepository(Users::class)->findUsersByRole('ROLE_USER');
+        $users2 =  $this->getDoctrine()->getRepository(Users::class)->findUsersByRole('ROLE_ADMIN');
+        for($i = 0; $i<count($users2); $i++){
+            array_push($users, $users2[$i]);
+        }
 
         $projects = $this->getDoctrine()->getRepository(Projects::class)->findAllProjects();
 

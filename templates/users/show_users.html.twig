@@ -22,7 +22,7 @@
                 {% if user.roles[0] == "ROLE_ADMIN" %}
                     <td>{% trans %}Administrator{% endtrans %}</td>
                 {% elseif user.roles[0] == "ROLE_USER" %}
-                    <td>{% trans %}Użytkownik{% endtrans %}</td>
+                    <td>{% trans %}Pracownik{% endtrans %}</td>
                 {% elseif user.roles[0] == "ROLE_CLIENT" %}
                     <td>{% trans %}Klient{% endtrans %}</td>
                 {% endif %}
