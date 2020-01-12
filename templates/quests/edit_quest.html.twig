@@ -31,7 +31,7 @@
                 <div>
                     <select class="browser-default custom-select" name="user" required>
                         {% for user in users %}
-                            <option value="{{ user.id }}">{{ user.login }}</option>
+                            <option value="{{ user.id }}">{{ user.fullName }}</option>
                         {% endfor %}
                     </select>
                 </div>

@@ -76,6 +76,11 @@ class Users implements UserInterface
      */
     private $userAccessToken;
 
+    /**
+     * @ORM\Column(type="string", length=50)
+     */
+    private $fullName;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -200,6 +205,18 @@ class Users implements UserInterface
     public function setUserAccessToken(?string $userAccessToken): self
     {
         $this->userAccessToken = $userAccessToken;
+
+        return $this;
+    }
+
+    public function getFullName(): ?string
+    {
+        return $this->fullName;
+    }
+
+    public function setFullName(string $fullName): self
+    {
+        $this->fullName = $fullName;
 
         return $this;
     }

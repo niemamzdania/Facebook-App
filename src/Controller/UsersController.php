@@ -64,6 +64,27 @@ class UsersController extends AbstractController
         $emailForm->handleRequest($request);
         $avatarForm->handleRequest($request);
 
+        if ($request->query->get('fullName')) {
+            $fullName = $request->query->get('fullName');
+            $request->query->remove('fullName');
+
+            if ($user->getFullName() == $fullName) {
+                $session->set('message', 'Podano takie same dane');
+                return $this->redirectToRoute('edit_user', [
+                    'id' => $this->getUser()->getId()
+                ]);
+            } else {
+                $user->setFullName($fullName);
+                $entityManager = $this->getDoctrine()->getManager();
+                $entityManager->flush();
+
+                $session->set('message', 'Dane zostały zmienione');
+                return $this->redirectToRoute('edit_user', [
+                    'id' => $this->getUser()->getId()
+                ]);
+            }
+        }
+
         if (($loginForm->isSubmitted() && $loginForm->isValid()) ||
             ($emailForm->isSubmitted() && $emailForm->isValid())) {
             $entityManager->flush();
@@ -142,8 +163,7 @@ class UsersController extends AbstractController
                         'avatarForm' => $avatarForm->createView(),
                     ]);
                 }
-            }
-            else{
+            } else {
                 if (isset($userAvatar)) {
                     return $this->render('users/edit_user.html.twig', [
                         'avatar' => $userAvatar,
@@ -167,8 +187,7 @@ class UsersController extends AbstractController
                 'emailForm' => $emailForm->createView(),
                 'avatarForm' => $avatarForm->createView(),
             ]);
-        }
-        else{
+        } else {
             return $this->render('users/edit_user.html.twig', [
                 'loginForm' => $loginForm->createView(),
                 'passwordForm' => $passwordForm->createView(),

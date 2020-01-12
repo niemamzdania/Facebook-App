@@ -6,6 +6,7 @@
         <tr>
             <th scope="col">id</th>
             <th scope="col">login</th>
+            <th scope="col">{% trans %}Imię i nazwisko{% endtrans %}</th>
             <th scope="col">e-mail</th>
             <th scope="col">{% trans %}Rola{% endtrans %}</th>
             <th scope="col">{% trans %}Zmień{% endtrans %} email</th>
@@ -18,6 +19,7 @@
             <tr>
                 <th>{{ user.id }}</th>
                 <td>{{ user.login }}</td>
+                <td>{{ user.fullName }}</td>
                 <td>{{ user.email }}</td>
                 {% if user.roles[0] == "ROLE_ADMIN" %}
                     <td>{% trans %}Administrator{% endtrans %}</td>

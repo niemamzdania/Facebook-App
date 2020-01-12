@@ -14,8 +14,10 @@
                 <h6>{{ quest.endDate|date("m/d/Y") }}</br></h6>
             </div>
             <div>
-                <h2>Pracownik</h2>
-                <h6>{{ quest.user.login }}</h6>
+                {% if is_granted('ROLE_USER') == false %}
+                    <h2>Pracownik</h2>
+                    <h6>{{ quest.user.fullName }}</h6>
+                {% endif %}
                 <h2>Projekt</h2>
                 <h6>{{ quest.project.name }}</h6>
             </div>

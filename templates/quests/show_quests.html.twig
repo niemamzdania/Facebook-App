@@ -30,7 +30,7 @@
             {% for quest in quests %}
                 <tr style="text-align:center">
                     {% if user is defined %}
-                        <td>{{ quest.user.login }}</td>
+                        <td>{{ quest.user.fullName }}</td>
                     {% endif %}
                     <td>{{ quest.endDate|date("m/d/Y") }}</td>
                     <td>{{ quest.project.name }}</td>

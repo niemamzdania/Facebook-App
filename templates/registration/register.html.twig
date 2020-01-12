@@ -17,6 +17,9 @@
         <div class="mt-3"><span style="cursor: default; font-weight: bold;">Login:</span></div>
         {{ form_widget(registrationForm.login, {'widget_attr': {'class': 'mt-2'}}) }}
         {{ form_errors(registrationForm.login, {'errors_attr': {'class': 'mt-2'}}) }}
+        <div class="mt-3"><span style="cursor: default; font-weight: bold;">{% trans %}Imię i nazwisko{% endtrans %}:</span></div>
+        {{ form_widget(registrationForm.fullName, {'widget_attr': {'class': 'mt-2'}}) }}
+        {{ form_errors(registrationForm.fullName, {'errors_attr': {'class': 'mt-2'}}) }}
         <div class="mt-3"><span style="cursor: default; font-weight: bold;">Email:</span></div>
         {{ form_widget(registrationForm.email, {'widget_attr': {'class': 'mt-2'}}) }}
         {{ form_errors(registrationForm.email, {'errors_attr': {'class': 'mt-2'}}) }}
