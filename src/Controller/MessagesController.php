@@ -25,7 +25,7 @@ class MessagesController extends AbstractController
      */
     public function send_message(Conversations $topic, Publisher $publisher, Request $request, Session $session)
     {
-        $data = $request->request->get('Content');
+        $data = $request->query->get('Content');
 
         if ($data) {
             $update = new Update((string)$topic->getId(), $data);
@@ -42,7 +42,7 @@ class MessagesController extends AbstractController
             else $message->setRecipient($conversation->getUser1());
 
             $message->setTime(new \DateTime());
-            $message->setContent($request->request->get('Content'));
+            $message->setContent($request->query->get('Content'));
 
             $entityManager = $this->getDoctrine()->getManager();
             $entityManager->persist($message);

@@ -15,19 +15,22 @@
                                  style="{% if id_conv is defined and conversation.id == id_conv %} background-color: lightgreen;{% endif %} border-top: 1px solid lightgray; height: 100%; padding: 5px;">
                                 <div div="col-4 ml-2" style="padding-top: 10px; padding-bottom: 10px;">
 
+                                    {% if avatars is defined %}
                                         {% for key, value in avatars %}
                                             {% if key != app.user.id and (key == conversation.user1.id or key == conversation.user2.id) %}
-                                                <img class="ml-3" style="height: 40px; max-width: 55px; border-radius:50%;"
+                                                <img class="ml-3"
+                                                     style="height: 40px; width: 40px; border-radius: 50%;"
                                                      src="{{ value }}">
                                             {% endif %}
                                         {% endfor %}
+                                    {% endif %}
 
                                 </div>
                                 <div class="col-8 ml-2" style="padding-top: 15px; padding-bottom: 10px;">
                                     {% if app.user.id == conversation.user1.Id %}
-                                        <h5 style="cursor: pointer;">{{ conversation.user2.login }}</h5>
+                                        <h5 style="cursor: pointer;">{{ conversation.user2.fullName }}</h5>
                                     {% elseif app.user.Id != conversation.user1.Id %}
-                                        <h5 style="cursor: pointer;">{{ conversation.user1.login }}</h5>
+                                        <h5 style="cursor: pointer;">{{ conversation.user1.fullName }}</h5>
                                     {% endif %}
                                 </div>
                             </div>
@@ -75,9 +78,9 @@
 
         var messageFromInput = "";
 
-        const url = new URL('http://0.0.0.0:3000/hub');
+        const url = new URL('http://localhost:8080/hub');
         url.searchParams.append('topic', {{ topic }});
-        const eventSource = new EventSource(url)
+        const eventSource = new EventSource(url);
         eventSource.onmessage = e => {
             $interceptedMessage = e.data;
 
