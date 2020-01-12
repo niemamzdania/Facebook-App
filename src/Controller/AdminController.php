@@ -119,7 +119,13 @@ class AdminController extends AbstractController
      */
     public function show_users(Session $session)
     {
-        $users = $this->getDoctrine()->getRepository(Users::class)->findAllUsers();
+        $users2 = $this->getDoctrine()->getRepository(Users::class)->findAllUsers();
+        $users = [];
+        for($i=0; $i<count($users2); $i++){
+            if($users2[$i] == $this->getUser())
+                continue;
+            array_push($users, $users2[$i]);
+        }
 
         if($session->get('message'))
         {
