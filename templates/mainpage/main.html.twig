@@ -79,10 +79,10 @@
     <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
     <script>
         $(".button").click(function () {
-            let url3 = $(this).attr('id');
+            let url = $(this).attr('id');
 
             $.ajax({
-                url: url3,
+                url: url,
                 success: function (result) {
                     $(".content").html(result);
                 }
@@ -94,10 +94,10 @@
         }
 
         function changeLanguage(clicked_id) {
-            let url2 = '{{ path('change_lang', {lang: 'clicked_id'}) }}';
-            url2 = url.replace("clicked_id", clicked_id);
+            let url = '{{ path('change_lang', {lang: 'clicked_id'}) }}';
+            url = url.replace("clicked_id", clicked_id);
             $.ajax({
-                url: url2,
+                url: url,
             });
             setTimeout(function () {
                 window.location.reload();
