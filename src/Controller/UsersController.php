@@ -231,10 +231,10 @@ class UsersController extends AbstractController
     }
 
     /**
-     * @Route("/avatars/delete/{id}", name="delete_user")
+     * @Route("/avatars/delete/{id}", name="delete_avatar")
      * @IsGranted("IS_AUTHENTICATED_FULLY")
      */
-    public function delete_user(Users $user, Session $session)
+    public function delete_avatar(Users $user, Session $session)
     {
         if ($this->getUser()->getId() != $this->getUser()->getId() &&
             !$this->isGranted("ROLE_ADMIN")) {
