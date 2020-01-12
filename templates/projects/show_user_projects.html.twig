@@ -10,7 +10,6 @@
             <th style="text-align: center;" scope="col">{% trans %}Nazwa{% endtrans %}</th>
             <th scope="col"></th>
             <th scope="col">{% trans %}Zadania{% endtrans %}</th>
-            <th scope="col">{% trans %}Usuń{% endtrans %}</th>
         </tr>
         </thead>
         <tbody>
@@ -30,19 +29,11 @@
                            data-target="#modalShowQuests"
                            data-toggle="modal">{% trans %}Pokaż{% endtrans %}</a>
                     </td>
-                    <td>
-                        <button data-id="{{ project.id }}" onclick="get_number_delete(this.getAttribute('data-id'))"
-                                class="btn btn-outline-danger action_post"
-                                data-target="#modalDeleteProject" data-toggle="modal">
-                            <i class="fas fa-trash-alt"></i>
-                        </button>
-                    </td>
                 </tr>
             {% endfor %}
         {% else %}
             <tr>
                 <td><h4>{% trans %}Brak projektów do wyświetlenia{% endtrans %}</h4></td>
-                <td></td>
                 <td></td>
                 <td></td>
                 <td></td>
@@ -172,10 +163,6 @@
                     '                        </button>\n' +
                     '                    </div>');
             }
-        }
-
-        function get_number_delete(clicked_id) {
-            number_delete = clicked_id;
         }
 
         function delete_trigger() {

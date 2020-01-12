@@ -26,9 +26,11 @@
                  aria-valuenow="20" aria-valuemin="0" aria-valuemax="100">{{ quest.status }}%
             </div>
         </div>
-        <a href="/quest/edit/{{ quest.id }}">
-            <button class="btn btn-warning mt-4">{% trans %}Edytuj{% endtrans %}</button>
-        </a>
+        {% if app.user.id == quest.user.id or is_granted('ROLE_ADMIN') %}
+            <a href="/quest/edit/{{ quest.id }}">
+                <button class="btn btn-warning mt-4">{% trans %}Edytuj{% endtrans %}</button>
+            </a>
+        {% endif %}
         <button onclick="goBack()" class="btn btn-secondary mt-4 ml-2">{% trans %}Wróć{% endtrans %}</button>
     </div>
 {% endblock %}
