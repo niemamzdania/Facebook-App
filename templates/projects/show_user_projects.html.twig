@@ -6,7 +6,6 @@
     <table class="table table-striped">
         <thead>
         <tr>
-            <th scope="col">id</th>
             <th style="text-align: center;" scope="col">{% trans %}Nazwa{% endtrans %}</th>
             <th scope="col"></th>
             <th scope="col">{% trans %}Zadania{% endtrans %}</th>
@@ -16,7 +15,6 @@
         {% if projects is not empty %}
             {% for project in projects %}
                 <tr>
-                    <th>{{ project.id }}</th>
                     <th><textarea id="{{ project.id }}" style="width: 100%;">{{ project.name }}</textarea></th>
                     <th>
                         <button style="text-align: left;" data-id="{{ project.id }}"

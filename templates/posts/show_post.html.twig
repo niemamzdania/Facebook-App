@@ -8,7 +8,7 @@
                     <p style="font-weight: bold;"><h4>{% trans %}Data{% endtrans %}:</h4>
                     <h6>{{ post.Date|date("d.m.Y H:i") }}</h6></p>
                     <p><h4>{% trans %}Autor{% endtrans %}:</h4>
-                <h6>{{ post.User.Login }}</h6></p>
+                <h6>{{ post.User.fullName }}</h6></p>
                     <p><h4>{% trans %}Tytuł{% endtrans %}:</h4>
                     <h6>{{ post.Title }}</h6></p>
                     <p><h4>{% trans %}Treść{% endtrans %}:</h4>
