@@ -1,7 +1,7 @@
 {% extends 'mainpage/main.html.twig' %}
 {% block content %}
     <h1 style="margin:25px;">{% trans %}Posty{% endtrans %}</h1>
-    {% if app.user.id == 1 %}<h5 style="margin: 25px;">{% trans %}Posty opublikowane z tego konta można zobaczyć na stronie facebookowej{% endtrans %}: <a href="https://www.facebook.com/FbApp-107676910612052/">FbApp</a></h5>{% endif %}
+    {% if app.user.id == 1 %}<h5 style="margin: 25px;">{% trans %}Adres strony facebookowej przypisanej do tego konta{% endtrans %}: <a href="https://www.facebook.com/FbApp-107676910612052/">FbApp</a></h5>{% endif %}
     <a class="btn btn-outline-secondary m-2" href="{{ path('new_post') }}">{% trans %}Stwórz nowy post{% endtrans %}</a>
     <div class="table">
         <table class="table table-striped">
